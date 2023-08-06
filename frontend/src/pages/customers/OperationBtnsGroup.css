@@ -1,0 +1,5 @@
+.operations__btns {
+  border-bottom: 1px solid var(--primary-color);
+  padding-block: 0.5rem;
+  gap: 0.3rem;
+}

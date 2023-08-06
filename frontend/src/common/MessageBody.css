@@ -1,0 +1,11 @@
+.message__body {
+  padding: 0.5rem;
+  text-align: center;
+  width: 100%;
+}
+.message__error {
+  color: red;
+}
+.message__success {
+  color: green;
+}

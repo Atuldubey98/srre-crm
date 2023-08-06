@@ -1,0 +1,23 @@
+.customer__item {
+  padding-block: 0.3rem;
+  padding-inline: 0.5rem;
+}
+.customer__item:hover {
+  background-color: rgb(240, 239, 239);
+}
+.selected__customer {
+  background-color: var(--primary-color);
+}
+.customer__name {
+  font-weight: bold;
+}
+.customer__meta {
+  font-size: small;
+}
+.form__control {
+  display: grid;
+  gap: 0.3rem;
+}
+.form__control > label {
+  font-weight: bold;
+}

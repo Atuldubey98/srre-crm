@@ -1,0 +1,20 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+:root {
+  --primary-color: lightgrey;
+  --dominant-color: white;
+  --secondary-color: #5dbae7;
+}
+.d-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.d-grid {
+  display: grid;
+}

@@ -1,0 +1,15 @@
+.technician {
+  gap: 0.3rem;
+  padding-block: 0.3rem;
+  padding-inline: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.technician:hover {
+  background-color: rgb(240, 239, 239);
+}
+.technician__selected {
+  background-color: var(--primary-color);
+}

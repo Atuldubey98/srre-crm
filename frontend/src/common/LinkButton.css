@@ -1,0 +1,8 @@
+.link__btn {
+  padding: 0.3rem;
+  text-decoration: none;
+  color: white;
+  border-radius: 0.2rem;
+  font-weight: bold;
+  background-color: var(--secondary-color);
+}

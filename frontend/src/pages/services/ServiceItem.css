@@ -1,0 +1,14 @@
+.service__acType {
+  font-weight: bold;
+}
+.service__item {
+  padding-block: 0.3rem;
+  padding-inline: 0.5rem;
+  cursor: pointer;
+}
+.service__item:hover {
+  background-color: rgb(240, 239, 239);
+}
+.selected__serviceItem {
+  background-color: var(--primary-color);
+}

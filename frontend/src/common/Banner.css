@@ -1,0 +1,6 @@
+.banner > img {
+  border-radius: 0.3rem;
+}
+.banner {
+  gap: 0.5rem;
+}

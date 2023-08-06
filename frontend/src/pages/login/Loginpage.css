@@ -1,0 +1,9 @@
+.login__form {
+  max-width: 450px;
+  margin: auto;
+  gap: 1rem;
+  width: 100%;
+}
+.form__container {
+  height: 600px;
+}
