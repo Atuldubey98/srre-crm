@@ -10,6 +10,9 @@ export default function customerRepository() {
       "email name role _id"
     );
   }
+  async function getAddressListByCustomerId(customerId) {
+    return Customer.findById(customerId).select("address");
+  }
   async function createCustomer(customerBody) {
     try {
       const newCustomer = await CustomerBodySchema.validateAsync(customerBody);
@@ -55,6 +58,7 @@ export default function customerRepository() {
     createCustomer,
     getAllCustomers,
     updateCustomerById,
+    getAddressListByCustomerId,
     getCustomerById,
     deleteCustomerById,
   });

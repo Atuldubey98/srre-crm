@@ -1,0 +1,8 @@
+.report__statusBig {
+  font-size: large;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+}
+.report__acsList {
+  list-style: decimal;
+}

@@ -9,8 +9,19 @@ export const getAllCustomers = (search = "") => {
     },
   });
 };
+export const getAllCustomerNames = (search = "") => {
+  return instance.get("/api/v1/customers", {
+    params: {
+      select: "name",
+      q: search,
+    },
+  });
+};
 export const getCustomerById = (customerId: string) => {
   return instance.get(`/api/v1/customers/${customerId}`);
+};
+export const getAddressByCustomerId = (customerId: string) => {
+  return instance.get(`/api/v1/customers/${customerId}/address`);
 };
 export const deleteCustomerById = (customerId: string) => {
   return instance.delete(`/api/v1/customers/${customerId}`);

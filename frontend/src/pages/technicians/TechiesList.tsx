@@ -6,6 +6,8 @@ import TechnicianItem from "./TechnicianItem";
 import useTechnicians from "./useTechnicians";
 export default function TechiesList() {
   const { technicians, filterProps } = useTechnicians();
+  
+
   const filteredTechnicians = useMemo(() => {
     return (technicians || []).filter((techy) =>
       filterProps.filter

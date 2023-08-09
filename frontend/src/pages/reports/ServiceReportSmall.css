@@ -1,0 +1,20 @@
+.customer__address {
+  font-size: small;
+  font-style: italic;
+}
+.report__statusWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.service__reportSmall {
+  padding: 0.3rem;
+  transition: all 300ms ease-in;
+  cursor: pointer;
+}
+.service__reportSmall:hover {
+  background-color: rgb(240, 239, 239);
+}
+.selected__service__reportSmall {
+  background-color: var(--primary-color);
+}

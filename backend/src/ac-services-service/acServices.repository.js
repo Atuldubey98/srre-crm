@@ -39,6 +39,17 @@ export default function acServiceRepository() {
    */
   async function getAllAcServicesByAcType(typeOfAC) {
     try {
+      if (!typeOfAC) {
+        const services = await ACService.aggregate([
+          {
+            $project: {
+              typeOfAC: "$typeOfAC",
+              serviceGiven: { $concat: ["$serviceName", "-", "$typeOfAC"] },
+            },
+          },
+        ]);
+        return services;
+      }
       const services = await ACService.find(
         typeOfAC === "all" ? {} : { typeOfAC }
       );

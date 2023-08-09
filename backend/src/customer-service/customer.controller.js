@@ -1,12 +1,17 @@
+import { isValidObjectId } from "mongoose";
 import customerRepository from "./customer.repository.js";
 import { CustomerIdSchema } from "./customer.validation.js";
+import { CustomerNotFound } from "./errors.js";
+import reportRepository from "../report-service/report.repository.js";
 const {
   createCustomer,
   getAllCustomers,
   updateCustomerById,
   getCustomerById,
   deleteCustomerById,
+  getAddressListByCustomerId,
 } = customerRepository();
+const { getServiceReportsByCustomerId } = reportRepository();
 export async function createCustomerController(req, res, next) {
   try {
     const newCustomer = await createCustomer({
@@ -64,6 +69,40 @@ export async function getCustomerByIdController(req, res, next) {
     );
     const customer = await getCustomerById(customerId);
     return res.status(200).json({ status: true, data: customer });
+  } catch (error) {
+    next(error);
+  }
+}
+export async function getCustomerAddresssListByController(req, res, next) {
+  try {
+    if (!isValidObjectId(req.params.customerId)) {
+      throw new CustomerNotFound();
+    }
+    const customer = await getAddressListByCustomerId(req.params.customerId);
+    return res.status(200).json({ status: true, data: customer });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getReportsOfCustomerByCustomerIdController(
+  req,
+  res,
+  next
+) {
+  try {
+    const customerId = req.params.customerId;
+    if (!isValidObjectId(customerId)) {
+      throw new CustomerNotFound();
+    }
+    const limit = isNaN(Number(req.query.limit)) ? 10 : Number(req.query.limit);
+    const skip = isNaN(Number(req.query.skip)) ? 10 : Number(req.query.skip);
+    const reportsOfCustomers = await getServiceReportsByCustomerId(
+      customerId,
+      limit,
+      skip
+    );
+    return res.status(200).json({ status: true, data: reportsOfCustomers });
   } catch (error) {
     next(error);
   }

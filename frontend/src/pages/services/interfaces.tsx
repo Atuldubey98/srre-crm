@@ -8,6 +8,11 @@ export interface Service extends ServiceFilter {
   createdAt: string;
   updatedAt: string;
 }
+export interface TypeOfServiceGiven {
+  _id: string;
+  serviceGiven: string;
+  typeOfAC: string;
+}
 export const acOptions: { [key: string]: string } = {
   all: "All",
   splitac: "Split AC",

@@ -1,0 +1,18 @@
+.report__status {
+  font-size: x-small;
+  font-style: oblique;
+  padding: 0.1rem;
+  border-radius: 0.2rem;
+}
+.report__statusComplete {
+  background-color: green;
+  color: white;
+}
+.report__statusIncomplete {
+  background-color: red;
+  color: white;
+}
+.report__statusPending {
+  background-color: yellow;
+  color: white;
+}

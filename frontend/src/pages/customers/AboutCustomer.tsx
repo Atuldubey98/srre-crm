@@ -47,7 +47,7 @@ export default function AboutCustomer(props: AboutCustomerProps) {
                 onNavigate(`/customers/${props.customer?._id}/edit`);
               }}
             />
-            <Button label="Add Service" className="btn" />
+            <Button label="View Services" className="btn" />
             <Button
               label="Delete Customer"
               className="btn btn-danger"

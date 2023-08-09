@@ -3,6 +3,7 @@ import CustomerPage from "./pages/customers";
 import Loginpage from "./pages/login";
 import ServicesPage from "./pages/services";
 import TechnicansPage from "./pages/technicians";
+import ServiceReportsPage from "./pages/reports";
 
 export default function App() {
   return (
@@ -23,6 +24,11 @@ export default function App() {
         <Route path="new" element={<TechnicansPage />} />
         <Route path=":technicianId" element={<TechnicansPage />} />
         <Route path=":technicianId/edit" element={<TechnicansPage />} />
+      </Route>
+      <Route path="/reports">
+        <Route path="" element={<ServiceReportsPage />} />
+        <Route path="new" element={<ServiceReportsPage />} />
+        <Route path=":reportId" element={<ServiceReportsPage />} />
       </Route>
       <Route path="/login" element={<Loginpage />} />
     </Routes>

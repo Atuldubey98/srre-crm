@@ -52,8 +52,13 @@ export async function createServiceController(req, res, next) {
  */
 export async function getAllAirConditonerServicesByType(req, res, next) {
   try {
-    const typeOfAC = await acTypeSchema.validateAsync(req.query.typeOfAC);
-    const services = await getAllAcServicesByAcType(typeOfAC);
+    let services = null;
+    if (req.query.typeOfAC) {
+      const typeOfAC = await acTypeSchema.validateAsync(req.query.typeOfAC);
+      services = await getAllAcServicesByAcType(typeOfAC);
+    } else {
+      services = await getAllAcServicesByAcType("");
+    }
     return res.status(200).json({ status: true, data: services });
   } catch (error) {
     next(error);

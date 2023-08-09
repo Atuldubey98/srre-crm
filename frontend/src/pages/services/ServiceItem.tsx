@@ -15,11 +15,14 @@ export default function ServiceItem(props: ServiceItemProps) {
   return (
     <li onClick={onNavigateToAbout} key={service._id} className="service__item">
       <div className="service">
-        <span className="service__acType">{acOptions[service.typeOfAC]}</span> :
-        <span>{service.serviceName}</span>
+        <span className="service__acType">{service.serviceName}</span>
       </div>
       <div className="service__dates">
-        <span>{getDateByCustomerCreationDate(service.createdAt)}</span>
+        <span>{getDateByCustomerCreationDate(service.createdAt)}</span>{" "}
+        <span className="service">
+          {": "}
+          {acOptions[service.typeOfAC]}
+        </span>
       </div>
     </li>
   );
