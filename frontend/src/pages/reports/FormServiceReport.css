@@ -1,0 +1,6 @@
+.service__reportForm {
+  margin-block: 0.3rem;
+  margin-inline: 0.5rem;
+  display: grid;
+  gap: 0.5rem;
+}

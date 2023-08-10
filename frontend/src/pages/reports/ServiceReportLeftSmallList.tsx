@@ -23,7 +23,7 @@ export default function ServiceReportLeftSmallList() {
           queryParamsReports.limit,
           queryParamsReports.skip
         );
-        setServiceReports(data.data);
+        setServiceReports([...(serviceReports || []), ...data.data]);
         setHashMoreReports(data.data.length > 0);
       } catch (error) {}
     })();

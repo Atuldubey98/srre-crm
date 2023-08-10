@@ -1,0 +1,6 @@
+.form__fieldTextArea {
+  width: 100%;
+}
+.form__fieldTextArea > textarea {
+  width: 100%;
+}

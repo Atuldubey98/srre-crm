@@ -29,6 +29,7 @@ export default function App() {
         <Route path="" element={<ServiceReportsPage />} />
         <Route path="new" element={<ServiceReportsPage />} />
         <Route path=":reportId" element={<ServiceReportsPage />} />
+        <Route path=":reportId/edit" element={<ServiceReportsPage />} />
       </Route>
       <Route path="/login" element={<Loginpage />} />
     </Routes>

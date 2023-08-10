@@ -7,10 +7,13 @@ import ACMetaInfosList from "./ACMetaInfosList";
 import "./ServicesGivenFields.css";
 import { AcMetaInfo } from "./interfaces";
 export type ServicesGivenFieldsProps = {
-  acMetaInfo: AcMetaInfo[];
+  acMetaInfoList: AcMetaInfo[];
+  onAddService: (service: AcMetaInfo) => void;
+  onUpdateService: (acmeta: AcMetaInfo) => void;
+  onRemoveService: (serviceId: string) => void;
 };
 export default function ServicesGivenFields(props: ServicesGivenFieldsProps) {
-  const { acMetaInfo } = props;
+  const { acMetaInfoList } = props;
   const defaultACMetaInfo = {
     modelNumber: "",
     tonnage: "",
@@ -18,19 +21,22 @@ export default function ServicesGivenFields(props: ServicesGivenFieldsProps) {
     services: [],
   };
   const [acMetaForm, setAcMetaForm] = useState<AcMetaInfo | null>(null);
+  const [services, setServices] = useState<Service[] | null>(null);
+
   const onChangeACType: ChangeEventHandler<HTMLSelectElement> = (e) => {
     if (acMetaForm) {
+      setServices(null);
       setAcMetaForm({
         ...acMetaForm,
         typeOfAC: e.currentTarget.value,
+        services: [],
       });
     }
   };
-  const onSetACMetaInfo = (acMeta: AcMetaInfo) => {
+  const onSetACMetaInfo = (acMeta: AcMetaInfo | null) => {
     setAcMetaForm(acMeta);
   };
 
-  const [services, setServices] = useState<Service[] | null>(null);
   useEffect(() => {
     (async () => {
       if (acMetaForm && acMetaForm.typeOfAC) {
@@ -40,23 +46,30 @@ export default function ServicesGivenFields(props: ServicesGivenFieldsProps) {
     })();
   }, [acMetaForm?.typeOfAC]);
   return (
-    <fieldset>
+    <fieldset className="field__section">
       <legend>Work Done</legend>
-      {acMetaForm ? null : (
-        <Button
-          className="btn btn-small"
-          label="Add More AC"
-          onClick={() => setAcMetaForm(defaultACMetaInfo)}
-        />
-      )}
       <ACMetaInfosList
-        acMetaInfos={acMetaInfo}
+        onRemoveService={props.onRemoveService}
+        acMetaInfos={acMetaInfoList}
         onSetACMetaInfo={onSetACMetaInfo}
       />
+      {acMetaForm ? null : (
+        <div className="d-flex-center">
+          <Button
+            className="btn btn-small"
+            label="Add More AC"
+            onClick={() => setAcMetaForm(defaultACMetaInfo)}
+          />
+        </div>
+      )}
+
       {acMetaForm ? (
         <ACMetaInfoForm
+          onUpdateService={props.onUpdateService}
+          onAddService={props.onAddService}
           onSetACMetaInfo={onSetACMetaInfo}
           acMetaForm={acMetaForm}
+          acMetaInfoList={acMetaInfoList}
           onChangeACType={onChangeACType}
           services={services}
         />

@@ -7,14 +7,31 @@ export type ServiceReportStatus =
   | "Incomplete"
   | "Material Pending";
 
+export interface ReportFormFields {
+  _id?: string;
+  customer: string;
+  serviceDate: string;
+  customerAddress: string;
+  description: string;
+  status: ServiceReportStatus;
+  technician: string;
+  siteContactPerson: SiteContactPerson;
+  acMetaInfo: AcMetaInfo[];
+}
+export type SiteContactPerson = {
+  identification: string;
+  contactNumber: string;
+};
 export interface ServiceReport {
   _id?: string;
   customer: Customer;
   serviceDate: string;
+  description: string;
+
   customerAddress: Address;
   acMetaInfo?: AcMetaInfo[] | null;
   technician: Technician;
-  siteContact?: Contact;
+  siteContactPerson?: SiteContactPerson;
   status: ServiceReportStatus;
 }
 export interface Customer {

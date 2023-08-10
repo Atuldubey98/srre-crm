@@ -6,3 +6,6 @@
 .report__acsList {
   list-style: decimal;
 }
+.reports__aboutWrapper{
+  padding-inline: 0.8rem;
+}

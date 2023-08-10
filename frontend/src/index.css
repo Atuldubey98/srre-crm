@@ -2,6 +2,9 @@
   box-sizing: border-box;
   margin: 0;
 }
+body {
+  font-family: "Poppins", sans-serif;
+}
 :root {
   --primary-color: lightgrey;
   --dominant-color: white;
@@ -17,4 +20,16 @@
 }
 .d-grid {
   display: grid;
+}
+.field__section {
+  display: grid;
+  gap: 0.5rem;
+}
+.field__section > legend {
+  font-size: large;
+  font-weight: 800;
+}
+.form {
+  display: grid;
+  gap: 0.5rem;
 }

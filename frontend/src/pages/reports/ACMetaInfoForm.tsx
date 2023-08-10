@@ -3,12 +3,16 @@ import FormLabelField from "../../common/FormLabelField";
 import SelectOptions from "../../common/SelectOptions";
 import { Service, acTypeOptions } from "../services/interfaces";
 import { AcMetaInfo } from "./interfaces";
+import Button from "../../common/Button";
 
 export type ACMetaInfoFormProps = {
   acMetaForm: AcMetaInfo;
   onChangeACType: ChangeEventHandler<HTMLSelectElement>;
   services: Service[] | null;
-  onSetACMetaInfo: (acMetaForm: AcMetaInfo) => void;
+  acMetaInfoList: AcMetaInfo[];
+  onUpdateService: (acmeta: AcMetaInfo) => void;
+  onAddService: (service: AcMetaInfo) => void;
+  onSetACMetaInfo: (acMetaForm: AcMetaInfo | null) => void;
 };
 export default function ACMetaInfoForm(props: ACMetaInfoFormProps) {
   const { acMetaForm, onChangeACType, services, onSetACMetaInfo } = props;
@@ -38,14 +42,14 @@ export default function ACMetaInfoForm(props: ACMetaInfoFormProps) {
       });
     }
   };
-  const onChangeACMetaForm: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const onChangeACModelNumber: ChangeEventHandler<HTMLInputElement> = (e) => {
     onSetACMetaInfo({
       ...acMetaForm,
-      [e.currentTarget.name]: e.currentTarget.value,
+      modelNumber: e.currentTarget.value.toLocaleUpperCase(),
     });
   };
   return (
-    <div className="ac__form">
+    <div className="ac__form form">
       <FormLabelField
         input={{
           name: "tonnage",
@@ -60,7 +64,7 @@ export default function ACMetaInfoForm(props: ACMetaInfoFormProps) {
           name: "modelNumber",
           type: "string",
           value: acMetaForm.modelNumber,
-          onChange: onChangeACMetaForm,
+          onChange: onChangeACModelNumber,
         }}
         label="Model Number :"
       />
@@ -80,7 +84,7 @@ export default function ACMetaInfoForm(props: ACMetaInfoFormProps) {
         </SelectOptions>
       </div>
       {services ? (
-        <fieldset>
+        <fieldset className="field__section">
           <legend>Work Done </legend>
           {services.map((service) => (
             <div key={service._id} className="form__select d-flex">
@@ -99,6 +103,37 @@ export default function ACMetaInfoForm(props: ACMetaInfoFormProps) {
           ))}
         </fieldset>
       ) : null}
+      <div className="d-flex-center btn-group">
+        <Button
+          label="Cancel"
+          className="btn btn-small btn-info"
+          onClick={() => {
+            onSetACMetaInfo(null);
+          }}
+        />
+        {acMetaForm._id ? (
+          <Button
+            label="Update Serviced"
+            className="btn btn-small"
+            onClick={() => {
+              props.onUpdateService(acMetaForm);
+              onSetACMetaInfo(null);
+            }}
+          />
+        ) : (
+          <Button
+            label="Add AC Serviced"
+            className="btn btn-small"
+            onClick={() => {
+              props.onAddService({
+                ...acMetaForm,
+                _id: Math.random().toString(36).substring(2, 9),
+              });
+              onSetACMetaInfo(null);
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 }

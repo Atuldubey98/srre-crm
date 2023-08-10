@@ -5,6 +5,9 @@ export default function reportRepository() {
     const serviceReport = new Report(report);
     return serviceReport.save();
   }
+  async function updateServiceReport(reportId, report) {
+    return Report.findByIdAndUpdate(reportId, report, { new: true });
+  }
   /**
    *
    * @param {string} reportId
@@ -69,7 +72,7 @@ export default function reportRepository() {
               },
             },
           },
-          contact: "$contact",
+          siteContactPerson: "$siteContactPerson",
           status: 1,
 
           technician: "$technician",
@@ -152,7 +155,7 @@ export default function reportRepository() {
               },
             },
           },
-          contact: "$contact",
+          siteContactPerson: "$siteContactPerson",
           status: 1,
 
           technician: "$technician",
@@ -223,7 +226,7 @@ export default function reportRepository() {
               },
             },
           },
-          contact: "$contact",
+          siteContactPerson: "$siteContactPerson",
           technician: "$technician",
           status: 1,
         },
@@ -239,5 +242,6 @@ export default function reportRepository() {
     deleteReportById,
     getReportById,
     getServiceReportsByCustomerId,
+    updateServiceReport,
   });
 }

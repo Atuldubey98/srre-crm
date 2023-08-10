@@ -2,8 +2,8 @@ import Joi from "joi";
 import { acTypeSchema } from "../ac-services-service/acServices.validation.js";
 
 const contactSchema = Joi.object({
-  identification: Joi.string().required(),
-  contactNumber: Joi.string(),
+  identification: Joi.string().allow("").optional(),
+  contactNumber: Joi.string().allow("").optional(),
 });
 
 const acModelSchema = Joi.object({

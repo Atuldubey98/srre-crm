@@ -3,7 +3,6 @@ import { typesOfACs } from "../ac-services-service/acServices.model.js";
 const contactSchema = new Schema({
   identification: {
     type: String,
-    required: true,
   },
   contactNumber: {
     type: String,
@@ -58,6 +57,7 @@ const reportsSchema = new Schema(
     technician: {
       type: Schema.Types.ObjectId,
       ref: "technician",
+      required: true,
     },
   },
   {
@@ -65,5 +65,6 @@ const reportsSchema = new Schema(
     timestamps: true,
   }
 );
+reportsSchema.index({ createdAt: -1 });
 const Report = model("report", reportsSchema);
 export default Report;

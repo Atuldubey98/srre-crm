@@ -1,8 +1,10 @@
 import ReportField from "./ReportField";
 import { AcMetaInfo } from "./interfaces";
-
+import "./ACMetaInfosList.css";
+import Button from "../../common/Button";
 export type ACMetaInfosListProps = {
   acMetaInfos: AcMetaInfo[];
+  onRemoveService: (serviceId: string) => void;
   onSetACMetaInfo: (acMetaInfo: AcMetaInfo) => void;
 };
 export default function ACMetaInfosList(props: ACMetaInfosListProps) {
@@ -10,20 +12,36 @@ export default function ACMetaInfosList(props: ACMetaInfosListProps) {
   return (
     <ul className="ac__Infos">
       {acMetaInfos.map((acInfo) => (
-        <li
-          onClick={() => onSetACMetaInfo(acInfo)}
-          key={acInfo._id}
-          className="ac__info"
-        >
-          <ReportField value={acInfo.modelNumber} fieldName="AC Model Number" />
-          <ReportField
-            value={acInfo.tonnage.toString()}
-            fieldName="Total Tonn of AC"
-          />
-          <ReportField
-            value={acInfo.typeOfAC.toString()}
-            fieldName="Type of AC"
-          />
+        <li key={acInfo._id} className="ac__info">
+          <div onClick={() => onSetACMetaInfo(acInfo)}>
+            <ReportField
+              value={acInfo.modelNumber}
+              fieldName="AC Model Number"
+            />
+            <ReportField
+              value={acInfo.tonnage.toString()}
+              fieldName="Total Tonn of AC"
+            />
+            <ReportField
+              value={acInfo.typeOfAC.toString()}
+              fieldName="Type of AC"
+            />
+            <ReportField
+              value={(acInfo.services || [])
+                .map((ser) => `${ser.typeOfAC} : ${ser.serviceName}`)
+                .join(", ")}
+              fieldName="Services Done"
+            />
+          </div>
+          <div className="ac__InfoDelete">
+            <Button
+              className="btn btn-small btn-danger"
+              label="Delete"
+              onClick={() => {
+                props.onRemoveService(acInfo._id || "");
+              }}
+            />
+          </div>
         </li>
       ))}
     </ul>

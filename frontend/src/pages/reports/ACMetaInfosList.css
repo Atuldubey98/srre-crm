@@ -4,3 +4,14 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
+.ac__info {
+  border-radius: 0.5rem;
+  border: 1px solid var(--primary-color);
+  cursor: pointer;
+  padding: 0.3rem;
+}
+.ac__InfoDelete {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}

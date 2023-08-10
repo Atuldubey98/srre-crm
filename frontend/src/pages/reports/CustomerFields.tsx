@@ -6,12 +6,15 @@ import {
 } from "../customers/customersApi";
 import { Address } from "../customers/interfaces";
 import "./CustomerFields.css";
-import { Customer } from "./interfaces";
+import { Customer, SiteContactPerson } from "./interfaces";
+import FormLabelField from "../../common/FormLabelField";
 export type CustomerFieldsProps = {
   onChangeCustomerField: ChangeEventHandler<
     HTMLInputElement | HTMLSelectElement
   >;
   customer: string;
+  onChangeContactField: ChangeEventHandler<HTMLInputElement>;
+  siteContactPerson: SiteContactPerson;
   customerAddress: string;
 };
 export default function CustomerFields(props: CustomerFieldsProps) {
@@ -36,7 +39,7 @@ export default function CustomerFields(props: CustomerFieldsProps) {
     })();
   }, [customer]);
   return (
-    <fieldset>
+    <fieldset className="field__section">
       <legend>Customer</legend>
       {customers ? (
         <div className="form__labelField d-grid">
@@ -74,6 +77,22 @@ export default function CustomerFields(props: CustomerFieldsProps) {
           </SelectOptions>
         </div>
       ) : null}
+      <FormLabelField
+        input={{
+          name: "identification",
+          value: props.siteContactPerson.identification,
+          onChange: props.onChangeContactField,
+        }}
+        label="Site Contact Person ID or Name"
+      />
+      <FormLabelField
+        input={{
+          name: "contactNumber",
+          value: props.siteContactPerson.contactNumber,
+          onChange: props.onChangeContactField,
+        }}
+        label="Site Contact Person Phone number"
+      />
     </fieldset>
   );
 }

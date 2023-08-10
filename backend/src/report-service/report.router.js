@@ -4,6 +4,7 @@ import {
   createServiceReportController,
   getServiceReportsController,
   getServicesReportByIdController,
+  updateServiceReportController,
 } from "./report.controller.js";
 
 const reportRouter = Router();
@@ -13,5 +14,10 @@ reportRouter.get(
   "/:reportId",
   authenticationMiddleware,
   getServicesReportByIdController
+);
+reportRouter.patch(
+  "/:reportId",
+  authenticationMiddleware,
+  updateServiceReportController
 );
 export default reportRouter;

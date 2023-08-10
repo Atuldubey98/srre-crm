@@ -1,13 +1,13 @@
-import { reportFilterSchema, reportsSchema } from "./report.validations.js";
-import reportRepository from "./report.repository.js";
-import Joi from "joi";
 import { isValidObjectId } from "mongoose";
 import { ReportNotFound } from "./errors.js";
+import reportRepository from "./report.repository.js";
+import { reportsSchema } from "./report.validations.js";
 const {
   createServiceReport,
   getServiceReports,
   getReportById,
   deleteReportById,
+  updateServiceReport,
 } = reportRepository();
 /**
  * @description : create service report
@@ -67,6 +67,23 @@ export async function deleteReportByIdController(req, res, next) {
     return res
       .status(204)
       .json({ status: true, message: "Service Report deleted" });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateServiceReportController(req, res, next) {
+  try {
+    const reportId = req.params.reportId;
+    if (!isValidObjectId(reportId)) {
+      throw new ReportNotFound();
+    }
+    const report = await reportsSchema.validateAsync(req.body);
+    const updatedReport = await updateServiceReport(reportId, report);
+    if (!updatedReport) {
+      throw new ReportNotFound();
+    }
+    return res.status(200).json({ status: true, data: updatedReport });
   } catch (error) {
     next(error);
   }

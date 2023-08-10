@@ -1,3 +1,6 @@
 .form__labelField {
-  gap: 0.3rem;
+  gap: 0.5rem;
+}
+.form__labelField > label {
+  font-weight: 600;
 }
