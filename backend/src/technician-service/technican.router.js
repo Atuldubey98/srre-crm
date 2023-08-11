@@ -5,12 +5,18 @@ import {
   getTechnicianByIdController,
   updateTechnicianByIdController,
   createTechnicianController,
+  deleteTechnicianByIdController,
 } from "./technician.controller.js";
 
 const technicianRouter = Router();
 technicianRouter
   .get("/", authenticationMiddleware, getAllTechniciansController)
   .get("/:technicianId", authenticationMiddleware, getTechnicianByIdController)
+  .delete(
+    "/:technicianId",
+    authenticationMiddleware,
+    deleteTechnicianByIdController
+  )
   .patch(
     "/:technicianId",
     authenticationMiddleware,

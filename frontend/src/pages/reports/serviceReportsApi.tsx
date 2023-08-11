@@ -14,6 +14,9 @@ export function getServiceReports(limit: number, skip: number) {
 export function getServiceReportById(reportId: string) {
   return instance.get(`/api/v1/service-reports/${reportId}`);
 }
+export function deleteServiceReportById(reportId: string) {
+  return instance.delete(`/api/v1/service-reports/${reportId}`);
+}
 export function downloadServiceReportsByFilter(
   filter: ServiceReportListFormFields
 ) {

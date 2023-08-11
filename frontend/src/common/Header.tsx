@@ -1,7 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Banner from "./Banner";
 import "./Header.css";
+import { useAuth } from "./AuthContext";
+import Button from "./Button";
 export default function Header() {
+  const authContext = useAuth();
+  const navigate = useNavigate();
+  const onLogoutClick = () => {
+    if (confirm("Do you want to logout ?")) {
+      localStorage.clear();
+      navigate("/login", { replace: true });
+    }
+  };
   return (
     <header className="d-flex-center">
       <Banner />
@@ -17,6 +27,16 @@ export default function Header() {
         </li>
         <li>
           <Link to={"/reports"}>Service-Reports</Link>
+        </li>
+        <li>
+          <span>
+            {authContext?.currentUser?.name} | {authContext?.currentUser?.role}
+          </span>
+          <Button
+            className="btn btn-primary"
+            label="Logout"
+            onClick={onLogoutClick}
+          />
         </li>
       </ul>
     </header>

@@ -6,18 +6,21 @@ import ServicesList from "./ServicesList";
 import "./ServicesPage.css";
 import useServiceAbout from "./useServiceAbout";
 import NewServiceAddForm from "./NewServiceAddForm";
+import PrivateRoute from "../../common/PrivateRoute";
 export default function ServicesPage() {
   const { service } = useServiceAbout();
   const location = useLocation();
   const pathnameMatch = useMatch(location.pathname);
   const showNewServiceForm = pathnameMatch?.pathnameBase === `/services/new`;
   return (
-    <Container>
-      <PageLeftRight>
-        <ServicesList />
-        {showNewServiceForm ? null : <AboutService service={service} />}
-        <NewServiceAddForm />
-      </PageLeftRight>
-    </Container>
+    <PrivateRoute>
+      <Container>
+        <PageLeftRight>
+          <ServicesList />
+          {showNewServiceForm ? null : <AboutService service={service} />}
+          <NewServiceAddForm />
+        </PageLeftRight>
+      </Container>
+    </PrivateRoute>
   );
 }

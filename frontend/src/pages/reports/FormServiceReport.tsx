@@ -63,7 +63,7 @@ export default function FormServiceReport() {
     }
   };
   const isUpdateForm =
-    error && pathnameMatch?.pathnameBase === `/reports/${reportId}/edit`;
+    pathnameMatch?.pathnameBase === `/reports/${reportId}/edit`;
   useEffect(() => {
     if (reportId) {
       (async () => {

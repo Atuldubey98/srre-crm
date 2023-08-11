@@ -1,13 +1,14 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import CustomerPage from "./pages/customers";
 import Loginpage from "./pages/login";
+import ServiceReportsPage from "./pages/reports";
 import ServicesPage from "./pages/services";
 import TechnicansPage from "./pages/technicians";
-import ServiceReportsPage from "./pages/reports";
 
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/customers">
         <Route path="" element={<CustomerPage />} />
         <Route path="new" element={<CustomerPage />} />

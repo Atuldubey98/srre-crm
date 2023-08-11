@@ -19,7 +19,7 @@ instance.interceptors.response.use(
     return response;
   },
   function (error) {
-    const check = isAxiosError(error) ? error.response?.status === 401 : false;
+    const check = isAxiosError(error) ? error.response?.status === 403 : false;
     if (window.location.pathname !== "/login" && check) {
       window.location.href = "/login";
     }

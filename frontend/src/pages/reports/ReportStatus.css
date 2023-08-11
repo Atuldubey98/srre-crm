@@ -13,6 +13,6 @@
   color: white;
 }
 .report__statusPending {
-  background-color: yellow;
+  background-color: rgba(255, 174, 0, 0.945);
   color: white;
 }

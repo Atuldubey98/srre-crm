@@ -1,20 +1,36 @@
-import { useEffect, useState } from "react";
+import {
+  ChangeEventHandler,
+  FormEventHandler,
+  useEffect,
+  useState,
+} from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Button from "../../common/Button";
+import Input from "../../common/Input";
 import { AboutSection } from "../../common/PageLeftRight";
 import { getDateByCustomerCreationDate } from "../../utils/dateUtils";
 import OperationBtnsGroup from "../customers/OperationBtnsGroup";
 import ReportACList from "./ReportACList";
 import ReportField from "./ReportField";
+import ReportnotFound from "./ReportnotFound";
 import "./ServiceReportAboutSection.css";
 import { ServiceReport } from "./interfaces";
-import { getServiceReportById } from "./serviceReportsApi";
-import Button from "../../common/Button";
-import ReportnotFound from "./ReportnotFound";
-export default function ServiceReportAboutSection() {
+import {
+  deleteServiceReportById,
+  getServiceReportById,
+} from "./serviceReportsApi";
+export type ServiceReportAboutSectionProps = {
+  onRemoveService: (serviceReportId: string) => void;
+};
+export default function ServiceReportAboutSection(
+  props: ServiceReportAboutSectionProps
+) {
+  const { onRemoveService } = props;
   const { reportId = "" } = useParams();
   const [serviceReport, setServiceReport] = useState<ServiceReport | null>(
     null
   );
+  const [searchReportId, setSearchReportId] = useState<string>("");
   useEffect(() => {
     if (!reportId) {
       return;
@@ -26,15 +42,44 @@ export default function ServiceReportAboutSection() {
       } catch (error) {}
     })();
   }, [reportId]);
-  const navigate = useNavigate();
+  const onNavigate = useNavigate();
+  const onChangeSearchReportId: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setSearchReportId(e.currentTarget.value);
+  };
+  const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    onNavigate(`/reports/${searchReportId}`);
+  };
+  const onDeleteReport = async () => {
+    try {
+      if (confirm("Do you want to delete the report?")) {
+        await deleteServiceReportById(reportId);
+        onRemoveService(reportId);
+        onNavigate(`/reports`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <AboutSection>
       <div className="reports__aboutWrapper">
         <OperationBtnsGroup
           navigationUrl="/reports/new"
           operationLabel="Add new report"
-        />
-        {serviceReport ? (
+        >
+          <form className="d-flex-center" onSubmit={onSubmit}>
+            <Input
+              type="text"
+              placeholder="Search By Report Id"
+              value={searchReportId}
+              required
+              onChange={onChangeSearchReportId}
+            />
+            <Button label="Search" className="btn btn-info" />
+          </form>
+        </OperationBtnsGroup>
+        {serviceReport && reportId ? (
           <>
             <div className="report__customer">
               <h1>{serviceReport.customer.name}</h1>
@@ -83,8 +128,13 @@ export default function ServiceReportAboutSection() {
                 label="Edit Report"
                 className="btn btn-info"
                 onClick={() => {
-                  navigate(`/reports/${serviceReport?._id}/edit`);
+                  onNavigate(`/reports/${serviceReport?._id}/edit`);
                 }}
+              />
+              <Button
+                label="Delete Report"
+                className="btn btn-danger"
+                onClick={onDeleteReport}
               />
             </div>
           </>

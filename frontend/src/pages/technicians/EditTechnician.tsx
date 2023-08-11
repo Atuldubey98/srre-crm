@@ -81,7 +81,7 @@ export default function EditTechnician() {
       if (technician) {
         const { data } = await createNewTechnician({
           name: technician?.name,
-          contactNumber: technician?.name,
+          contactNumber: technician?.contactNumber,
           currentlyActive: technician?.currentlyActive,
           email: technician?.email,
         });
@@ -100,6 +100,7 @@ export default function EditTechnician() {
             <label htmlFor="name"> Technician Name : </label>
             <Input
               name="name"
+              required
               value={technician?.name || ""}
               onChange={onChangeTechnician}
             />
@@ -108,6 +109,7 @@ export default function EditTechnician() {
             <label htmlFor="contactNumber">Technician Contact Number : </label>
             <Input
               type="tel"
+              required
               name="contactNumber"
               value={technician?.contactNumber || ""}
               onChange={onChangeTechnician}

@@ -8,7 +8,7 @@ import {
   useParams,
 } from "react-router-dom";
 import { Technician } from "./interfaces";
-import { getAllTechnicianById } from "./techiesApi";
+import { deleteTechnicianById, getAllTechnicianById } from "./techiesApi";
 import OperationBtnsGroup from "../customers/OperationBtnsGroup";
 import Button from "../../common/Button";
 import TechnicianNotfound from "./TechnicianNotfound";
@@ -35,6 +35,14 @@ export default function AboutTechnician() {
   const onTechyEdit = () => {
     navigate(`/technicians/${technicianId}/edit`);
   };
+  const onDeleteTechy = async () => {
+    try {
+      await deleteTechnicianById(technicianId);
+      navigate("/technicians");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <AboutSection>
       <OperationBtnsGroup
@@ -55,6 +63,11 @@ export default function AboutTechnician() {
               label="Edit Technician"
               className="btn btn-info"
               onClick={onTechyEdit}
+            />
+            <Button
+              label="Delete Technician"
+              className="btn btn-danger"
+              onClick={onDeleteTechy}
             />
           </div>
         </section>

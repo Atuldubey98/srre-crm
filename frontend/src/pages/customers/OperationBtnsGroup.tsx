@@ -4,6 +4,7 @@ import "./OperationBtnsGroup.css";
 export type OperationBtnsGroupProps = {
   navigationUrl: string;
   operationLabel: string;
+  children?: JSX.Element;
 };
 export default function OperationBtnsGroup(props: OperationBtnsGroupProps) {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export default function OperationBtnsGroup(props: OperationBtnsGroupProps) {
         className="btn btn-success"
         onClick={() => navigate(props.navigationUrl)}
       />
+      {props.children}
     </section>
   );
 }

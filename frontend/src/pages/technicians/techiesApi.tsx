@@ -8,6 +8,10 @@ export const getAllTechnicianById = (technicianId: string) => {
   return instance.get(`/api/v1/technicians/${technicianId}`);
 };
 
+export const deleteTechnicianById = (technicianId: string) => {
+  return instance.delete(`/api/v1/technicians/${technicianId}`);
+};
+
 export const createNewTechnician = (technician: TechnicianBody) => {
   return instance.post("/api/v1/technicians", technician);
 };
