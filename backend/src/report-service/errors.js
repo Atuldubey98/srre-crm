@@ -6,3 +6,11 @@ export class ReportNotFound extends Error {
     this.name = "ReportNotFound";
   }
 }
+export class ReportFilterInvalid extends Error {
+  constructor() {
+    super("Report Filter invalid");
+    this.code = 400;
+    this.stack = Error.captureStackTrace(this);
+    this.name = "ReportNotFound";
+  }
+}

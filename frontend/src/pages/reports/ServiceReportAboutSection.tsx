@@ -9,6 +9,7 @@ import "./ServiceReportAboutSection.css";
 import { ServiceReport } from "./interfaces";
 import { getServiceReportById } from "./serviceReportsApi";
 import Button from "../../common/Button";
+import ReportnotFound from "./ReportnotFound";
 export default function ServiceReportAboutSection() {
   const { reportId = "" } = useParams();
   const [serviceReport, setServiceReport] = useState<ServiceReport | null>(
@@ -50,7 +51,9 @@ export default function ServiceReportAboutSection() {
               />
               {serviceReport.acMetaInfo ? (
                 <div className="report__acs">
-                  <h4>ACs Services Description :</h4>
+                  {serviceReport.acMetaInfo ? (
+                    <h4>ACs Services Description :</h4>
+                  ) : null}
                   <ReportACList acMetaInfo={serviceReport.acMetaInfo} />
                 </div>
               ) : null}
@@ -69,6 +72,10 @@ export default function ServiceReportAboutSection() {
                   value={serviceReport.technician.currentlyActive}
                   fieldName="Current Active"
                 />
+                <ReportField
+                  value={serviceReport.description}
+                  fieldName="Description"
+                />
               </div>
             ) : null}
             <div className="btn-group d-flex-center">
@@ -81,6 +88,8 @@ export default function ServiceReportAboutSection() {
               />
             </div>
           </>
+        ) : reportId ? (
+          <ReportnotFound />
         ) : null}
       </div>
     </AboutSection>

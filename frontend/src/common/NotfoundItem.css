@@ -1,0 +1,4 @@
+.not__foundItem {
+  flex-direction: column;
+  min-height: 450px;
+}

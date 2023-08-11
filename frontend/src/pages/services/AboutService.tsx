@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../common/Button";
 import { AboutSection } from "../../common/PageLeftRight";
 import { getDateByCustomerCreationDate } from "../../utils/dateUtils";
@@ -6,12 +6,13 @@ import OperationBtnsGroup from "../customers/OperationBtnsGroup";
 import "./AboutService.css";
 import { Service, acOptions } from "./interfaces";
 import { deleteServiceById } from "./servicesApi";
+import ServiceNotfound from "./ServiceNotfound";
 export type AboutSectionProps = {
   service: Service | null;
-
 };
 export default function AboutService(props: AboutSectionProps) {
   const { service } = props;
+  const { serviceId } = useParams();
   const navigate = useNavigate();
   const onDeleteService = async () => {
     try {
@@ -40,6 +41,8 @@ export default function AboutService(props: AboutSectionProps) {
             />
           </div>
         </section>
+      ) : serviceId ? (
+        <ServiceNotfound />
       ) : null}
     </AboutSection>
   );

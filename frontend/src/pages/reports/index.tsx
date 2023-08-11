@@ -4,6 +4,7 @@ import { PageLeftRight } from "../../common/PageLeftRight";
 import FormServiceReport from "./FormServiceReport";
 import ServiceReportAboutSection from "./ServiceReportAboutSection";
 import ServiceReportLeftSmallList from "./ServiceReportLeftSmallList";
+import ReportGenerationUtilities from "./ReportGenerationUtilities";
 
 export default function ServiceReportsPage() {
   const location = useLocation();
@@ -16,12 +17,13 @@ export default function ServiceReportsPage() {
     <Container>
       <PageLeftRight>
         <ServiceReportLeftSmallList />
-       
+
         {showNewReport || showEditReport ? (
           <FormServiceReport />
         ) : (
           <ServiceReportAboutSection />
         )}
+        <ReportGenerationUtilities />
       </PageLeftRight>
     </Container>
   );

@@ -26,6 +26,7 @@ export default function ServicesGivenFields(props: ServicesGivenFieldsProps) {
   const onChangeACType: ChangeEventHandler<HTMLSelectElement> = (e) => {
     if (acMetaForm) {
       setServices(null);
+      props.onUpdateService({ ...acMetaForm, services: [] });
       setAcMetaForm({
         ...acMetaForm,
         typeOfAC: e.currentTarget.value,

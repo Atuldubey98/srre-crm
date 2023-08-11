@@ -1,0 +1,10 @@
+.report__generationDates {
+  grid-template-columns: 1fr 1fr;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.report__generationWrapper > details > form {
+  display: grid;
+  gap: 0.8rem;
+}

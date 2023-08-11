@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import { AboutSection } from "../../common/PageLeftRight";
 import "./AboutTechnician.css";
-import { useLocation, useMatch, useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useMatch,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { Technician } from "./interfaces";
 import { getAllTechnicianById } from "./techiesApi";
 import OperationBtnsGroup from "../customers/OperationBtnsGroup";
 import Button from "../../common/Button";
+import TechnicianNotfound from "./TechnicianNotfound";
 export default function AboutTechnician() {
   const { technicianId = "" } = useParams();
   const location = useLocation();
@@ -52,6 +58,8 @@ export default function AboutTechnician() {
             />
           </div>
         </section>
+      ) : technicianId ? (
+        <TechnicianNotfound />
       ) : null}
     </AboutSection>
   );

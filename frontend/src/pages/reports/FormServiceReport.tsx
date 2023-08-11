@@ -22,24 +22,13 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { ServiceReport } from "./interfaces";
+import { getDateForField } from "../../utils/dateUtils";
 export default function FormServiceReport() {
-  function getDateForField(dateString: string) {
-    const dateObject = new Date(dateString);
-
-    const year = dateObject.getFullYear();
-    const month = String(dateObject.getMonth() + 1).padStart(2, "0");
-    const day = String(dateObject.getDate()).padStart(2, "0");
-
-    const formattedDate = `${year}-${month}-${day}`;
-
-    return formattedDate;
-  }
   const { state, operations } = useReportForm();
   const location = useLocation();
   const { reportId = "" } = useParams();
   const pathnameMatch = useMatch(location.pathname);
-  const isUpdateForm =
-    pathnameMatch?.pathnameBase === `/reports/${reportId}/edit`;
+  const [error, setError] = useState<string>("");
   const [message, setMessage] = useState<MessageBodyProps>({
     type: "success",
     body: "",
@@ -73,81 +62,90 @@ export default function FormServiceReport() {
       }, 1500);
     }
   };
+  const isUpdateForm =
+    error && pathnameMatch?.pathnameBase === `/reports/${reportId}/edit`;
   useEffect(() => {
     if (reportId) {
       (async () => {
-        const response = await getServiceReportById(reportId);
-        const report: ServiceReport = response.data.data;
-        console.log(report);
-        
-        operations.onSetNewState({
-          customer: report.customer._id,
-          acMetaInfo: report.acMetaInfo || [],
-          customerAddress: report.customerAddress._id,
-          description: report.description,
-          serviceDate: getDateForField(report.serviceDate),
-          siteContactPerson: report.siteContactPerson || {
-            contactNumber: "",
-            identification: "",
-          },
-          status: report.status,
-          technician: report.technician._id || "",
-        });
+        setError("");
+        try {
+          const response = await getServiceReportById(reportId);
+          const report: ServiceReport = response.data.data;
+          operations.onSetNewState({
+            customer: report.customer._id,
+            acMetaInfo: report.acMetaInfo || [],
+            customerAddress: report.customerAddress._id,
+            description: report.description,
+            serviceDate: getDateForField(report.serviceDate),
+            siteContactPerson: report.siteContactPerson || {
+              contactNumber: "",
+              identification: "",
+            },
+            status: report.status,
+            technician: report.technician._id || "",
+          });
+        } catch (error) {
+          setError(
+            isAxiosError(error) ? error.response?.data.message : "Error occured"
+          );
+        }
       })();
     }
   }, [reportId]);
   return (
     <AboutSection>
-      <form className="service__reportForm" onSubmit={onSubmit}>
-        <FormLabelField
-          input={{
-            name: "serviceDate",
-            type: "date",
-            required: true,
-            value: state.serviceDate,
-            onChange: operations.onChangeReportField,
-          }}
-          label="Service Date"
-        />
-        <CustomerFields
-          siteContactPerson={state.siteContactPerson}
-          customer={customer}
-          customerAddress={customerAddress}
-          onChangeContactField={operations.onChangeContactField}
-          onChangeCustomerField={operations.onChangeReportField}
-        />
-        <ServicesGivenFields
-          onRemoveService={operations.onRemoveService}
-          onUpdateService={operations.onUpdateService}
-          acMetaInfoList={acMetaInfo}
-          onAddService={operations.onAddService}
-        />
-        <TechnicianFormSelect
-          status={state.status}
-          onChangeReportField={operations.onChangeReportField}
-          technician={state.technician}
-        />
-        <WorkDescriptionField
-          description={state.description}
-          onChangeReportField={operations.onChangeReportField}
-        />
-        <MessageBody {...message} />
-        <div className="d-flex-center">
-          {isUpdateForm ? (
-            <Button
-              type="submit"
-              label="Update Report"
-              className="btn btn-info"
-            />
-          ) : (
-            <Button
-              type="submit"
-              label="Add Report"
-              className="btn btn-success"
-            />
-          )}
-        </div>
-      </form>
+      {error ? null : (
+        <form className="service__reportForm" onSubmit={onSubmit}>
+          <FormLabelField
+            input={{
+              name: "serviceDate",
+              type: "date",
+              required: true,
+              value: state.serviceDate,
+              onChange: operations.onChangeReportField,
+            }}
+            label="Service Date"
+          />
+          <CustomerFields
+            siteContactPerson={state.siteContactPerson}
+            customer={customer}
+            customerAddress={customerAddress}
+            onChangeContactField={operations.onChangeContactField}
+            onChangeCustomerField={operations.onChangeReportField}
+          />
+          <ServicesGivenFields
+            onRemoveService={operations.onRemoveService}
+            onUpdateService={operations.onUpdateService}
+            acMetaInfoList={acMetaInfo}
+            onAddService={operations.onAddService}
+          />
+          <TechnicianFormSelect
+            status={state.status}
+            onChangeReportField={operations.onChangeReportField}
+            technician={state.technician}
+          />
+          <WorkDescriptionField
+            description={state.description}
+            onChangeReportField={operations.onChangeReportField}
+          />
+          <MessageBody {...message} />
+          <div className="d-flex-center">
+            {isUpdateForm ? (
+              <Button
+                type="submit"
+                label="Update Report"
+                className="btn btn-info"
+              />
+            ) : (
+              <Button
+                type="submit"
+                label="Add Report"
+                className="btn btn-success"
+              />
+            )}
+          </div>
+        </form>
+      )}
     </AboutSection>
   );
 }

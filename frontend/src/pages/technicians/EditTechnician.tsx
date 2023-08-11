@@ -25,10 +25,12 @@ export default function EditTechnician() {
   const location = useLocation();
   const { technicianId = "" } = useParams();
   const pathnameMatch = useMatch(location.pathname);
-  const showUpdateTechnician =
-    pathnameMatch?.pathnameBase === `/technicians/${technicianId}/edit`;
+
   const showTechnicianNew = pathnameMatch?.pathnameBase === `/technicians/new`;
   const [technician, setTechnician] = useState<Technician | null>(null);
+  const showUpdateTechnician =
+    technician &&
+    pathnameMatch?.pathnameBase === `/technicians/${technicianId}/edit`;
   useEffect(() => {
     (async () => {
       if (!technicianId) {

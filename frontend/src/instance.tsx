@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 const baseUrl = "http://localhost:9000";
 
@@ -14,5 +14,16 @@ instance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
+instance.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    const check = isAxiosError(error) ? error.response?.status === 401 : false;
+    if (window.location.pathname !== "/login" && check) {
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
 export default instance;

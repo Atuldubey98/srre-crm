@@ -19,6 +19,7 @@ export default function CustomerForm(props: CustomerFormProps) {
   const pathnameMatch = useMatch(location.pathname);
   const isUpdateForm =
     pathnameMatch?.pathnameBase === `/customers/${props.customer?._id}/edit`;
+  const isCustomerNewForm = pathnameMatch?.pathnameBase === `/customers/new`;
   const [message, setMessage] = useState<MessageBodyProps>({
     type: "success",
     body: "",
@@ -120,29 +121,31 @@ export default function CustomerForm(props: CustomerFormProps) {
   };
   return (
     <EditSection>
-      <form onSubmit={onCustomerFormSubmit} className="customer__form">
-        <div className="form__control">
-          <label htmlFor="name">Customer Name :</label>
-          <Input
-            type="text"
-            onChange={onChangeName}
-            name="name"
-            value={customer.name}
+      {(isUpdateForm && customer) || isCustomerNewForm ? (
+        <form onSubmit={onCustomerFormSubmit} className="customer__form">
+          <div className="form__control">
+            <label htmlFor="name">Customer Name :</label>
+            <Input
+              type="text"
+              onChange={onChangeName}
+              name="name"
+              value={customer.name}
+            />
+          </div>
+          <AddressInputs
+            address={customer.address}
+            onAddAddress={onAddAddress}
+            onRemoveAddress={onRemoveAddress}
+            onChangeAddress={onChangeAddress}
           />
-        </div>
-        <AddressInputs
-          address={customer.address}
-          onAddAddress={onAddAddress}
-          onRemoveAddress={onRemoveAddress}
-          onChangeAddress={onChangeAddress}
-        />
-        <CustomerContactInputs
-          onChangeContact={onChangeContact}
-          contact={customer.contact}
-        />
-        <CustomerFormUpdateSaveBtn customerId={customer._id} />
-        <MessageBody {...message} />
-      </form>
+          <CustomerContactInputs
+            onChangeContact={onChangeContact}
+            contact={customer.contact}
+          />
+          <CustomerFormUpdateSaveBtn customerId={customer._id} />
+          <MessageBody {...message} />
+        </form>
+      ) : null}
     </EditSection>
   );
 }

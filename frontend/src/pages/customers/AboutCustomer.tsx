@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../common/Button";
 import { AboutSection } from "../../common/PageLeftRight";
 import "./AboutCustomer.css";
@@ -8,12 +8,14 @@ import { Customer } from "./interfaces";
 import { deleteCustomerById } from "./customersApi";
 import useNavigateWithQuery from "../../common/useNavigateWithQuery";
 import OperationBtnsGroup from "./OperationBtnsGroup";
+import CustomerNotFound from "./CustomerNotFound";
 export type AboutCustomerProps = {
   customer: Customer | null;
 };
 export default function AboutCustomer(props: AboutCustomerProps) {
   const navigate = useNavigate();
   const { onNavigate } = useNavigateWithQuery();
+  const { customerId } = useParams();
   const onDeleteCustomer = async () => {
     try {
       if (confirm("Do you want to delete the customer ?")) {
@@ -55,6 +57,8 @@ export default function AboutCustomer(props: AboutCustomerProps) {
             />
           </div>
         </div>
+      ) : customerId ? (
+        <CustomerNotFound />
       ) : null}
     </AboutSection>
   );

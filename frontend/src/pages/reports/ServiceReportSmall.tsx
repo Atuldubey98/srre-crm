@@ -16,7 +16,7 @@ export default function ServiceReportSmall(props: ServiceReportSmallProps) {
   }`;
   return (
     <li onClick={navigateToService} className={classname}>
-      <div className="customer__data">
+      <div className="customer__data text-wrap">
         <p title="Customer Name" className="customer__name">
           {props.serviceReport.customer.name}
         </p>

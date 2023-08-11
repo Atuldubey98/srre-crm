@@ -1,4 +1,5 @@
 import instance from "../../instance";
+import { ServiceReportListFormFields } from "./ReportGenerationUtilities";
 import { ReportFormFields } from "./interfaces";
 
 export function getServiceReports(limit: number, skip: number) {
@@ -13,6 +14,20 @@ export function getServiceReports(limit: number, skip: number) {
 export function getServiceReportById(reportId: string) {
   return instance.get(`/api/v1/service-reports/${reportId}`);
 }
+export function downloadServiceReportsByFilter(
+  filter: ServiceReportListFormFields
+) {
+  return instance.get(`/api/v1/service-reports/download`, {
+    params: {
+      ...filter,
+      customer: filter.customer ? filter.customer : undefined,
+      customerAddress: filter.customerAddress
+        ? filter.customerAddress
+        : undefined,
+    },
+    responseType: "blob",
+  });
+}
 
 export function createNewServiceReport(report: ReportFormFields) {
   return instance.post("/api/v1/service-reports", {
@@ -20,7 +35,7 @@ export function createNewServiceReport(report: ReportFormFields) {
     acMetaInfo: report.acMetaInfo.map((acmeta) => ({
       ...acmeta,
       _id: undefined,
-      tonnage: parseFloat(acmeta.tonnage),
+      tonnage: acmeta.tonnage ? parseFloat(acmeta.tonnage) : 0,
       services: acmeta.services?.map((service) => service._id),
     })),
   });

@@ -1,9 +1,83 @@
 import { Types } from "mongoose";
 import Report from "./report.model.js";
+import { getReportsCSVFileData } from "./report.csvgeneration.js";
+
 export default function reportRepository() {
   async function createServiceReport(report) {
     const serviceReport = new Report(report);
     return serviceReport.save();
+  }
+  async function downloadServiceReportsByFilter(filter) {
+    const reports = await Report.aggregate([
+      { $match: filter },
+      {
+        $lookup: {
+          from: "customers",
+          localField: "customer",
+          foreignField: "_id",
+          as: "customer",
+        },
+      },
+      {
+        $lookup: {
+          from: "technicians",
+          localField: "technician",
+          foreignField: "_id",
+          as: "technician",
+        },
+      },
+      { $unwind: "$technician" },
+      {
+        $lookup: {
+          from: "acservices",
+          localField: "acMetaInfo.services",
+          foreignField: "_id",
+          as: "acMetaInfoServices",
+        },
+      },
+      { $unwind: "$customer" },
+      {
+        $project: {
+          serviceDate: 1,
+          customer: {
+            _id: "$customer._id",
+
+            name: "$customer.name",
+            contact: "$customer.contact",
+          },
+          customerAddress: {
+            $filter: {
+              input: "$customer.address",
+              as: "address",
+              cond: {
+                $eq: ["$$address._id", "$customerAddress"],
+              },
+            },
+          },
+          acMetaInfo: {
+            $map: {
+              input: "$acMetaInfo",
+              as: "ac",
+              in: {
+                tonnage: "$$ac.tonnage",
+                _id: "$$ac._id",
+
+                modelNumber: "$$ac.modelNumber",
+                typeOfAC: "$$ac.typeOfAC",
+                services: "$acMetaInfoServices",
+              },
+            },
+          },
+          siteContactPerson: "$siteContactPerson",
+          technician: "$technician",
+          status: 1,
+          description: 1,
+        },
+      },
+      { $unwind: "$customerAddress" },
+    ]);
+    const csvFileData = getReportsCSVFileData(reports);
+    return csvFileData;
   }
   async function updateServiceReport(reportId, report) {
     return Report.findByIdAndUpdate(reportId, report, { new: true });
@@ -74,6 +148,7 @@ export default function reportRepository() {
           },
           siteContactPerson: "$siteContactPerson",
           status: 1,
+          description: 1,
 
           technician: "$technician",
         },
@@ -157,6 +232,7 @@ export default function reportRepository() {
           },
           siteContactPerson: "$siteContactPerson",
           status: 1,
+          description: 1,
 
           technician: "$technician",
         },
@@ -168,6 +244,7 @@ export default function reportRepository() {
   }
   async function getServiceReports(skip = 0, limit = 10) {
     return Report.aggregate([
+      { $sort: { createdAt: -1 } },
       {
         $lookup: {
           from: "customers",
@@ -199,7 +276,6 @@ export default function reportRepository() {
           serviceDate: 1,
           customer: {
             _id: "$customer._id",
-
             name: "$customer.name",
             contact: "$customer.contact",
           },
@@ -219,7 +295,6 @@ export default function reportRepository() {
               in: {
                 tonnage: "$$ac.tonnage",
                 _id: "$$ac._id",
-
                 modelNumber: "$$ac.modelNumber",
                 typeOfAC: "$$ac.typeOfAC",
                 services: "$acMetaInfoServices",
@@ -228,6 +303,8 @@ export default function reportRepository() {
           },
           siteContactPerson: "$siteContactPerson",
           technician: "$technician",
+          description: 1,
+
           status: 1,
         },
       },
@@ -241,6 +318,7 @@ export default function reportRepository() {
     getServiceReports,
     deleteReportById,
     getReportById,
+    downloadServiceReportsByFilter,
     getServiceReportsByCustomerId,
     updateServiceReport,
   });

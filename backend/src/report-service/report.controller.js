@@ -1,4 +1,4 @@
-import { isValidObjectId } from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 import { ReportNotFound } from "./errors.js";
 import reportRepository from "./report.repository.js";
 import { reportsSchema } from "./report.validations.js";
@@ -8,6 +8,7 @@ const {
   getReportById,
   deleteReportById,
   updateServiceReport,
+  downloadServiceReportsByFilter,
 } = reportRepository();
 /**
  * @description : create service report
@@ -84,6 +85,46 @@ export async function updateServiceReportController(req, res, next) {
       throw new ReportNotFound();
     }
     return res.status(200).json({ status: true, data: updatedReport });
+  } catch (error) {
+    next(error);
+  }
+}
+export async function downloadServiceReportsByFilterController(req, res, next) {
+  const customer =
+    typeof req.query.customer === "string" ? req.query.customer : "all";
+  const customerAddress =
+    typeof req.query.customerAddress === "string"
+      ? req.query.customerAddress
+      : "";
+  let filter = {};
+  if (isValidObjectId(customer)) {
+    filter = { customer: new mongoose.Types.ObjectId(customer) };
+  }
+  if (isValidObjectId(customerAddress)) {
+    filter = {
+      ...filter,
+      customerAddress: new mongoose.Types.ObjectId(customerAddress),
+    };
+  }
+  const fromDate =
+    typeof req.query.fromDate === "string" ? req.query.fromDate : "";
+  const toDate = typeof req.query.toDate === "string" ? req.query.toDate : "";
+
+  if (fromDate) {
+    filter = { ...filter, serviceDate: { $gte: new Date(fromDate) } };
+  }
+  if (toDate) {
+    filter = {
+      ...filter,
+      serviceDate: { ...(filter.serviceDate || {}), $lte: new Date(toDate) },
+    };
+  }
+  try {
+    const csvFileData = await downloadServiceReportsByFilter(filter);
+    const csvData = csvFileData.join("\n");
+    res.setHeader("Content-Disposition", "attachment; filename=data.csv");
+    res.setHeader("Content-Type", "text/csv");
+    res.send(csvData);
   } catch (error) {
     next(error);
   }
