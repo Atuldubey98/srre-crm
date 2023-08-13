@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import { AboutSection } from "../../common/PageLeftRight";
-import "./AboutTechnician.css";
 import {
   useLocation,
   useMatch,
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { Technician } from "./interfaces";
-import { deleteTechnicianById, getAllTechnicianById } from "./techiesApi";
-import OperationBtnsGroup from "../customers/OperationBtnsGroup";
 import Button from "../../common/Button";
+import { AboutSection } from "../../common/PageLeftRight";
+import OperationBtnsGroup from "../customers/OperationBtnsGroup";
+import "./AboutTechnician.css";
 import TechnicianNotfound from "./TechnicianNotfound";
+import { Technician } from "./interfaces";
+import { getAllTechnicianById } from "./techiesApi";
+import ReportTechnician from "../reports/ReportTechnician";
 export default function AboutTechnician() {
   const { technicianId = "" } = useParams();
   const location = useLocation();
@@ -35,14 +36,7 @@ export default function AboutTechnician() {
   const onTechyEdit = () => {
     navigate(`/technicians/${technicianId}/edit`);
   };
-  const onDeleteTechy = async () => {
-    try {
-      await deleteTechnicianById(technicianId);
-      navigate("/technicians");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   return (
     <AboutSection>
       <OperationBtnsGroup
@@ -51,23 +45,16 @@ export default function AboutTechnician() {
       />
       {technician ? (
         <section className="technician__about d-grid">
-          <h1>Technician Name : {technician.name}</h1>
+          <ReportTechnician technician={technician} />
           {technician.email ? (
             <h3>Technician Email Id : {technician.email}</h3>
           ) : null}
-          <h4>Technician Contact Number :{technician.contactNumber}</h4>
-          <h4>Technician Current Status :{technician.currentlyActive}</h4>
 
           <div className="btn-group d-flex-center">
             <Button
               label="Edit Technician"
               className="btn btn-info"
               onClick={onTechyEdit}
-            />
-            <Button
-              label="Delete Technician"
-              className="btn btn-danger"
-              onClick={onDeleteTechy}
             />
           </div>
         </section>

@@ -1,24 +1,17 @@
-import {
-  ChangeEventHandler,
-  FormEventHandler,
-  useEffect,
-  useState,
-} from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import Button from "../../common/Button";
-import Input from "../../common/Input";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
 import { AboutSection } from "../../common/PageLeftRight";
-import { getDateByCustomerCreationDate } from "../../utils/dateUtils";
-import OperationBtnsGroup from "../customers/OperationBtnsGroup";
-import ReportACList from "./ReportACList";
+import ReportButtonsGroup from "./ReportButtonsGroup";
+import ReportCustomer from "./ReportCustomer";
 import ReportField from "./ReportField";
+import ReportMetaInformation from "./ReportMetaInformation";
+import ReportTechnician from "./ReportTechnician";
 import ReportnotFound from "./ReportnotFound";
+import SearchReportForm from "./SearchReportForm";
 import "./ServiceReportAboutSection.css";
 import { ServiceReport } from "./interfaces";
-import {
-  deleteServiceReportById,
-  getServiceReportById,
-} from "./serviceReportsApi";
+import { getServiceReportById } from "./serviceReportsApi";
 export type ServiceReportAboutSectionProps = {
   onRemoveService: (serviceReportId: string) => void;
 };
@@ -26,117 +19,55 @@ export default function ServiceReportAboutSection(
   props: ServiceReportAboutSectionProps
 ) {
   const { onRemoveService } = props;
+  const [loading, setLoading] = useState<boolean>(false);
   const { reportId = "" } = useParams();
   const [serviceReport, setServiceReport] = useState<ServiceReport | null>(
     null
   );
-  const [searchReportId, setSearchReportId] = useState<string>("");
   useEffect(() => {
     if (!reportId) {
       return;
     }
     (async () => {
       try {
+        setLoading(true);
         const { data } = await getServiceReportById(reportId);
         setServiceReport(data.data);
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
     })();
   }, [reportId]);
-  const onNavigate = useNavigate();
-  const onChangeSearchReportId: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setSearchReportId(e.currentTarget.value);
-  };
-  const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    onNavigate(`/reports/${searchReportId}`);
-  };
-  const onDeleteReport = async () => {
-    try {
-      if (confirm("Do you want to delete the report?")) {
-        await deleteServiceReportById(reportId);
-        onRemoveService(reportId);
-        onNavigate(`/reports`);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   return (
     <AboutSection>
       <div className="reports__aboutWrapper">
-        <OperationBtnsGroup
-          navigationUrl="/reports/new"
-          operationLabel="Add new report"
-        >
-          <form className="d-flex-center" onSubmit={onSubmit}>
-            <Input
-              type="text"
-              placeholder="Search By Report Id"
-              value={searchReportId}
-              required
-              onChange={onChangeSearchReportId}
-            />
-            <Button label="Search" className="btn btn-info" />
-          </form>
-        </OperationBtnsGroup>
-        {serviceReport && reportId ? (
+        <SearchReportForm />
+        {loading ? (
+          <LoadingIndicatorAbout loading={loading} />
+        ) : serviceReport && reportId ? (
           <>
-            <div className="report__customer">
-              <h1>{serviceReport.customer.name}</h1>
-              <address>{serviceReport.customerAddress.location}</address>
-              <ReportField
-                value={getDateByCustomerCreationDate(serviceReport.serviceDate)}
-                fieldName="Service Date"
+            <ReportCustomer
+              customerAddress={serviceReport.customerAddress.location}
+              customerName={serviceReport.customer.name}
+              reportId={serviceReport?._id || ""}
+              serviceDate={serviceReport.serviceDate}
+            />
+            {serviceReport.acMetaInfo ? (
+              <ReportMetaInformation
+                acMetaInfo={serviceReport.acMetaInfo}
+                status={serviceReport.status}
               />
-            </div>
-            <div className="report__meta">
-              <ReportField
-                fieldName="Report Status"
-                value={serviceReport.status}
-              />
-              {serviceReport.acMetaInfo ? (
-                <div className="report__acs">
-                  {serviceReport.acMetaInfo ? (
-                    <h4>ACs Services Description :</h4>
-                  ) : null}
-                  <ReportACList acMetaInfo={serviceReport.acMetaInfo} />
-                </div>
-              ) : null}
-            </div>
-            {serviceReport.technician ? (
-              <div className="report__techy">
-                <ReportField
-                  value={serviceReport.technician.name}
-                  fieldName="Technician Name"
-                />
-                <ReportField
-                  value={serviceReport.technician.contactNumber}
-                  fieldName="Technician Phone number"
-                />
-                <ReportField
-                  value={serviceReport.technician.currentlyActive}
-                  fieldName="Current Active"
-                />
-                <ReportField
-                  value={serviceReport.description}
-                  fieldName="Description"
-                />
-              </div>
             ) : null}
-            <div className="btn-group d-flex-center">
-              <Button
-                label="Edit Report"
-                className="btn btn-info"
-                onClick={() => {
-                  onNavigate(`/reports/${serviceReport?._id}/edit`);
-                }}
-              />
-              <Button
-                label="Delete Report"
-                className="btn btn-danger"
-                onClick={onDeleteReport}
-              />
-            </div>
+            {serviceReport.technician ? (
+              <ReportTechnician technician={serviceReport.technician} />
+            ) : null}
+            <ReportField
+              value={serviceReport.description}
+              fieldName="Description"
+            />
+            <ReportButtonsGroup onRemoveService={onRemoveService} />
           </>
         ) : reportId ? (
           <ReportnotFound />

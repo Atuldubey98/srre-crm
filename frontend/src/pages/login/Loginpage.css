@@ -7,3 +7,10 @@
 .form__container {
   height: 600px;
 }
+.login__form > i {
+  text-align: center;
+  font-weight: 100;
+}
+.login__form > h1{
+  text-align: center;
+}

@@ -2,6 +2,7 @@
   padding: 0.5rem;
   text-align: center;
   width: 100%;
+  text-transform: capitalize;
 }
 .message__error {
   color: red;

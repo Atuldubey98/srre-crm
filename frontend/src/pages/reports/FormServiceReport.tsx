@@ -23,6 +23,7 @@ import {
 } from "react-router-dom";
 import { ServiceReport } from "./interfaces";
 import { getDateForField } from "../../utils/dateUtils";
+import ReportnotFound from "./ReportnotFound";
 export default function FormServiceReport() {
   const { state, operations } = useReportForm();
   const location = useLocation();
@@ -94,7 +95,9 @@ export default function FormServiceReport() {
   }, [reportId]);
   return (
     <AboutSection>
-      {error ? null : (
+      {error ? (
+        <ReportnotFound />
+      ) : (
         <form className="service__reportForm" onSubmit={onSubmit}>
           <FormLabelField
             input={{

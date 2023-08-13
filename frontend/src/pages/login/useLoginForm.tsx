@@ -5,6 +5,7 @@ import { isAxiosError } from "axios";
 import { login } from "./loginApi";
 import { useAuth } from "../../common/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
+import { MessageBodyProps } from "../../common/MessageBody";
 
 export default function useLoginForm() {
   const { state, onChangeField } = useFieldChange<LoginBody>({
@@ -13,7 +14,10 @@ export default function useLoginForm() {
   });
   const navigate = useNavigate();
   const authContext = useAuth();
-  const [error, setError] = useState<string>("");
+  const [message, setMessage] = useState<MessageBodyProps>({
+    type: "success",
+    body: "",
+  });
   const [loading, setLoading] = useState<boolean>(false);
   let location = useLocation();
   let from = location.state?.from?.pathname || "/customers";
@@ -23,15 +27,19 @@ export default function useLoginForm() {
       setLoading(true);
       const { data } = await login(state);
       authContext?.onSetCurrentUser(data.data.user);
-      navigate(from, { replace: true });
       localStorage.setItem("token", data.data.token);
+      navigate(from, { replace: true });
     } catch (error) {
-      if (isAxiosError(error)) {
-        setError(error.response?.data.message);
-      }
+      setMessage({
+        ...message,
+        type: "error",
+        body: isAxiosError(error)
+          ? error.response?.data.message
+          : "Netowork Error occured",
+      });
     } finally {
       setLoading(false);
     }
   };
-  return { state, onChangeField, onSubmitForm, loading, error };
+  return { state, onChangeField, onSubmitForm, loading, message };
 }

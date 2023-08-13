@@ -1,6 +1,7 @@
+import { isAxiosError } from "axios";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom";
-import Input from "../../common/Input";
+import FormLabelField from "../../common/FormLabelField";
 import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
 import { EditSection } from "../../common/PageLeftRight";
 import AddressInputs from "./AddressInputs";
@@ -9,7 +10,6 @@ import "./CustomerForm.css";
 import CustomerFormUpdateSaveBtn from "./CustomerFormUpdateSaveBtn";
 import { addNewCustomer, updateCustomerById } from "./customersApi";
 import { Customer } from "./interfaces";
-import { isAxiosError } from "axios";
 export type CustomerFormProps = {
   customer?: Customer | null;
   onSetCustomer: (updatedCustomer: Customer) => void;
@@ -123,15 +123,16 @@ export default function CustomerForm(props: CustomerFormProps) {
     <EditSection>
       {(isUpdateForm && customer) || isCustomerNewForm ? (
         <form onSubmit={onCustomerFormSubmit} className="customer__form">
-          <div className="form__control">
-            <label htmlFor="name">Customer Name :</label>
-            <Input
-              type="text"
-              onChange={onChangeName}
-              name="name"
-              value={customer.name}
-            />
-          </div>
+          <FormLabelField
+            input={{
+              type: "text",
+              required: true,
+              onChange: onChangeName,
+              name: "name",
+              value: customer.name,
+            }}
+            label="Customer Name :"
+          />
           <AddressInputs
             address={customer.address}
             onAddAddress={onAddAddress}

@@ -1,10 +1,11 @@
+import { lazy } from "react";
 import Container from "../../common/Container";
 import { PageLeftRight } from "../../common/PageLeftRight";
-import AboutCustomer from "./AboutCustomer";
-import CustomersList from "./CustomersList";
-import CustomerForm from "./CustomerForm";
-import useCustomers from "./useCustomers";
 import PrivateRoute from "../../common/PrivateRoute";
+import CustomersList from "./CustomersList";
+import useCustomers from "./useCustomers";
+const AboutCustomer = lazy(() => import("./AboutCustomer"));
+const CustomerForm = lazy(() => import("./CustomerForm"));
 
 export default function CustomerPage() {
   const {
@@ -13,6 +14,8 @@ export default function CustomerPage() {
     showNewCustomerPage,
     showEditCustomerPage,
     onSetCustomer,
+    customerLoading,
+    message,
   } = useCustomers();
 
   return (
@@ -23,7 +26,13 @@ export default function CustomerPage() {
           {showNewCustomerPage ? (
             <CustomerForm onSetCustomer={onSetCustomer} />
           ) : null}
-          {showNewCustomerPage ? null : <AboutCustomer customer={customer} />}
+          {showNewCustomerPage ? null : (
+            <AboutCustomer
+              customer={customer}
+              customerLoading={customerLoading}
+              message={message}
+            />
+          )}
           {showEditCustomerPage || typeof showEditCustomerPage === undefined ? (
             <CustomerForm customer={customer} onSetCustomer={onSetCustomer} />
           ) : null}

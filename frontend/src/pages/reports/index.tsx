@@ -1,15 +1,15 @@
+import { lazy, useEffect, useState } from "react";
 import { useLocation, useMatch, useParams } from "react-router-dom";
 import Container from "../../common/Container";
 import { PageLeftRight } from "../../common/PageLeftRight";
-import FormServiceReport from "./FormServiceReport";
-import ServiceReportAboutSection from "./ServiceReportAboutSection";
-import ServiceReportLeftSmallList from "./ServiceReportLeftSmallList";
-import ReportGenerationUtilities from "./ReportGenerationUtilities";
 import PrivateRoute from "../../common/PrivateRoute";
-import { useState, useEffect } from "react";
+import ReportGenerationUtilities from "./ReportGenerationUtilities";
+import ServiceReportLeftSmallList from "./ServiceReportLeftSmallList";
 import { ServiceReport } from "./interfaces";
 import { getServiceReports } from "./serviceReportsApi";
 import useHasMore from "./useHasMore";
+const FormServiceReport= lazy(()=>import("./FormServiceReport"));
+const ServiceReportAboutSection= lazy(()=>import("./ServiceReportAboutSection"));
 
 export default function ServiceReportsPage() {
   const location = useLocation();

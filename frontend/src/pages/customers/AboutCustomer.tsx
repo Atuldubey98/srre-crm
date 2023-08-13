@@ -9,13 +9,19 @@ import { deleteCustomerById } from "./customersApi";
 import useNavigateWithQuery from "../../common/useNavigateWithQuery";
 import OperationBtnsGroup from "./OperationBtnsGroup";
 import CustomerNotFound from "./CustomerNotFound";
+import { MessageBodyProps } from "../../common/MessageBody";
+import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
+import { memo } from "react";
 export type AboutCustomerProps = {
   customer: Customer | null;
+  customerLoading: boolean;
+  message: MessageBodyProps;
 };
-export default function AboutCustomer(props: AboutCustomerProps) {
+function AboutCustomer(props: AboutCustomerProps) {
   const navigate = useNavigate();
   const { onNavigate } = useNavigateWithQuery();
   const { customerId } = useParams();
+  const { customerLoading: loading } = props;
   const onDeleteCustomer = async () => {
     try {
       if (confirm("Do you want to delete the customer ?")) {
@@ -32,7 +38,9 @@ export default function AboutCustomer(props: AboutCustomerProps) {
         navigationUrl="/customers/new"
         operationLabel="Add new Customer"
       />
-      {props.customer ? (
+      {loading ? (
+        <LoadingIndicatorAbout loading={loading} />
+      ) : props.customer ? (
         <div className="customer d-grid">
           <h1>{props.customer.name}</h1>
           {props.customer.contact ? (
@@ -63,3 +71,5 @@ export default function AboutCustomer(props: AboutCustomerProps) {
     </AboutSection>
   );
 }
+
+export default memo(AboutCustomer);

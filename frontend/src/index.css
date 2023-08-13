@@ -3,7 +3,7 @@
   margin: 0;
 }
 body {
-  font-family: "Poppins", sans-serif;
+  line-height: 1.5rem;
 }
 :root {
   --primary-color: lightgrey;

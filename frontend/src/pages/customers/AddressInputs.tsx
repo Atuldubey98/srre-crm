@@ -24,6 +24,7 @@ export default function AddressInputs(props: AddressInputsProps) {
         <div key={address._id} className="customer__address d-flex-center">
           <Input
             name="location"
+            required
             value={address.location}
             onChange={(e) => {
               props.onChangeAddress(e, address._id);
