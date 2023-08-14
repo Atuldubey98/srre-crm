@@ -29,7 +29,9 @@ export default function AboutTechnician() {
       try {
         const { data } = await getAllTechnicianById(technicianId);
         setTechnician(data.data);
-      } catch (error) {}
+      } catch (error) {
+        setTechnician(null);
+      }
     })();
   }, [technicianId, updateTechnician]);
   const navigate = useNavigate();

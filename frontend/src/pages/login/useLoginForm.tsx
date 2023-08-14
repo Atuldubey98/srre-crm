@@ -3,7 +3,7 @@ import useFieldChange from "../../common/useFieldChange";
 import { LoginBody } from "./interfaces";
 import { isAxiosError } from "axios";
 import { login } from "./loginApi";
-import { useAuth } from "../../common/AuthContext";
+import { useAuth } from "../../common/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MessageBodyProps } from "../../common/MessageBody";
 
@@ -19,8 +19,8 @@ export default function useLoginForm() {
     body: "",
   });
   const [loading, setLoading] = useState<boolean>(false);
-  let location = useLocation();
-  let from = location.state?.from?.pathname || "/customers";
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/customers";
   const onSubmitForm: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     try {

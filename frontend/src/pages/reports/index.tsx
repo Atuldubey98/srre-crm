@@ -7,9 +7,13 @@ import ServiceReportLeftSmallList from "./ServiceReportLeftSmallList";
 import { ServiceReport } from "./interfaces";
 import { getServiceReports } from "./serviceReportsApi";
 import useHasMore from "./useHasMore";
-const FormServiceReport= lazy(()=>import("./FormServiceReport"));
-const ReportGenerationUtilities= lazy(()=>import("./ReportGenerationUtilities"));
-const ServiceReportAboutSection= lazy(()=>import("./ServiceReportAboutSection"));
+const FormServiceReport = lazy(() => import("./FormServiceReport"));
+const ReportGenerationUtilities = lazy(
+  () => import("./ReportGenerationUtilities")
+);
+const ServiceReportAboutSection = lazy(
+  () => import("./ServiceReportAboutSection")
+);
 
 export default function ServiceReportsPage() {
   const location = useLocation();
@@ -36,7 +40,9 @@ export default function ServiceReportsPage() {
         );
         setServiceReports([...(serviceReports || []), ...data.data]);
         setHashMoreReports(data.data.length > 0);
-      } catch (error) {}
+      } catch (error) {
+        setHashMoreReports(false);
+      }
     })();
   }, [queryParamsReports]);
   const onRemoveService = (serviceReportId: string) => {

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import Banner from "./Banner";
 import "./Header.css";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "./useAuth";
 import Button from "./Button";
 export default function Header() {
   const authContext = useAuth();

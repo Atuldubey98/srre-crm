@@ -15,6 +15,7 @@ export default function useTechnicians() {
         const { data } = await getAllTechnicials();
         setTechnicians(data.data);
       } catch (error) {
+        setTechnicians(null);
       } finally {
         setLoading(false);
       }

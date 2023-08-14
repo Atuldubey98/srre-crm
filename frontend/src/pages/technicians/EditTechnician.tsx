@@ -45,7 +45,9 @@ export default function EditTechnician() {
       try {
         const { data } = await getAllTechnicianById(technicianId);
         setTechnician(data.data);
-      } catch (error) {}
+      } catch (error) {
+        setTechnician(null);
+      }
     })();
   }, [technicianId]);
   const showForm = showTechnicianNew || showUpdateTechnician;

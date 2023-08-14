@@ -7,6 +7,9 @@ import "./AboutService.css";
 import { Service, acOptions } from "./interfaces";
 import { deleteServiceById } from "./servicesApi";
 import ServiceNotfound from "./ServiceNotfound";
+import { useState } from "react";
+import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
+import { isAxiosError } from "axios";
 export type AboutSectionProps = {
   service: Service | null;
 };
@@ -14,11 +17,22 @@ export default function AboutService(props: AboutSectionProps) {
   const { service } = props;
   const { serviceId } = useParams();
   const navigate = useNavigate();
+  const [message, setMessage] = useState<MessageBodyProps>({
+    type: "success",
+    body: "",
+  });
   const onDeleteService = async () => {
     try {
       await deleteServiceById(service?._id || "");
       navigate("/services");
-    } catch (error) {}
+    } catch (error) {
+      setMessage({
+        type: "error",
+        body: isAxiosError(error)
+          ? error.response?.data.message
+          : "Network error occured",
+      });
+    }
   };
   return (
     <AboutSection>
@@ -40,6 +54,7 @@ export default function AboutService(props: AboutSectionProps) {
               onClick={onDeleteService}
             />
           </div>
+          <MessageBody {...message} />
         </section>
       ) : serviceId ? (
         <ServiceNotfound />

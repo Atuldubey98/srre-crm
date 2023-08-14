@@ -23,7 +23,9 @@ export default function useServiceList() {
       try {
         const { data: response } = await getAllServices(filter.typeOfAC);
         setServices(response.data);
-      } catch (error) {}
+      } catch (error) {
+        setServices([]);
+      }
     })();
   }, [filter.typeOfAC, serviceId]);
   const filterProps: FilterServicesProps = {

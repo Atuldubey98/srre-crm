@@ -33,7 +33,7 @@ export default function CustomerPage() {
               message={message}
             />
           )}
-          {showEditCustomerPage || typeof showEditCustomerPage === undefined ? (
+          {showEditCustomerPage ? (
             <CustomerForm customer={customer} onSetCustomer={onSetCustomer} />
           ) : null}
         </PageLeftRight>

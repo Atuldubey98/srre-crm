@@ -34,6 +34,7 @@ export default function ServiceReportAboutSection(
         const { data } = await getServiceReportById(reportId);
         setServiceReport(data.data);
       } catch (error) {
+        setServiceReport(null);
       } finally {
         setLoading(false);
       }
