@@ -28,7 +28,7 @@ export default function Header() {
         <li>
           <Link to={"/reports"}>Service-Reports</Link>
         </li>
-        <li>
+        <li className="header__link d-flex-center">
           <span>
             {authContext?.currentUser?.name} | {authContext?.currentUser?.role}
           </span>

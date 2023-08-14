@@ -21,10 +21,15 @@ export default function NewServiceAddForm() {
     body: "",
   });
   const showNewServiceForm = pathnameMatch?.pathnameBase === `/services/new`;
-  const { state: service, onChangeField } = useFieldChange<CreateServiceBody>({
+  const defaultService = {
     typeOfAC: "all",
     serviceName: "",
-  });
+  };
+  const {
+    state: service,
+    onChangeField,
+    onSetField,
+  } = useFieldChange<CreateServiceBody>(defaultService);
   const navigate = useNavigate();
   const onNewServiceFormSubmit: FormEventHandler<HTMLFormElement> = async (
     e
@@ -32,6 +37,7 @@ export default function NewServiceAddForm() {
     e.preventDefault();
     try {
       const { data } = await createNewService(service);
+      onSetField(defaultService);
       if (data.data.count > 1) {
         setMessage({ type: "success", body: "Bulk services added" });
       } else {

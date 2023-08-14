@@ -3,7 +3,7 @@ export const NODE_ENV = process.env.NODE_ENV || "development";
 dotenv.config({
   path: NODE_ENV === "development" ? "../.env.development" : "../../.env",
 });
-
+export const SECRET_ADMIN_KEY = process.env.SECRET_ADMIN_KEY;
 export const MONGO_URI = process.env.MONGO_URI;
 export const PORT = isNaN(Number(process.env.VITE_API_PORT))
   ? 9000

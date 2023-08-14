@@ -11,5 +11,8 @@ export default function useFieldChange<T>(defaultValue: T) {
       [name]: value,
     });
   };
-  return { state, onChangeField };
+  const onSetField = (newState: T) => {
+    setState(newState);
+  };
+  return { state, onChangeField, onSetField };
 }

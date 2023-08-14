@@ -57,7 +57,6 @@ function AboutCustomer(props: AboutCustomerProps) {
                 onNavigate(`/customers/${props.customer?._id}/edit`);
               }}
             />
-            <Button label="View Services" className="btn" />
             <Button
               label="Delete Customer"
               className="btn btn-danger"

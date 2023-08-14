@@ -6,7 +6,6 @@ class UserExistsError extends Error {
     this.name = "UserExists";
   }
 }
-
 class UserDoesNotExistsError extends Error {
   constructor() {
     super("email does not exists");

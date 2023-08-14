@@ -5,8 +5,15 @@ const UserBodySchema = joi.object({
   password: joi.string().required(),
 });
 
+const AdminBodySchema = joi.object({
+  name: joi.string().required(),
+  email: joi.string().email().required(),
+  password: joi.string().required(),
+  secretKey: joi.string().required(),
+});
 const LoginBodySchema = joi.object({
   email: joi.string().email().required(),
   password: joi.string().required(),
 });
-export { UserBodySchema, LoginBodySchema };
+export { AdminBodySchema, LoginBodySchema, UserBodySchema };
+
