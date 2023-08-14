@@ -13,7 +13,7 @@ export default function ReportMetaInformation(
     <div className="report__meta">
       <ReportField fieldName="Report Status" value={status} />
       <div className="report__acs">
-        <h4>ACs Services Description :</h4>
+        {acMetaInfo.length ? <h4>ACs Services Description :</h4> : null}
         <ReportACList acMetaInfo={acMetaInfo} />
       </div>
     </div>

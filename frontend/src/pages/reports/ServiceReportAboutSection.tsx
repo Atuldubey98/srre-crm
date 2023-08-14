@@ -47,7 +47,7 @@ export default function ServiceReportAboutSection(
         {loading ? (
           <LoadingIndicatorAbout loading={loading} />
         ) : serviceReport && reportId ? (
-          <>
+          <div className="reports__aboutSection">
             <ReportCustomer
               customerAddress={serviceReport.customerAddress.location}
               customerName={serviceReport.customer.name}
@@ -68,7 +68,7 @@ export default function ServiceReportAboutSection(
               fieldName="Description"
             />
             <ReportButtonsGroup onRemoveService={onRemoveService} />
-          </>
+          </div>
         ) : reportId ? (
           <ReportnotFound />
         ) : null}

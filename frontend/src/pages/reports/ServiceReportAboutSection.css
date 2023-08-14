@@ -7,6 +7,8 @@
   list-style: decimal;
 }
 .reports__aboutWrapper{
-  padding-inline: 0.8rem;
   line-height: 2rem;
+}
+.reports__aboutSection{
+  margin: 0.5rem;
 }
