@@ -58,6 +58,7 @@ export default function useReportForm() {
     description: "",
     status: "Complete",
     technician: "",
+    typeOfCall: "R&S",
     serviceDate: "",
     siteContactPerson: {
       identification: "",
@@ -100,6 +101,7 @@ export default function useReportForm() {
         status: "Complete",
         technician: "",
         serviceDate: "",
+        typeOfCall: "R&S",
         siteContactPerson: {
           identification: "",
           contactNumber: "",
@@ -116,7 +118,6 @@ export default function useReportForm() {
     onRemoveService,
     onSetDefaultState,
     onSetNewState,
-    
   };
   return {
     operations,

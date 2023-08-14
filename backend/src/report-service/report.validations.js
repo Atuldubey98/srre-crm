@@ -26,6 +26,7 @@ const reportsSchema = Joi.object({
   customerAddress: Joi.string().required(),
   technician: Joi.string().optional(),
   serviceDate: Joi.date().default(Date.now),
+  typeOfCall: Joi.string().valid("R&S", "PMS"),
   siteContactPerson: contactSchema,
   status: Joi.string()
     .valid("Complete", "Incomplete", "Material Pending")

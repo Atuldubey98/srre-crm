@@ -7,74 +7,78 @@ export default function reportRepository() {
     const serviceReport = new Report(report);
     return serviceReport.save();
   }
+  const reportPipeLine = [
+    {
+      $lookup: {
+        from: "customers",
+        localField: "customer",
+        foreignField: "_id",
+        as: "customer",
+      },
+    },
+    {
+      $lookup: {
+        from: "technicians",
+        localField: "technician",
+        foreignField: "_id",
+        as: "technician",
+      },
+    },
+    { $unwind: "$technician" },
+    {
+      $lookup: {
+        from: "acservices",
+        localField: "acMetaInfo.services",
+        foreignField: "_id",
+        as: "acMetaInfoServices",
+      },
+    },
+    { $unwind: "$customer" },
+    {
+      $project: {
+        serviceDate: 1,
+        customer: {
+          _id: "$customer._id",
+
+          name: "$customer.name",
+          contact: "$customer.contact",
+        },
+        customerAddress: {
+          $filter: {
+            input: "$customer.address",
+            as: "address",
+            cond: {
+              $eq: ["$$address._id", "$customerAddress"],
+            },
+          },
+        },
+        acMetaInfo: {
+          $map: {
+            input: "$acMetaInfo",
+            as: "ac",
+            in: {
+              tonnage: "$$ac.tonnage",
+              _id: "$$ac._id",
+
+              modelNumber: "$$ac.modelNumber",
+              typeOfAC: "$$ac.typeOfAC",
+              services: "$acMetaInfoServices",
+            },
+          },
+        },
+        siteContactPerson: "$siteContactPerson",
+        technician: "$technician",
+        status: 1,
+        description: 1,
+        typeOfCall: 1,
+      },
+    },
+    { $unwind: "$customerAddress" },
+  ];
   async function downloadServiceReportsByFilter(filter) {
     const reports = await Report.aggregate([
       { $match: filter },
-      {
-        $lookup: {
-          from: "customers",
-          localField: "customer",
-          foreignField: "_id",
-          as: "customer",
-        },
-      },
-      {
-        $lookup: {
-          from: "technicians",
-          localField: "technician",
-          foreignField: "_id",
-          as: "technician",
-        },
-      },
-      { $unwind: "$technician" },
-      {
-        $lookup: {
-          from: "acservices",
-          localField: "acMetaInfo.services",
-          foreignField: "_id",
-          as: "acMetaInfoServices",
-        },
-      },
-      { $unwind: "$customer" },
-      {
-        $project: {
-          serviceDate: 1,
-          customer: {
-            _id: "$customer._id",
-
-            name: "$customer.name",
-            contact: "$customer.contact",
-          },
-          customerAddress: {
-            $filter: {
-              input: "$customer.address",
-              as: "address",
-              cond: {
-                $eq: ["$$address._id", "$customerAddress"],
-              },
-            },
-          },
-          acMetaInfo: {
-            $map: {
-              input: "$acMetaInfo",
-              as: "ac",
-              in: {
-                tonnage: "$$ac.tonnage",
-                _id: "$$ac._id",
-
-                modelNumber: "$$ac.modelNumber",
-                typeOfAC: "$$ac.typeOfAC",
-                services: "$acMetaInfoServices",
-              },
-            },
-          },
-          siteContactPerson: "$siteContactPerson",
-          technician: "$technician",
-          status: 1,
-          description: 1,
-        },
-      },
-      { $unwind: "$customerAddress" },
+      ...reportPipeLine,
     ]);
     const csvFileData = getReportsCSVFileData(reports);
     return csvFileData;
@@ -90,70 +94,7 @@ export default function reportRepository() {
   async function getReportById(reportId) {
     return Report.aggregate([
       { $match: { _id: new Types.ObjectId(reportId) } },
-      {
-        $lookup: {
-          from: "customers",
-          localField: "customer",
-          foreignField: "_id",
-          as: "customer",
-        },
-      },
-      {
-        $lookup: {
-          from: "technicians",
-          localField: "technician",
-          foreignField: "_id",
-          as: "technician",
-        },
-      },
-      { $unwind: "$technician" },
-      {
-        $lookup: {
-          from: "acservices",
-          localField: "acMetaInfo.services",
-          foreignField: "_id",
-          as: "acMetaInfoServices",
-        },
-      },
-      { $unwind: "$customer" },
-      {
-        $project: {
-          serviceDate: 1,
-          customer: {
-            _id: "$customer._id",
-            name: "$customer.name",
-            contact: "$customer.contact",
-          },
-          customerAddress: {
-            $filter: {
-              input: "$customer.address",
-              as: "address",
-              cond: {
-                $eq: ["$$address._id", "$customerAddress"],
-              },
-            },
-          },
-          acMetaInfo: {
-            $map: {
-              input: "$acMetaInfo",
-              as: "ac",
-              in: {
-                tonnage: "$$ac.tonnage",
-                modelNumber: "$$ac.modelNumber",
-                typeOfAC: "$$ac.typeOfAC",
-                services: "$acMetaInfoServices",
-                _id: "$$ac._id",
-              },
-            },
-          },
-          siteContactPerson: "$siteContactPerson",
-          status: 1,
-          description: 1,
-
-          technician: "$technician",
-        },
-      },
-      { $unwind: "$customerAddress" },
+      ...reportPipeLine,
     ]);
   }
   async function deleteReportById(reportId) {
@@ -173,71 +114,7 @@ export default function reportRepository() {
   ) {
     return Report.aggregate([
       { $match: { customer: new Types.ObjectId(customerId) } },
-      {
-        $lookup: {
-          from: "customers",
-          localField: "customer",
-          foreignField: "_id",
-          as: "customer",
-        },
-      },
-      {
-        $lookup: {
-          from: "technicians",
-          localField: "technician",
-          foreignField: "_id",
-          as: "technician",
-        },
-      },
-      { $unwind: "$technician" },
-      {
-        $lookup: {
-          from: "acservices",
-          localField: "acMetaInfo.services",
-          foreignField: "_id",
-          as: "acMetaInfoServices",
-        },
-      },
-      { $unwind: "$customer" },
-      {
-        $project: {
-          serviceDate: 1,
-          customer: {
-            _id: "$customer._id",
-            name: "$customer.name",
-            contact: "$customer.contact",
-          },
-          customerAddress: {
-            $filter: {
-              input: "$customer.address",
-              as: "address",
-              cond: {
-                $eq: ["$$address._id", "$customerAddress"],
-              },
-            },
-          },
-          acMetaInfo: {
-            $map: {
-              input: "$acMetaInfo",
-              as: "ac",
-              in: {
-                tonnage: "$$ac.tonnage",
-                _id: "$$ac._id",
-
-                modelNumber: "$$ac.modelNumber",
-                typeOfAC: "$$ac.typeOfAC",
-                services: "$acMetaInfoServices",
-              },
-            },
-          },
-          siteContactPerson: "$siteContactPerson",
-          status: 1,
-          description: 1,
-
-          technician: "$technician",
-        },
-      },
-      { $unwind: "$customerAddress" },
+      ...reportPipeLine,
       { $skip: skip },
       { $limit: limit },
     ]);
@@ -245,70 +122,7 @@ export default function reportRepository() {
   async function getServiceReports(skip = 0, limit = 10) {
     return Report.aggregate([
       { $sort: { createdAt: -1 } },
-      {
-        $lookup: {
-          from: "customers",
-          localField: "customer",
-          foreignField: "_id",
-          as: "customer",
-        },
-      },
-      {
-        $lookup: {
-          from: "technicians",
-          localField: "technician",
-          foreignField: "_id",
-          as: "technician",
-        },
-      },
-      { $unwind: "$technician" },
-      {
-        $lookup: {
-          from: "acservices",
-          localField: "acMetaInfo.services",
-          foreignField: "_id",
-          as: "acMetaInfoServices",
-        },
-      },
-      { $unwind: "$customer" },
-      {
-        $project: {
-          serviceDate: 1,
-          customer: {
-            _id: "$customer._id",
-            name: "$customer.name",
-            contact: "$customer.contact",
-          },
-          customerAddress: {
-            $filter: {
-              input: "$customer.address",
-              as: "address",
-              cond: {
-                $eq: ["$$address._id", "$customerAddress"],
-              },
-            },
-          },
-          acMetaInfo: {
-            $map: {
-              input: "$acMetaInfo",
-              as: "ac",
-              in: {
-                tonnage: "$$ac.tonnage",
-                _id: "$$ac._id",
-                modelNumber: "$$ac.modelNumber",
-                typeOfAC: "$$ac.typeOfAC",
-                services: "$acMetaInfoServices",
-              },
-            },
-          },
-          siteContactPerson: "$siteContactPerson",
-          technician: "$technician",
-          description: 1,
-
-          status: 1,
-        },
-      },
-      { $unwind: "$customerAddress" },
+      ...reportPipeLine,
       { $skip: skip },
       { $limit: limit },
     ]);

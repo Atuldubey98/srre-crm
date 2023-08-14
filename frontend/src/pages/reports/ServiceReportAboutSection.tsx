@@ -56,6 +56,7 @@ export default function ServiceReportAboutSection(
             />
             {serviceReport.acMetaInfo ? (
               <ReportMetaInformation
+                typeOfCall={serviceReport.typeOfCall}
                 acMetaInfo={serviceReport.acMetaInfo}
                 status={serviceReport.status}
               />

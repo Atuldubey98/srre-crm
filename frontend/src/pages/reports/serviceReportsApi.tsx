@@ -1,5 +1,6 @@
 import instance from "../../instance";
-import { ServiceReportListFormFields } from "./ReportGenerationUtilities";
+import { ServiceReportListFormFields } from "./ServiceReportCsvGenerationForm";
+
 import { ReportFormFields } from "./interfaces";
 
 export function getServiceReports(limit: number, skip: number) {

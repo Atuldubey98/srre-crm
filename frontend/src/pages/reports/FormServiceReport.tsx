@@ -24,6 +24,7 @@ import {
 import { ServiceReport } from "./interfaces";
 import { getDateForField } from "../../utils/dateUtils";
 import ReportnotFound from "./ReportnotFound";
+import SelectOptions from "../../common/SelectOptions";
 export default function FormServiceReport() {
   const { state, operations } = useReportForm();
   const location = useLocation();
@@ -71,6 +72,7 @@ export default function FormServiceReport() {
           const report: ServiceReport = response.data.data;
           operations.onSetNewState({
             customer: report.customer._id,
+            typeOfCall: report.typeOfCall || "R&S",
             acMetaInfo: report.acMetaInfo || [],
             customerAddress: report.customerAddress._id,
             description: report.description,
@@ -106,6 +108,18 @@ export default function FormServiceReport() {
             }}
             label="Service Date"
           />
+          <div className="form__fieldLabel">
+            <label htmlFor="typeOfCall">Type of Service </label>
+            <SelectOptions
+              required
+              name="typeOfCall"
+              onChange={operations.onChangeReportField}
+              value={state.typeOfCall}
+            >
+              <option value="R&S">Repair and Service</option>
+              <option value="PMS">Preventive Maintinence</option>
+            </SelectOptions>
+          </div>
           <CustomerFields
             siteContactPerson={state.siteContactPerson}
             customer={customer}

@@ -43,6 +43,11 @@ const reportsSchema = new Schema(
       type: Schema.Types.Date,
       default: new Date(Date.now()),
     },
+    typeOfCall: {
+      type: Schema.Types.String,
+      default: "R&S",
+      enum: ["R&S", "PMS"],
+    },
     siteContactPerson: contactSchema,
     status: {
       type: String,
