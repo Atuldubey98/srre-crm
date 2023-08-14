@@ -8,7 +8,7 @@ const contactSchema = Joi.object({
 
 const acModelSchema = Joi.object({
   tonnage: Joi.number().allow(0).optional(),
-  modelNumber: Joi.string(),
+  modelNumber: Joi.string().allow("").optional(),
   typeOfAC: acTypeSchema,
   services: Joi.array().items(Joi.string()).default([]),
 });
