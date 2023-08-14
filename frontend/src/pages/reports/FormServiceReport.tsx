@@ -43,11 +43,8 @@ export default function FormServiceReport() {
         const { data } = await updateServiceReport(state, reportId);
         navigate(`/reports/${data.data._id}`);
       } else {
-        await createNewServiceReport(state);
-        setMessage({
-          type: "success",
-          body: "New report created",
-        });
+        const { data } = await createNewServiceReport(state);
+        navigate(`/reports/${data.data._id}`);
       }
       operations.onSetDefaultState();
     } catch (error) {

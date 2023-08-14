@@ -71,6 +71,7 @@ export default function ACMetaInfoForm(props: ACMetaInfoFormProps) {
       <div className="form__labelField">
         <label htmlFor="typeOfAC">Type of AC</label>
         <SelectOptions
+          required
           value={acMetaForm ? acMetaForm.typeOfAC : ""}
           onChange={onChangeACType}
           name="typeOfAC"
