@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import { MONGO_URI } from "./config.js";
+import { MONGO_URI, NODE_ENV } from "./config.js";
 import { errorHandler, logErrors } from "./middlewares/error.middleware.js";
 import customerRouter from "./customer-service/customer.router.js";
 import userRouter from "./auth-service/user.router.js";
@@ -9,9 +9,13 @@ import acServicesRouter from "./ac-services-service/acServices.router.js";
 import routeNotFoundMiddleware from "./middlewares/notfound.middleware.js";
 import technicianRouter from "./technician-service/technican.router.js";
 import reportRouter from "./report-service/report.router.js";
+import morgan from "morgan";
+import helmet from "helmet";
 const app = express();
 app.use(express.json());
+app.use(helmet());
 app.use(cors());
+app.use(morgan(NODE_ENV === "development" ? "dev" : "combined"));
 mongoose.connect(MONGO_URI);
 app.get("/api/v1/health", (req, res, next) => {
   return res.status(200).send("Server is healthy");
@@ -25,4 +29,3 @@ app.use("*", routeNotFoundMiddleware);
 app.use(logErrors);
 app.use(errorHandler);
 export default app;
-
