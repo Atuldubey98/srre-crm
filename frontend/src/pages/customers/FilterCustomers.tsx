@@ -24,6 +24,7 @@ export default function FilterCustomers() {
     <section className="customer__filter">
       <Input
         type="search"
+        aria-label="Search"
         onChange={onChangeSearch}
         name="search"
         value={search}

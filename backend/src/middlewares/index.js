@@ -27,6 +27,10 @@ middlewaresRouter.use(
     maxAge: "1y",
   })
 );
+middlewaresRouter.get("/robots.txt", (req, res) => {
+  res.type("text/plain");
+  res.send("User-agent: *\nDisallow: /");
+});
 middlewaresRouter.use((req, res, next) => {
   if (req.originalUrl.startsWith("/api")) {
     next();

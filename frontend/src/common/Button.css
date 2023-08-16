@@ -11,7 +11,7 @@
   padding: 0.1rem;
 }
 .btn-success {
-  background-color: rgb(54, 185, 54);
+  background-color: #196619;
   color: var(--dominant-color);
 }
 .btn-danger {
