@@ -39,7 +39,10 @@ export default function NewServiceAddForm() {
       const { data } = await createNewService(service);
       onSetField(defaultService);
       if (data.data.count > 1) {
-        setMessage({ type: "success", body: "Bulk services added" });
+        setMessage({
+          type: "success",
+          body: "Bulk services added reload to see services",
+        });
       } else {
         navigate(`/services/${data.data.service._id}`);
       }

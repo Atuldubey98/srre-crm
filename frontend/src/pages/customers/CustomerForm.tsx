@@ -113,10 +113,23 @@ export default function CustomerForm(props: CustomerFormProps) {
   };
   const onCustomerFormSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    if (isUpdateForm) {
-      await onCustomerUpdateClick();
+    let errorMessage =
+      customer.name.length <= 2
+        ? "Customer name cannot be less than 2"
+        : customer.address.length === 0
+        ? "At least one address is required"
+        : null;
+    if (errorMessage) {
+      setMessage({
+        type: "error",
+        body: errorMessage,
+      });
     } else {
-      await onCustomerAddClick();
+      if (isUpdateForm) {
+        await onCustomerUpdateClick();
+      } else {
+        await onCustomerAddClick();
+      }
     }
   };
   return (

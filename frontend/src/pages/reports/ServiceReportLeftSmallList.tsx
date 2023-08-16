@@ -1,4 +1,6 @@
+import { TbReportSearch } from "react-icons/tb";
 import Button from "../../common/Button";
+import NotfoundItem from "../../common/NotfoundItem";
 import { ListSection } from "../../common/PageLeftRight";
 import ReportsList from "./ReportsList";
 import { ServiceReport } from "./interfaces";
@@ -16,10 +18,14 @@ export default function ServiceReportLeftSmallList(
   return (
     <ListSection>
       <section className="service__reportsList">
-        <ReportsList
-          serviceReports={serviceReports}
-          onRemoveService={onRemoveService}
-        />
+        {serviceReports && serviceReports.length > 0 ? (
+          <ReportsList
+            serviceReports={serviceReports}
+            onRemoveService={onRemoveService}
+          />
+        ) : (
+          <NotfoundItem Icon={TbReportSearch} message="No reports available" />
+        )}
         <div className="d-flex-center">
           {hasMoreReports ? (
             <Button
