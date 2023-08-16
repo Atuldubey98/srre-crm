@@ -85,12 +85,12 @@ async function getCustomers(token = "") {
             tonnage: 5,
             modelNumber: "kahsdioh1kahsdkjasd",
             typeOfAC: "splitac",
-            services: ["64d53184b240a385c64283d7"],
+            services: ["64dd0b1ea62b3fb62f73a28b"],
           },
         ],
         description: "This is descriptions ",
         status: "Complete",
-        technician : "64d53173075b26adf33e0f57"
+        technician : "64dd0b5a64e7507f57e375cc"
       };
     })
     .map(async (report) => {

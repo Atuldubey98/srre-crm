@@ -13,6 +13,7 @@ import TechnicianNotfound from "./TechnicianNotfound";
 import { Technician } from "./interfaces";
 import { getAllTechnicianById } from "./techiesApi";
 import ReportTechnician from "../reports/ReportTechnician";
+import ReportField from "../reports/ReportField";
 export default function AboutTechnician() {
   const { technicianId = "" } = useParams();
   const location = useLocation();
@@ -48,10 +49,7 @@ export default function AboutTechnician() {
       {technician ? (
         <section className="technician__about d-grid">
           <ReportTechnician technician={technician} />
-          {technician.email ? (
-            <h3>Technician Email Id : {technician.email}</h3>
-          ) : null}
-
+          <ReportField value={technician.email} fieldName="Technician Email" />
           <div className="btn-group d-flex-center">
             <Button
               label="Edit Technician"
