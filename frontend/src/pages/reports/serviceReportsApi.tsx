@@ -70,8 +70,7 @@ export function updateServiceReport(
     acMetaInfo: report.acMetaInfo.map((acmeta) => ({
       ...acmeta,
       _id: undefined,
-
-      tonnage: parseFloat(acmeta.tonnage),
+      tonnage: acmeta.tonnage ? parseFloat(acmeta.tonnage) : 0,
       services: acmeta.services?.map((service) => service._id),
     })),
   });

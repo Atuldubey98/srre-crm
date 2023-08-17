@@ -1,0 +1,10 @@
+.address__list {
+  list-style: none;
+  padding-left: 0;
+}
+.customer__AddressSearch {
+  margin-block: 0.6rem;
+}
+.address__list > li {
+  margin-block: 0.5rem;
+}

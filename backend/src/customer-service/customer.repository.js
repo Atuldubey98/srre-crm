@@ -30,7 +30,8 @@ export default function customerRepository() {
       const filter = query ? { $text: { $search: query } } : {};
       const customers = await Customer.find(filter)
         .populate("createdBy", "email name _id role")
-        .select(select);
+        .select(select)
+        .sort({ createdAt: -1 });
       return customers;
     } catch (error) {
       throw error;
@@ -57,46 +58,44 @@ export default function customerRepository() {
   }
   async function findUniqueServicesUsedByCustomer(filter) {
     return Report.aggregate([
-      [
-        {
-          $match: filter,
-        },
-        {
-          $unwind: "$acMetaInfo",
-        },
-        {
-          $unwind: "$acMetaInfo.services",
-        },
-        {
-          $group: {
-            _id: "$acMetaInfo.services",
-            count: {
-              $sum: 1,
-            },
+      {
+        $match: filter,
+      },
+      {
+        $unwind: "$acMetaInfo",
+      },
+      {
+        $unwind: "$acMetaInfo.services",
+      },
+      {
+        $group: {
+          _id: "$acMetaInfo.services",
+          count: {
+            $sum: 1,
           },
         },
-        {
-          $lookup: {
-            from: "acservices",
-            localField: "_id",
-            foreignField: "_id",
-            as: "_id",
-          },
+      },
+      {
+        $lookup: {
+          from: "acservices",
+          localField: "_id",
+          foreignField: "_id",
+          as: "_id",
         },
-        {
-          $unwind: "$_id",
+      },
+      {
+        $unwind: "$_id",
+      },
+      {
+        $project: {
+          _id: "$_id._id",
+          serviceName: "$_id.serviceName",
+          typeOfAC: "$_id.typeOfAC",
+          createdAt: "$_id.createdAt",
+          updatedAt: "$_id.updatedAt",
+          noOfTimesServiceUsed: "$count",
         },
-        {
-          $project: {
-            _id: "$_id._id",
-            serviceName: "$_id.serviceName",
-            typeOfAC: "$_id.typeOfAC",
-            createdAt: "$_id.createdAt",
-            updatedAt: "$_id.updatedAt",
-            noOfTimesServiceUsed: "$count",
-          },
-        },
-      ],
+      },
     ]);
   }
   return Object.freeze({
