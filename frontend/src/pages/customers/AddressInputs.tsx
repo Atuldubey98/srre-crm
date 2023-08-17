@@ -4,7 +4,10 @@ import Input from "../../common/Input";
 import { Address } from "./interfaces";
 export type AddressInputsProps = {
   address: Address[] | null;
-  onChangeAddress: (e: any, address: string) => void;
+  onChangeAddress: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    address: string
+  ) => void;
   onAddAddress: VoidFunction;
   onRemoveAddress: (addressId: string) => void;
 };

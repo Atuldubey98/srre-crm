@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export default function useHasMore() {
   const [queryParams, setQueryParams] = useState<{
@@ -16,8 +16,8 @@ export default function useHasMore() {
       skip: queryParams.skip + 10,
     });
   };
-  const onSetHasMoreReports = (hasMoreData: boolean) => {
+  const onSetHasMoreReports = useCallback((hasMoreData: boolean) => {
     setHashMoreReports(hasMoreData);
-  };
+  }, []);
   return { queryParams, onIncrementSkip, onSetHasMoreReports, hasMore };
 }

@@ -1,9 +1,11 @@
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, memo } from "react";
 import "./Button.css";
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
 }
-export default function Button(props: ButtonProps) {
+function ButtonElement(props: ButtonProps) {
   const { label, ...buttonProps } = props;
   return <button {...buttonProps}>{label}</button>;
 }
+const Button = memo(ButtonElement);
+export default Button;

@@ -17,7 +17,7 @@ export type AboutCustomerProps = {
   customerLoading: boolean;
   message: MessageBodyProps;
 };
-function AboutCustomer(props: AboutCustomerProps) {
+function AboutCustomerElement(props: AboutCustomerProps) {
   const navigate = useNavigate();
   const { onNavigate } = useNavigateWithQuery();
   const { customerId } = useParams();
@@ -70,5 +70,5 @@ function AboutCustomer(props: AboutCustomerProps) {
     </AboutSection>
   );
 }
-
-export default memo(AboutCustomer);
+const AboutCustomer = memo(AboutCustomerElement);
+export default AboutCustomer;

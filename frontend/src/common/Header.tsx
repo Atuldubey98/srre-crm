@@ -3,6 +3,7 @@ import Banner from "./Banner";
 import "./Header.css";
 import { useAuth } from "./useAuth";
 import Button from "./Button";
+import AdminWrapper from "./AdminWrapper";
 export default function Header() {
   const authContext = useAuth();
   const navigate = useNavigate();
@@ -28,8 +29,13 @@ export default function Header() {
         <li>
           <Link to={"/reports"}>Service-Reports</Link>
         </li>
+        <AdminWrapper>
+          <li>
+            <Link to={"/users"}>Users</Link>
+          </li>
+        </AdminWrapper>
         <li className="header__link d-flex-center">
-          <span>
+          <span className="header__user">
             {authContext?.currentUser?.name} | {authContext?.currentUser?.role}
           </span>
           <Button

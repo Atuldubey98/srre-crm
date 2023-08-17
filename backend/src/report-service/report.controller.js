@@ -21,7 +21,11 @@ export async function createServiceReportController(req, res, next) {
   try {
     const report = await reportsSchema.validateAsync(req.body);
     const serviceReport = await createServiceReport(report);
-    return res.status(201).json({ status: true, data: serviceReport });
+    const reports = await getReportById(serviceReport._id);
+    if (reports.length === 0) {
+      throw new ReportNotFound();
+    }
+    return res.status(201).json({ status: true, data: reports[0] });
   } catch (error) {
     next(error);
   }
@@ -81,10 +85,11 @@ export async function updateServiceReportController(req, res, next) {
     }
     const report = await reportsSchema.validateAsync(req.body);
     const updatedReport = await updateServiceReport(reportId, report);
-    if (!updatedReport) {
+    const reports = await getReportById(reportId);
+    if (reports.length === 0 || !updatedReport) {
       throw new ReportNotFound();
     }
-    return res.status(200).json({ status: true, data: updatedReport });
+    return res.status(200).json({ status: true, data: reports[0] });
   } catch (error) {
     next(error);
   }

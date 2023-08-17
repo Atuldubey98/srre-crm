@@ -60,7 +60,10 @@ export default function CustomerForm(props: CustomerFormProps) {
       address: (customer.address || []).filter((add) => add._id !== addressId),
     });
   };
-  const onChangeAddress = (e: any, _id: string) => {
+  const onChangeAddress = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    _id: string
+  ) => {
     setCustomer({
       ...customer,
       address: customer.address.map((add) =>
@@ -113,7 +116,7 @@ export default function CustomerForm(props: CustomerFormProps) {
   };
   const onCustomerFormSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    let errorMessage =
+    const errorMessage =
       customer.name.length <= 2
         ? "Customer name cannot be less than 2"
         : customer.address.length === 0

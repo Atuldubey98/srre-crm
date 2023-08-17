@@ -3,6 +3,7 @@ import { useLocation, useMatch, useParams } from "react-router-dom";
 import Container from "../../common/Container";
 import { PageLeftRight } from "../../common/PageLeftRight";
 import PrivateRoute from "../../common/PrivateRoute";
+import { FormServiceReportProps } from "./FormServiceReport";
 import ServiceReportLeftSmallList from "./ServiceReportLeftSmallList";
 import { ServiceReport } from "./interfaces";
 import { getServiceReports } from "./serviceReportsApi";
@@ -31,6 +32,7 @@ export default function ServiceReportsPage() {
   const [serviceReports, setServiceReports] = useState<ServiceReport[] | null>(
     null
   );
+
   useEffect(() => {
     (async () => {
       try {
@@ -38,17 +40,30 @@ export default function ServiceReportsPage() {
           queryParamsReports.limit,
           queryParamsReports.skip
         );
-        setServiceReports([...(serviceReports || []), ...data.data]);
+        setServiceReports((prevReports) => [
+          ...(prevReports || []),
+          ...data.data,
+        ]);
         setHashMoreReports(data.data.length > 0);
       } catch (error) {
         setHashMoreReports(false);
       }
     })();
-  }, [queryParamsReports]);
+  }, [queryParamsReports, setServiceReports, setHashMoreReports]);
   const onRemoveService = (serviceReportId: string) => {
     setServiceReports(
       (serviceReports || []).filter((rep) => rep._id !== serviceReportId)
     );
+  };
+  const onUpdateService = (serviceReport: ServiceReport) => {
+    setServiceReports(
+      (serviceReports || []).map((rep) =>
+        rep._id === serviceReport._id ? { ...rep, ...serviceReport } : rep
+      )
+    );
+  };
+  const formServiceReportProps: FormServiceReportProps = {
+    onUpdateService,
   };
   return (
     <PrivateRoute>
@@ -61,7 +76,7 @@ export default function ServiceReportsPage() {
             hasMoreReports={hasMoreReports}
           />
           {showNewReport || showEditReport ? (
-            <FormServiceReport />
+            <FormServiceReport {...formServiceReportProps} />
           ) : (
             <ServiceReportAboutSection onRemoveService={onRemoveService} />
           )}

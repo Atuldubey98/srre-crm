@@ -8,7 +8,7 @@ export type ReportCustomerProps = {
   reportId: string;
   serviceDate: string;
 };
-function ReportCustomer(props: ReportCustomerProps) {
+function ReportCustomerElement(props: ReportCustomerProps) {
   const { customerAddress, customerName, reportId, serviceDate } = props;
   return (
     <div className="report__customer">
@@ -22,4 +22,5 @@ function ReportCustomer(props: ReportCustomerProps) {
     </div>
   );
 }
-export default memo(ReportCustomer);
+const ReportCustomer = memo(ReportCustomerElement);
+export default ReportCustomer;

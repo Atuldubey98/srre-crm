@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useReducer } from "react";
+import { ChangeEventHandler, useCallback, useReducer } from "react";
 import { AcMetaInfo, ReportFormFields } from "./interfaces";
 
 export default function useReportForm() {
@@ -66,9 +66,10 @@ export default function useReportForm() {
     },
     acMetaInfo: [],
   });
-  const onSetNewState = (newState: ReportFormFields) => {
+
+  const onSetNewState = useCallback((newState: ReportFormFields) => {
     dispatch({ type: "set", payload: newState });
-  };
+  }, []);
   const onChangeReportField: ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
   > = (e) => {
@@ -83,7 +84,6 @@ export default function useReportForm() {
   };
   const onAddService = (service: AcMetaInfo) => {
     dispatch({ type: "add:acMetaInfos", payload: service });
-    console.log(service);
   };
   const onRemoveService = (serviceId: string) => {
     dispatch({ type: "remove:acMetaInfos", payload: serviceId });

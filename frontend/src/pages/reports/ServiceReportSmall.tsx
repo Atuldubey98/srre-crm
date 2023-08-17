@@ -1,10 +1,9 @@
 import { useParams } from "react-router-dom";
 import useNavigateWithQuery from "../../common/useNavigateWithQuery";
-import {
-  getDateByCustomerCreationDate
-} from "../../utils/dateUtils";
+import { getDateByCustomerCreationDate } from "../../utils/dateUtils";
 import ReportStatus from "./ReportStatus";
 import "./ServiceReportSmall.css";
+import TypeofService from "./TypeofService";
 import { ServiceReport } from "./interfaces";
 import { deleteServiceReportById } from "./serviceReportsApi";
 export type ServiceReportSmallProps = {
@@ -42,6 +41,7 @@ export default function ServiceReportSmall(props: ServiceReportSmallProps) {
           {props.serviceReport.customerAddress.location}
         </p>
         <div className="report__statusWrapper">
+          <TypeofService typeOfService={props.serviceReport.typeOfCall} />
           <span className="report__serviceDate">
             {getDateByCustomerCreationDate(props.serviceReport.serviceDate)}
           </span>

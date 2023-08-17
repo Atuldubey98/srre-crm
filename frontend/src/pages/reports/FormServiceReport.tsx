@@ -25,7 +25,10 @@ import { ServiceReport } from "./interfaces";
 import { getDateForField } from "../../utils/dateUtils";
 import ReportnotFound from "./ReportnotFound";
 import SelectOptions from "../../common/SelectOptions";
-export default function FormServiceReport() {
+export type FormServiceReportProps = {
+  onUpdateService: (serviceReport: ServiceReport) => void;
+};
+export default function FormServiceReport(props: FormServiceReportProps) {
   const { state, operations } = useReportForm();
   const location = useLocation();
   const { reportId = "" } = useParams();
@@ -42,6 +45,7 @@ export default function FormServiceReport() {
     try {
       if (isUpdateForm) {
         const { data } = await updateServiceReport(state, reportId);
+        props.onUpdateService(data.data);
         navigate(`/reports/${data.data._id}`);
       } else {
         const { data } = await createNewServiceReport(state);
@@ -63,26 +67,26 @@ export default function FormServiceReport() {
   };
   const isUpdateForm =
     pathnameMatch?.pathnameBase === `/reports/${reportId}/edit`;
+  const { onSetNewState } = operations;
   useEffect(() => {
     if (reportId) {
       (async () => {
         setError("");
         try {
           const response = await getServiceReportById(reportId);
-          const report: ServiceReport = response.data.data;
-          operations.onSetNewState({
-            customer: report.customer._id,
-            typeOfCall: report.typeOfCall || "R&S",
-            acMetaInfo: report.acMetaInfo || [],
-            customerAddress: report.customerAddress._id,
-            description: report.description,
-            serviceDate: getDateForField(report.serviceDate),
-            siteContactPerson: report.siteContactPerson || {
+          onSetNewState({
+            customer: response.data.data.customer._id,
+            typeOfCall: response.data.data.typeOfCall || "R&S",
+            acMetaInfo: response.data.data.acMetaInfo || [],
+            customerAddress: response.data.data.customerAddress._id,
+            description: response.data.data.description,
+            serviceDate: getDateForField(response.data.data.serviceDate),
+            siteContactPerson: response.data.data.siteContactPerson || {
               contactNumber: "",
               identification: "",
             },
-            status: report.status,
-            technician: report.technician._id || "",
+            status: response.data.data.status,
+            technician: response.data.data.technician._id || "",
           });
         } catch (error) {
           setError(
@@ -91,7 +95,7 @@ export default function FormServiceReport() {
         }
       })();
     }
-  }, [reportId]);
+  }, [reportId, onSetNewState]);
   return (
     <AboutSection>
       {error ? (

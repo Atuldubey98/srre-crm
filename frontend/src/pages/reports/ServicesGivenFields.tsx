@@ -40,8 +40,8 @@ export default function ServicesGivenFields(props: ServicesGivenFieldsProps) {
 
   useEffect(() => {
     (async () => {
-      if (acMetaForm && acMetaForm.typeOfAC) {
-        const { data } = await getAllServices(acMetaForm.typeOfAC);
+      if (acMetaForm?.typeOfAC) {
+        const { data } = await getAllServices(acMetaForm?.typeOfAC);
         setServices(data.data);
       }
     })();

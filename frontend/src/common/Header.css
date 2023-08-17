@@ -9,6 +9,9 @@ header {
   gap: 1rem;
   flex-wrap: wrap;
 }
-.header__link{
+.header__link {
   gap: 0.5rem;
+}
+.header__user {
+  font-weight: 600;
 }

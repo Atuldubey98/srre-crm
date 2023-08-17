@@ -4,7 +4,7 @@ import Input from "../../common/Input";
 import OperationBtnsGroup from "../customers/OperationBtnsGroup";
 import { useNavigate } from "react-router-dom";
 
-const SearchReportForm = () => {
+const SearchReportFormElement = () => {
   const [searchReportId, setSearchReportId] = useState<string>("");
   const navigate = useNavigate();
   const onChangeSearchReportId: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -32,5 +32,5 @@ const SearchReportForm = () => {
     </OperationBtnsGroup>
   );
 };
-
-export default memo(SearchReportForm);
+const SearchReportForm = memo(SearchReportFormElement);
+export default SearchReportForm;
