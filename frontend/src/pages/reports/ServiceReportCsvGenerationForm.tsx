@@ -88,7 +88,7 @@ export default function ServiceReportCsvGenerationForm() {
         />
         <div className="d-grid report__generationDates">
           <FormLabelField
-            label="From"
+            label="From Date"
             input={{
               name: "fromDate",
               type: "date",
@@ -97,7 +97,7 @@ export default function ServiceReportCsvGenerationForm() {
             }}
           />
           <FormLabelField
-            label="To "
+            label="To Date"
             input={{
               type: "date",
               name: "toDate",

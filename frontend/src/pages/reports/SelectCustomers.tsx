@@ -18,7 +18,7 @@ export default function SelectCustomers(props: SelectCustomersProps) {
   }, []);
   return customers ? (
     <div className="form__labelField d-grid">
-      <label htmlFor="customer">Customer Name :</label>
+      <label htmlFor="customer">Customer Name :*</label>
       <SelectOptions
         disabled={props.customerFieldDisabled}
         required

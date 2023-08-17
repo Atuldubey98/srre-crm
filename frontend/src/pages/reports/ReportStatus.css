@@ -3,6 +3,7 @@
   font-style: oblique;
   padding: 0.1rem;
   border-radius: 0.2rem;
+  font-weight: 600;
 }
 .report__statusComplete {
   background-color: green;
