@@ -107,9 +107,7 @@ export default function ServiceReportCsvGenerationForm() {
             }}
           />
         </div>
-        <div className="d-flex-center">
-          <Button label="Download" className="btn btn-success" />
-        </div>
+        <Button label="Download" className="btn btn-success" />
       </form>
     </details>
   );

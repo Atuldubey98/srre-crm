@@ -8,6 +8,9 @@ export interface Service extends ServiceFilter {
   createdAt: string;
   updatedAt: string;
 }
+export interface ServiceUsedWithCount extends Service {
+  noOfTimesServiceUsed: number;
+}
 export interface TypeOfServiceGiven {
   _id: string;
   serviceGiven: string;

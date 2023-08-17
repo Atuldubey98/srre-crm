@@ -68,9 +68,7 @@ async function getCustomers(token = "") {
 }
 (async () => {
   const data = await loginUser();
-  console.log(data.data);
   const token = data.data.token;
-  await runCustomerRequests(token);
   const { data: customers } = await getCustomers(token);
   const reportRequests = customers
     .filter((customer) => customer.address.length !== 0)
@@ -80,6 +78,7 @@ async function getCustomers(token = "") {
       return {
         customer: customer._id,
         customerAddress: addressId,
+        serviceDate : "2023-09-01",
         acMetaInfo: [
           {
             tonnage: 5,

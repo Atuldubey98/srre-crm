@@ -1,11 +1,10 @@
-import { useState, useEffect, ChangeEventHandler } from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
+import SelectOptions from "../../common/SelectOptions";
 import {
-  getAllCustomerNames,
-  getAddressByCustomerId,
+  getAddressByCustomerId
 } from "../customers/customersApi";
 import { Address } from "../customers/interfaces";
-import { Customer } from "./interfaces";
-import SelectOptions from "../../common/SelectOptions";
+import SelectCustomers from "./SelectCustomers";
 export type CustomerNameAddressFieldsProps = {
   customer: string;
   onChangeCustomerField: ChangeEventHandler<HTMLSelectElement>;
@@ -17,14 +16,8 @@ export default function CustomerNameAddressFields(
   props: CustomerNameAddressFieldsProps
 ) {
   const { customer, onChangeCustomerField, customerAddress } = props;
-  const [customers, setCustomers] = useState<Customer[] | null>(null);
   const [addressList, setAddressList] = useState<Address[] | null>(null);
-  useEffect(() => {
-    (async () => {
-      const { data } = await getAllCustomerNames();
-      setCustomers(data.data);
-    })();
-  }, []);
+ 
   useEffect(() => {
     (() => {
       (async () => {
@@ -38,25 +31,11 @@ export default function CustomerNameAddressFields(
   }, [customer]);
   return (
     <>
-      {customers ? (
-        <div className="form__labelField d-grid">
-          <label htmlFor="customer">Customer Name :</label>
-          <SelectOptions
-            disabled={props.customerFieldDisabled}
-            required
-            value={customer}
-            onChange={onChangeCustomerField}
-            name="customer"
-          >
-            <option value="">Please select a customer</option>
-            {customers.map((customer) => (
-              <option key={customer._id} value={customer._id}>
-                {customer.name}
-              </option>
-            ))}
-          </SelectOptions>
-        </div>
-      ) : null}
+      <SelectCustomers
+        customer={customer}
+        onChangeCustomerField={onChangeCustomerField}
+        customerFieldDisabled={props.customerFieldDisabled}
+      />
       {customer && addressList ? (
         <div className="form__labelField">
           <label htmlFor="customerAddress">Customer Address :</label>

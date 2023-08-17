@@ -10,8 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/randomcolor": "^0.5.7",
     "axios": "^1.4.0",
+    "chart.js": "^4.3.3",
+    "randomcolor": "^0.6.2",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.14.2",

@@ -1,4 +1,5 @@
 import instance from "../../instance";
+import { CustomerServicesUsedCsvGeneratorFormFields } from "./CustomerServicesUsedCsvGenerator";
 import { ServiceReportListFormFields } from "./ServiceReportCsvGenerationForm";
 
 import { ReportFormFields } from "./interfaces";
@@ -17,6 +18,18 @@ export function getServiceReportById(reportId: string) {
 }
 export function deleteServiceReportById(reportId: string) {
   return instance.delete(`/api/v1/service-reports/${reportId}`);
+}
+export function downloadCustomerServicesCount(
+  fields: CustomerServicesUsedCsvGeneratorFormFields
+) {
+  const { customer, ...params } = fields;
+  const url = customer
+    ? `/api/v1/customers/${customer}/services/download`
+    : `/api/v1/customers/services/download`;
+  return instance.get(url, {
+    params,
+    responseType: "blob",
+  });
 }
 export function downloadServiceReportsByFilter(
   filter: ServiceReportListFormFields

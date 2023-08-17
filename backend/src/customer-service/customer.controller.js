@@ -1,8 +1,9 @@
-import { isValidObjectId } from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
+import reportRepository from "../report-service/report.repository.js";
+import { generateCSVForCustomerServicesCount } from "./customer.csvgeneration.js";
 import customerRepository from "./customer.repository.js";
 import { CustomerIdSchema } from "./customer.validation.js";
 import { CustomerNotFound } from "./errors.js";
-import reportRepository from "../report-service/report.repository.js";
 const {
   createCustomer,
   getAllCustomers,
@@ -10,8 +11,110 @@ const {
   getCustomerById,
   deleteCustomerById,
   getAddressListByCustomerId,
+  findUniqueServicesUsedByCustomer,
 } = customerRepository();
 const { getServiceReportsByCustomerId } = reportRepository();
+export async function getCustomerServicesUsedController(req, res, next) {
+  try {
+    const addressListWithIds =
+      typeof req.query.address === "string"
+        ? req.query.address
+            .split(",")
+            .filter((addressItem) => isValidObjectId(addressItem))
+            .map((addressItem) => new mongoose.Types.ObjectId(addressItem))
+        : [];
+    const customer =
+      typeof req.params.customerId === "string" &&
+      isValidObjectId(req.params.customerId)
+        ? new mongoose.Types.ObjectId(req.params.customerId)
+        : undefined;
+    const fromDate = isNaN(new Date(req.query.fromDate))
+      ? undefined
+      : new Date(req.query.fromDate);
+    const toDate = isNaN(new Date(req.query.toDate))
+      ? undefined
+      : new Date(req.query.toDate);
+    const filter = {};
+    if (addressListWithIds.length > 0) {
+      filter.address = { $in: addressListWithIds };
+    }
+
+    if (customer) {
+      filter.customer = customer;
+    }
+    if (fromDate) {
+      filter.serviceDate = { ...filter.serviceDate, $gte: fromDate };
+    }
+
+    if (toDate) {
+      filter.serviceDate = { ...filter.serviceDate, $lte: toDate };
+    }
+    const servicesGivenWithCount = await findUniqueServicesUsedByCustomer(
+      filter
+    );
+    return res.status(200).json({ status: true, data: servicesGivenWithCount });
+  } catch (error) {
+    next(error);
+  }
+}
+export async function getUniqueServicesUsedByCustomerController(
+  req,
+  res,
+  next
+) {
+  try {
+    const addressListWithIds =
+      typeof req.query.address === "string"
+        ? req.query.address
+            .split(",")
+            .filter((addressItem) => isValidObjectId(addressItem))
+            .map((addressItem) => new mongoose.Types.ObjectId(addressItem))
+        : [];
+    const customer =
+      typeof req.params.customerId === "string" &&
+      isValidObjectId(req.params.customerId)
+        ? new mongoose.Types.ObjectId(req.params.customerId)
+        : undefined;
+    const fromDate = isNaN(new Date(req.query.fromDate))
+      ? undefined
+      : new Date(req.query.fromDate);
+    const toDate = isNaN(new Date(req.query.toDate))
+      ? undefined
+      : new Date(req.query.toDate);
+    const filter = {};
+    if (addressListWithIds.length > 0) {
+      filter.address = { $in: addressListWithIds };
+    }
+
+    if (customer) {
+      filter.customer = customer;
+    }
+    const customerServiceReport = customer
+      ? await getCustomerById(customer)
+      : null;
+    if (fromDate) {
+      filter.serviceDate = { ...filter.serviceDate, $gte: fromDate };
+    }
+
+    if (toDate) {
+      filter.serviceDate = { ...filter.serviceDate, $lte: toDate };
+    }
+    const servicesGivenWithCount = await findUniqueServicesUsedByCustomer(
+      filter
+    );
+    const csvData = generateCSVForCustomerServicesCount(
+      servicesGivenWithCount,
+      customerServiceReport,
+      fromDate,
+      toDate
+    );
+    res.setHeader("Content-Disposition", "attachment; filename=data.csv");
+    res.setHeader("Content-Type", "text/csv");
+    res.send(csvData);
+  } catch (error) {
+    next(error);
+  }
+}
 export async function createCustomerController(req, res, next) {
   try {
     const newCustomer = await createCustomer({

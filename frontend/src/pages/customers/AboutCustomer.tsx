@@ -12,6 +12,7 @@ import CustomerNotFound from "./CustomerNotFound";
 import { MessageBodyProps } from "../../common/MessageBody";
 import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
 import { memo } from "react";
+import CustomerReportByPieChart from "./CustomerReportByPieChart";
 export type AboutCustomerProps = {
   customer: Customer | null;
   customerLoading: boolean;
@@ -63,6 +64,7 @@ function AboutCustomerElement(props: AboutCustomerProps) {
               onClick={onDeleteCustomer}
             />
           </div>
+          <CustomerReportByPieChart />
         </div>
       ) : customerId ? (
         <CustomerNotFound />

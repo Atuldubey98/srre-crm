@@ -3,6 +3,7 @@ import {
   CustomerBodySchema,
   UpdateCustomerBody,
 } from "./customer.validation.js";
+import Report from "../report-service/report.model.js";
 export default function customerRepository() {
   async function getCustomerById(customerId) {
     return Customer.findById(customerId).populate(
@@ -54,9 +55,54 @@ export default function customerRepository() {
       throw error;
     }
   }
+  async function findUniqueServicesUsedByCustomer(filter) {
+    return Report.aggregate([
+      [
+        {
+          $match: filter,
+        },
+        {
+          $unwind: "$acMetaInfo",
+        },
+        {
+          $unwind: "$acMetaInfo.services",
+        },
+        {
+          $group: {
+            _id: "$acMetaInfo.services",
+            count: {
+              $sum: 1,
+            },
+          },
+        },
+        {
+          $lookup: {
+            from: "acservices",
+            localField: "_id",
+            foreignField: "_id",
+            as: "_id",
+          },
+        },
+        {
+          $unwind: "$_id",
+        },
+        {
+          $project: {
+            _id: "$_id._id",
+            serviceName: "$_id.serviceName",
+            typeOfAC: "$_id.typeOfAC",
+            createdAt: "$_id.createdAt",
+            updatedAt: "$_id.updatedAt",
+            noOfTimesServiceUsed: "$count",
+          },
+        },
+      ],
+    ]);
+  }
   return Object.freeze({
     createCustomer,
     getAllCustomers,
+    findUniqueServicesUsedByCustomer,
     updateCustomerById,
     getAddressListByCustomerId,
     getCustomerById,

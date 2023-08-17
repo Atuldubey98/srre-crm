@@ -1,5 +1,18 @@
 import instance from "../../instance";
+import { CustomerServicesUsedCsvGeneratorFormFields } from "../reports/CustomerServicesUsedCsvGenerator";
 import { CreateCustomeBody, UpdateCustomerBody } from "./interfaces";
+
+export function getCustomerServicesCount(
+  fields: CustomerServicesUsedCsvGeneratorFormFields
+) {
+  const { customer, ...params } = fields;
+  const url = customer
+    ? `/api/v1/customers/${customer}/services`
+    : `/api/v1/customers/services`;
+  return instance.get(url, {
+    params,
+  });
+}
 
 export const getAllCustomers = (search = "") => {
   return instance.get("/api/v1/customers", {
