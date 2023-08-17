@@ -55,6 +55,10 @@ export default function ServiceReportAboutSection(
               reportId={serviceReport?._id || ""}
               serviceDate={serviceReport.serviceDate}
             />
+            <ReportField
+              fieldName="Customer Contact Identification"
+              value={serviceReport.siteContactPerson?.identification}
+            />
             {serviceReport.acMetaInfo ? (
               <ReportMetaInformation
                 typeOfCall={serviceReport.typeOfCall}
