@@ -1,0 +1,21 @@
+{
+  "name": "srre-crm",
+  "version": "1.0.0",
+  "description": "full stack crm software for managing services of s r refrigeration and electricals",
+  "main": "index.js",
+  "scripts": {
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm i && npm run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "start": "cd backend && npm start"
+  },
+  "keywords": [
+    "express",
+    "react",
+    "mongodb",
+    "chart.js",
+    "nodejs"
+  ],
+  "author": "Atul Dubey",
+  "license": "ISC"
+}

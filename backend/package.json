@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node .",
-    "dev": "nodemon ."
+    "dev": "export NODE_ENV=development && nodemon .",
+    "build": "npm i"
   },
   "keywords": [],
   "author": "",
