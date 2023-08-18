@@ -12,6 +12,10 @@ export async function deleteUserById(userId: string) {
   return instance.delete(`/api/v1/admin/users/${userId}`);
 }
 export async function registerEmployee(employeeUser: EmployeeUserFormFields) {
-  const { confirmPassword, ...user } = employeeUser;
+  const user = {
+    email: employeeUser.email,
+    password: employeeUser.password,
+    name: employeeUser.name,
+  };
   return instance.post(`/api/v1/admin/users/register`, user);
 }

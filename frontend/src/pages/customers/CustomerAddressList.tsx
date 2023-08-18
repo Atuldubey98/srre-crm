@@ -19,7 +19,7 @@ export default function CustomerAddressList(props: CustomerAddressListProps) {
             .indexOf(search.toLocaleLowerCase()) !== -1
         : true
     );
-  }, [search]);
+  }, [search, props.address]);
   return (
     <section className="customer__addressList">
       <h4>Addresses</h4>
