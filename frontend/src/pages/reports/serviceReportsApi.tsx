@@ -19,6 +19,9 @@ export function getServiceReportById(reportId: string) {
 export function deleteServiceReportById(reportId: string) {
   return instance.delete(`/api/v1/service-reports/${reportId}`);
 }
+export function downloadServiceReportByReportId(reportId: string) {
+  return instance.get(`/api/v1/service-reports/${reportId}/download`);
+}
 export function downloadCustomerServicesCount(
   fields: CustomerServicesUsedCsvGeneratorFormFields
 ) {

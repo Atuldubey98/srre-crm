@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import Report from "./report.model.js";
-import { getReportsCSVFileData } from "./report.csvgeneration.js";
+import { getReportsCSVFileData } from "./report.generation.js";
 
 export default function reportRepository() {
   async function createServiceReport(report) {

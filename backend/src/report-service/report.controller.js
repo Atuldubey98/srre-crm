@@ -2,6 +2,8 @@ import mongoose, { isValidObjectId } from "mongoose";
 import { ReportNotFound } from "./errors.js";
 import reportRepository from "./report.repository.js";
 import { reportsSchema } from "./report.validations.js";
+import { generateHTMlForPdfOfReport } from "./report.generation.js";
+
 const {
   createServiceReport,
   getServiceReports,
@@ -130,6 +132,30 @@ export async function downloadServiceReportsByFilterController(req, res, next) {
     res.setHeader("Content-Disposition", "attachment; filename=data.csv");
     res.setHeader("Content-Type", "text/csv");
     res.send(csvData);
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * download pdf format for the service report
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @param {import("express").NextFunction} next
+ */
+export async function downloadServiceReportByReportId(req, res, next) {
+  try {
+    const reportId = req.params.reportId;
+    if (!isValidObjectId(reportId)) {
+      throw new ReportNotFound();
+    }
+    const reports = await getReportById(reportId);
+    if (reports.length === 0) {
+      throw new ReportNotFound();
+    }
+    const htmlContentOfReport = await generateHTMlForPdfOfReport(reports[0]);
+    res.setHeader("Content-Type", "text/html");
+    res.send(htmlContentOfReport);
   } catch (error) {
     next(error);
   }

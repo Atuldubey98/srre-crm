@@ -7,6 +7,7 @@ import {
   getServicesReportByIdController,
   updateServiceReportController,
   deleteReportByIdController,
+  downloadServiceReportByReportId,
 } from "./report.controller.js";
 
 const reportRouter = Router();
@@ -19,6 +20,7 @@ reportRouter
   .post("/", authenticationMiddleware, createServiceReportController)
   .get("/", authenticationMiddleware, getServiceReportsController)
   .get("/:reportId", authenticationMiddleware, getServicesReportByIdController)
+  .get("/:reportId/download", authenticationMiddleware, downloadServiceReportByReportId)
   .delete("/:reportId", authenticationMiddleware, deleteReportByIdController)
   .patch("/:reportId", authenticationMiddleware, updateServiceReportController);
 export default reportRouter;
