@@ -1,7 +1,7 @@
 import { ChangeEventHandler, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Input from "../../common/Input";
-
+import './FilterCustomers.css';
 export default function FilterCustomers() {
   const [search, setSearch] = useState("");
   const timeOut = useRef<number | undefined | null>(null);

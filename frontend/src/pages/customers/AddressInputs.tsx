@@ -14,15 +14,8 @@ export type AddressInputsProps = {
 export default function AddressInputs(props: AddressInputsProps) {
   return (
     <div className="form__control">
-      <label htmlFor="location">Location :</label>
-      <div className="d-flex-center">
-        <Button
-          type="button"
-          className="btn btn-small"
-          label="Add Address"
-          onClick={props.onAddAddress}
-        />
-      </div>
+      <label htmlFor="location">Location :*</label>
+
       {props.address?.map((address) => (
         <div key={address._id} className="customer__address d-flex-center">
           <Input
@@ -40,6 +33,14 @@ export default function AddressInputs(props: AddressInputsProps) {
           />
         </div>
       ))}
+      <div className="d-flex-center">
+        <Button
+          type="button"
+          className="btn btn-small"
+          label="Add Address"
+          onClick={props.onAddAddress}
+        />
+      </div>
     </div>
   );
 }

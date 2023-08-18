@@ -13,15 +13,17 @@ export default function CustomersList(props: CustomersListProps) {
   return (
     <ListSection>
       <FilterCustomers />
-      {props.customers.length ? (
-        <ul className="customers__list">
-          {props.customers.map((customer) => (
-            <CustomerItem {...customer} key={customer._id} />
-          ))}
-        </ul>
-      ) : (
-        <NotfoundItem Icon={IoBusinessSharp} message="No customers found" />
-      )}
+      <div className="customers__wrapper">
+        {props.customers.length ? (
+          <ul className="customers__list">
+            {props.customers.map((customer) => (
+              <CustomerItem {...customer} key={customer._id} />
+            ))}
+          </ul>
+        ) : (
+          <NotfoundItem Icon={IoBusinessSharp} message="No customers found" />
+        )}
+      </div>
     </ListSection>
   );
 }

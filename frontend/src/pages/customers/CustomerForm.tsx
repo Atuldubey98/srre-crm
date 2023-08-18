@@ -147,7 +147,7 @@ export default function CustomerForm(props: CustomerFormProps) {
               name: "name",
               value: customer.name,
             }}
-            label="Customer Name :"
+            label="Customer Name :*"
           />
           <AddressInputs
             address={customer.address}

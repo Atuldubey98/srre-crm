@@ -1,3 +1,4 @@
+import { isAxiosError } from "axios";
 import {
   ChangeEventHandler,
   FormEventHandler,
@@ -12,6 +13,7 @@ import {
 } from "react-router-dom";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
+import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
 import { EditSection } from "../../common/PageLeftRight";
 import SelectOptions from "../../common/SelectOptions";
 import "./EditTechnician.css";
@@ -25,7 +27,10 @@ export default function EditTechnician() {
   const location = useLocation();
   const { technicianId = "" } = useParams();
   const pathnameMatch = useMatch(location.pathname);
-
+  const [messageBody, setMessageBody] = useState<MessageBodyProps>({
+    type: "success",
+    body: "",
+  });
   const showTechnicianNew = pathnameMatch?.pathnameBase === `/technicians/new`;
   const [technician, setTechnician] = useState<Technician | null>(null);
   const showUpdateTechnician =
@@ -66,29 +71,38 @@ export default function EditTechnician() {
   ) => {
     e.preventDefault();
 
-    if (showUpdateTechnician) {
-      if (technician) {
-        const { data } = await udpateNewTechnician(
-          {
-            name: technician.name,
-            contactNumber: technician.contactNumber,
-            currentlyActive: technician.currentlyActive,
-            email: technician.email,
-          },
-          technicianId
-        );
-        navigate(`/technicians/${data.data._id}`);
+    try {
+      if (showUpdateTechnician) {
+        if (technician) {
+          const { data } = await udpateNewTechnician(
+            {
+              name: technician.name,
+              contactNumber: technician.contactNumber,
+              currentlyActive: technician.currentlyActive,
+              email: technician.email,
+            },
+            technicianId
+          );
+          navigate(`/technicians/${data.data._id}`);
+        }
+      } else {
+        if (technician) {
+          const { data } = await createNewTechnician({
+            name: technician?.name,
+            contactNumber: technician?.contactNumber,
+            currentlyActive: technician?.currentlyActive,
+            email: technician?.email,
+          });
+          navigate(`/technicians/${data.data._id}`);
+        }
       }
-    } else {
-      if (technician) {
-        const { data } = await createNewTechnician({
-          name: technician?.name,
-          contactNumber: technician?.contactNumber,
-          currentlyActive: technician?.currentlyActive,
-          email: technician?.email,
-        });
-        navigate(`/technicians/${data.data._id}`);
-      }
+    } catch (error) {
+      setMessageBody({
+        type: "error",
+        body: isAxiosError(error)
+          ? error.response?.data.message
+          : "Network error occured",
+      });
     }
   };
   return showForm ? (
@@ -99,7 +113,7 @@ export default function EditTechnician() {
           className="d-grid edit__technicianForm"
         >
           <div className="form__control">
-            <label htmlFor="name"> Technician Name : </label>
+            <label htmlFor="name"> Technician Name :*</label>
             <Input
               name="name"
               required
@@ -108,7 +122,7 @@ export default function EditTechnician() {
             />
           </div>
           <div className="form__control">
-            <label htmlFor="contactNumber">Technician Contact Number : </label>
+            <label htmlFor="contactNumber">Technician Contact Number :*</label>
             <Input
               type="tel"
               required
@@ -152,6 +166,7 @@ export default function EditTechnician() {
               />
             )}
           </div>
+          <MessageBody {...messageBody} />
         </form>
       </section>
     </EditSection>
