@@ -1,3 +1,4 @@
+import { isValidObjectId } from "mongoose";
 import { SECRET_ADMIN_KEY } from "../config.js";
 import { UnauthorizedError } from "../middlewares/authorization.middleware.js";
 import userRepository from "./user.repository.js";
@@ -6,12 +7,28 @@ import {
   LoginBodySchema,
   UserBodySchema,
 } from "./user.validation.js";
-const { createUser, loginUser } = userRepository();
+import { EmployeeNotFound } from "./errors.js";
+const {
+  createUser,
+  loginUser,
+  getAllEmployees,
+  getEmployeeById,
+  deleteEmployeeById,
+} = userRepository();
 export async function registerUserController(req, res, next) {
   try {
     const validatedUser = await UserBodySchema.validateAsync(req.body);
-    await createUser(validatedUser);
-    return res.status(201).json({ status: true, message: "user created" });
+    const { email, name, role, _id } = await createUser(validatedUser);
+    return res.status(201).json({
+      status: true,
+      message: "User registerd successfully",
+      data: {
+        email,
+        name,
+        role,
+        _id,
+      },
+    });
   } catch (error) {
     next(error);
   }
@@ -49,6 +66,59 @@ export async function registerAdminController(req, res, next) {
     return res
       .status(201)
       .json({ status: true, data: `Admin registered successfully` });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ *
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @param {import("express").NextFunction} next
+ */
+export async function getAllEmployeesController(req, res, next) {
+  try {
+    const employees = await getAllEmployees();
+    return res.status(200).json({ status: true, data: employees });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ *
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @param {import("express").NextFunction} next
+ */
+export async function getEmployeeByIdController(req, res, next) {
+  try {
+    if (!isValidObjectId(req.params.userId)) {
+      throw new EmployeeNotFound();
+    }
+    const employee = await getEmployeeById(req.params.userId);
+    return res.status(200).json({ status: true, data: employee });
+  } catch (error) {
+    next(error);
+  }
+}
+/**
+ *
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @param {import("express").NextFunction} next
+ */
+export async function deleteEmployeeByIdController(req, res, next) {
+  try {
+    if (!isValidObjectId(req.params.userId)) {
+      throw new EmployeeNotFound();
+    }
+    const employee = await deleteEmployeeById(req.params.userId);
+    if (!employee) {
+      throw new EmployeeNotFound();
+    }
+    return res.status(200).json({ status: true, data: employee });
   } catch (error) {
     next(error);
   }

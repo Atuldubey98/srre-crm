@@ -11,6 +11,20 @@ const {
   getTokenAndEncryptionThePayload,
 } = encryptionRepository();
 export default function userRepository() {
+  const defaultUserSelect = {
+    name: 1,
+    email: 1,
+    _id: 1,
+    createdAt: 1,
+    updatedAt: 1,
+  };
+  async function getEmployeeById(userId = "") {
+    return User.findById(userId).select(defaultUserSelect);
+  }
+
+  async function getAllEmployees() {
+    return User.find({ role: "EMPLOYEE" }).select(defaultUserSelect);
+  }
   async function loginUser(user) {
     try {
       const existingUser = await findByUserByEmailId(user.email);
@@ -47,6 +61,9 @@ export default function userRepository() {
       throw error;
     }
   }
+  async function deleteEmployeeById(userId) {
+    return User.findByIdAndDelete(userId);
+  }
   async function createUser(user) {
     try {
       const existingUser = await findByUserByEmailId(user.email);
@@ -64,8 +81,12 @@ export default function userRepository() {
       throw error;
     }
   }
+
   return Object.freeze({
     createUser,
     loginUser,
+    getAllEmployees,
+    deleteEmployeeById,
+    getEmployeeById,
   });
 }

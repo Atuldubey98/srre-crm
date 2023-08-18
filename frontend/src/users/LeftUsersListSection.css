@@ -1,0 +1,8 @@
+.users__list {
+  list-style: none;
+  padding-left: 0;
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.3rem;
+}
+

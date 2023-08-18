@@ -1,0 +1,13 @@
+.user__item {
+  cursor: pointer;
+  padding: 0.3rem;
+}
+.user__itemName {
+  font-weight: bold;
+}
+.user__item:hover {
+  background-color: rgb(240, 239, 239);
+}
+.selected__user__item {
+  background-color: var(--primary-color);
+}

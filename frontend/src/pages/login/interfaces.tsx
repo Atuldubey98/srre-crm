@@ -8,3 +8,5 @@ export interface User {
   name: string;
   role: "EMPLOYEE" | "ADMIN";
 }
+
+export interface Employee extends User {}

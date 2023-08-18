@@ -1,5 +1,7 @@
 import encryptionRepository from "../auth-service/encryption.repostory.js";
 import { UnAuthenticatedUserError } from "../auth-service/errors.js";
+import userRepository from "../auth-service/user.repository.js";
+const { getEmployeeById } = userRepository();
 const { decryptTokenAndGetUser } = encryptionRepository();
 export default async function authenticationMiddleware(req, res, next) {
   try {
@@ -14,6 +16,10 @@ export default async function authenticationMiddleware(req, res, next) {
     const { email, name, _id, role } = await decryptTokenAndGetUser(
       bearerToken
     );
+    const user = await getEmployeeById(_id);
+    if (!user) {
+      throw new UnAuthenticatedUserError();
+    }
     req.user = { email, name, _id, role };
     next();
   } catch (error) {

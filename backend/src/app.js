@@ -9,6 +9,7 @@ import routeNotFoundMiddleware from "./middlewares/notfound.middleware.js";
 import reportRouter from "./report-service/report.router.js";
 import technicianRouter from "./technician-service/technican.router.js";
 import middlewaresRouter from "./middlewares/index.js";
+import adminRouter from "./auth-service/admin.router.js";
 const app = express();
 mongoose.connect(MONGO_URI);
 
@@ -17,6 +18,7 @@ app.use("/api/v1/customers", customerRouter);
 app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/services", acServicesRouter);
 app.use("/api/v1/technicians", technicianRouter);
+app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/service-reports", reportRouter);
 app.use("*", routeNotFoundMiddleware);
 app.use(logErrors);
