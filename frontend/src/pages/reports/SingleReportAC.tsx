@@ -1,3 +1,4 @@
+import { acOptions } from "../services/interfaces";
 import ReportField from "./ReportField";
 import ServiceGivenInACList from "./ServiceGivenInACList";
 import "./SingleReportAC.css";
@@ -17,7 +18,10 @@ export default function SingleReportAC(props: SingleReportACProps) {
         value={acmeta.modelNumber.toString()}
         fieldName="Model Number of AC"
       />
-      <ReportField value={acmeta.typeOfAC.toString()} fieldName="Type of AC" />
+      <ReportField
+        value={acOptions[acmeta.typeOfAC.toString()]}
+        fieldName="Type of AC"
+      />
       <ServiceGivenInACList services={acmeta.services} />
     </li>
   );

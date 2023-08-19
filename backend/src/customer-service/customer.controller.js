@@ -3,7 +3,7 @@ import reportRepository from "../report-service/report.repository.js";
 import { generateCSVForCustomerServicesCount } from "./customer.csvgeneration.js";
 import customerRepository from "./customer.repository.js";
 import { CustomerIdSchema } from "./customer.validation.js";
-import { CustomerNotFound } from "./errors.js";
+import { CustomerBeingUsedByReportError, CustomerNotFound } from "./errors.js";
 const {
   createCustomer,
   getAllCustomers,
@@ -13,7 +13,8 @@ const {
   getAddressListByCustomerId,
   findUniqueServicesUsedByCustomer,
 } = customerRepository();
-const { getServiceReportsByCustomerId } = reportRepository();
+const { getServiceReportsByCustomerId, getCountNumberOfReportsOfCustomer } =
+  reportRepository();
 export async function getCustomerServicesUsedController(req, res, next) {
   try {
     const addressListWithIds =
@@ -155,9 +156,17 @@ export async function updateCustomerByIdController(req, res, next) {
 
 export async function deleteCustomerByIdController(req, res, next) {
   try {
-    const customerId = await CustomerIdSchema.validateAsync(
-      req.params.customerId
+    const customerId = req.params.customerId;
+    if (!isValidObjectId(customerId)) {
+      throw new CustomerNotFound();
+    }
+    const countOfReportsForCustomer = await getCountNumberOfReportsOfCustomer(
+      customerId
     );
+    const doesReportExist = countOfReportsForCustomer > 0;
+    if (doesReportExist) {
+      throw new CustomerBeingUsedByReportError();
+    }
     await deleteCustomerById(customerId);
     return res.status(200).json({ status: true, message: "customer deleted" });
   } catch (error) {

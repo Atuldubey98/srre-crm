@@ -1,8 +1,9 @@
+import { isAxiosError } from "axios";
 import { memo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../common/Button";
 import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
-import { MessageBodyProps } from "../../common/MessageBody";
+import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
 import { AboutSection } from "../../common/PageLeftRight";
 import useNavigateWithQuery from "../../common/useNavigateWithQuery";
 import "./AboutCustomer.css";
@@ -21,12 +22,17 @@ export type AboutCustomerProps = {
 function AboutCustomerElement(props: AboutCustomerProps) {
   const navigate = useNavigate();
   const { onNavigate } = useNavigateWithQuery();
+  const [messageBody, setMessageBody] = useState<MessageBodyProps>({
+    type: "success",
+    body: "",
+  });
   const { customerId } = useParams();
   const { customerLoading: loading } = props;
   const [viewGraph, setViewGraph] = useState<boolean>(false);
   const onToggleGraph = () => {
     setViewGraph(!viewGraph);
   };
+
   const onDeleteCustomer = async () => {
     try {
       if (confirm("Do you want to delete the customer ?")) {
@@ -34,7 +40,18 @@ function AboutCustomerElement(props: AboutCustomerProps) {
         navigate("/customers");
       }
     } catch (error) {
-      console.log(error);
+      setMessageBody({
+        type: "error",
+        body: isAxiosError(error)
+          ? error.response?.data.message
+          : "Network error occured",
+      });
+      setTimeout(() => {
+        setMessageBody({
+          type: "success",
+          body: "",
+        });
+      }, 1000);
     }
   };
   return (
@@ -42,6 +59,8 @@ function AboutCustomerElement(props: AboutCustomerProps) {
       <OperationBtnsGroup
         navigationUrl="/customers/new"
         operationLabel="Add new Customer"
+        searchPlaceHolder="Search customer by id"
+        searchUrl="/customers"
       />
       {loading ? (
         <LoadingIndicatorAbout loading={loading} />
@@ -54,6 +73,7 @@ function AboutCustomerElement(props: AboutCustomerProps) {
           {props.customer.address ? (
             <CustomerAddressList address={props.customer.address} />
           ) : null}
+          <MessageBody {...messageBody} />
           <div className="btn-group d-flex-center">
             <Button
               label="Edit Customer"

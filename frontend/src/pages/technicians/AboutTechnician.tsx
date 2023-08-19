@@ -45,11 +45,14 @@ export default function AboutTechnician() {
       <OperationBtnsGroup
         navigationUrl="/technicians/new"
         operationLabel="Add new Technician"
+        searchPlaceHolder="Search technician by id"
+        searchUrl="/technicians"
       />
       {technician ? (
         <section className="technician__about d-grid">
           <ReportTechnician technician={technician} />
           <ReportField value={technician.email} fieldName="Technician Email" />
+          <ReportField value={technician._id} fieldName="Technician Id" />
           <div className="btn-group d-flex-center">
             <Button
               label="Edit Technician"

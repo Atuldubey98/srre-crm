@@ -2,6 +2,7 @@ import ReportField from "./ReportField";
 import { AcMetaInfo } from "./interfaces";
 import "./ACMetaInfosList.css";
 import Button from "../../common/Button";
+import { acOptions } from "../services/interfaces";
 export type ACMetaInfosListProps = {
   acMetaInfos: AcMetaInfo[];
   onRemoveService: (serviceId: string) => void;
@@ -23,7 +24,7 @@ export default function ACMetaInfosList(props: ACMetaInfosListProps) {
               fieldName="Total Tonn of AC"
             />
             <ReportField
-              value={acInfo.typeOfAC.toString()}
+              value={acOptions[acInfo.typeOfAC.toString()]}
               fieldName="Type of AC"
             />
             <ReportField

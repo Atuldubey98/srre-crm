@@ -1,4 +1,4 @@
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -19,10 +19,6 @@ instance.interceptors.response.use(
     return response;
   },
   function (error) {
-    const check = isAxiosError(error) ? error.response?.status === 401 : false;
-    if (window.location.pathname !== "/login" && check) {
-      window.location.href = "/login";
-    }
     return Promise.reject(error);
   }
 );

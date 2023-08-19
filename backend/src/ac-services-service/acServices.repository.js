@@ -1,6 +1,34 @@
 import ACService, { typesOfACs } from "./acServices.model.js";
-
+import Report from "../report-service/report.model.js";
+import mongoose, { isValidObjectId } from "mongoose";
 export default function acServiceRepository() {
+  /**
+   *
+   * @param {string[]} acServiceIds
+   * @returns {Promise<boolean>}
+   */
+  async function checkIfServiceIdBeingUsedInReport(acServiceIds) {
+    const serviceObjectIds = acServiceIds
+      .filter((serviceId) => isValidObjectId(serviceId))
+      .map((serviceId) => new mongoose.Types.ObjectId(serviceId));
+    const servicesBeingUsed = await Report.aggregate([
+      {
+        $unwind: "$acMetaInfo",
+      },
+      {
+        $unwind: "$acMetaInfo.services",
+      },
+      {
+        $group: {
+          _id: "$acMetaInfo.services",
+        },
+      },
+      {
+        $match: { _id: { $in: serviceObjectIds } },
+      },
+    ]);
+    return servicesBeingUsed.length > 0;
+  }
   /**
    *
    * @param {{serviceName : string}} acServiceBody
@@ -61,7 +89,7 @@ export default function acServiceRepository() {
   /**
    *
    * @param {string[]} acServiceIds
-   * @returns {Promise<number}
+   * @returns {Promise<number>}
    */
   async function deleteServicesByIds(acServiceIds) {
     try {
@@ -93,5 +121,6 @@ export default function acServiceRepository() {
     createServicesForAllTypesOfACs,
     getAllAcServicesByAcType,
     deleteServicesByIds,
+    checkIfServiceIdBeingUsedInReport,
   });
 }

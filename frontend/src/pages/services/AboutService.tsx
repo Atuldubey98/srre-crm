@@ -39,6 +39,8 @@ export default function AboutService(props: AboutSectionProps) {
       <OperationBtnsGroup
         navigationUrl="/services/new"
         operationLabel="Add new Service"
+        searchPlaceHolder="Search service by id"
+        searchUrl="/services"
       />
       {service ? (
         <section className="about__sectionService">

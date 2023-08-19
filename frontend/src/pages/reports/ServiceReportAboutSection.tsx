@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
 import { AboutSection } from "../../common/PageLeftRight";
+import OperationBtnsGroup from "../customers/OperationBtnsGroup";
 import ReportButtonsGroup from "./ReportButtonsGroup";
 import ReportCustomer from "./ReportCustomer";
 import ReportField from "./ReportField";
 import ReportMetaInformation from "./ReportMetaInformation";
 import ReportTechnician from "./ReportTechnician";
 import ReportnotFound from "./ReportnotFound";
-import SearchReportForm from "./SearchReportForm";
 import "./ServiceReportAboutSection.css";
 import { ServiceReport } from "./interfaces";
 import { getServiceReportById } from "./serviceReportsApi";
@@ -44,7 +44,12 @@ export default function ServiceReportAboutSection(
   return (
     <AboutSection>
       <div className="reports__aboutWrapper">
-        <SearchReportForm />
+        <OperationBtnsGroup
+          navigationUrl="/reports/new"
+          operationLabel="Add new report"
+          searchPlaceHolder="Search report by id"
+          searchUrl="/reports"
+        />
         {loading ? (
           <LoadingIndicatorAbout loading={loading} />
         ) : serviceReport && reportId ? (

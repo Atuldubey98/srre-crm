@@ -50,8 +50,8 @@ export default function customerRepository() {
   }
   async function deleteCustomerById(id) {
     try {
-      const updatedCustomer = await Customer.findByIdAndDelete(id);
-      return updatedCustomer;
+      const deletedCustomer = await Customer.findByIdAndDelete(id);
+      return deletedCustomer;
     } catch (error) {
       throw error;
     }

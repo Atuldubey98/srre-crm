@@ -101,10 +101,10 @@ export async function generateHTMlForPdfOfReport(report) {
     .join(",");
   const description = `${report.acMetaInfo
     .map(
-      (acmeta) =>
-        `${acmeta.tonnage || ""} ${acmeta.modelNumber || ""} ${
+      (acmeta, index) =>
+        `${index + 1} : ${acmeta.tonnage || ""} ${acmeta.modelNumber || ""} ${
           acmeta.typeOfAC || ""
-        }-${acmeta.services.map((service) => service.serviceName).join(",")}`
+        }-${acmeta.services.map((service) => service.serviceName).join(",")} `
     )
     .join("\n")} ;Work Description : ${report.description}`;
   const identification = report.siteContactPerson?.identification || "";
@@ -299,7 +299,7 @@ export async function generateHTMlForPdfOfReport(report) {
           <div class="row">
             <div class="field">
               <span class="field__name">Job or work Description:</span>
-              <span class="field__value underline">${description}</span>
+              <span class="field__value">${description}</span>
             </div>
           </div>
           <div class="row">

@@ -1,13 +1,14 @@
 import { acTypeSchema, newACServiceSchema } from "./acServices.validation.js";
 import acServiceRepository from "./acServices.repository.js";
 import Joi from "joi";
-import { ServiceNotFound } from "./errors.js";
+import { ServiceBeingUsedByReportError, ServiceNotFound } from "./errors.js";
 const {
   createAcService,
   createServicesForAllTypesOfACs,
   getAllAcServicesByAcType,
   deleteServicesByIds,
   findServiceById,
+  checkIfServiceIdBeingUsedInReport,
 } = acServiceRepository();
 
 /**
@@ -96,6 +97,12 @@ export async function deleteServiceByIdController(req, res, next) {
     const serviceIds = await Joi.string().validateAsync(req.query.serviceIds);
     if (serviceIds.split(",").length <= 0) {
       throw new ServiceNotFound();
+    }
+    const isServiceIdUsedInReport = await checkIfServiceIdBeingUsedInReport(
+      serviceIds.split(",")
+    );
+    if (isServiceIdUsedInReport) {
+      throw new ServiceBeingUsedByReportError();
     }
     const totalDeleted = await deleteServicesByIds(serviceIds.split(","));
     return res.status(204).json({
