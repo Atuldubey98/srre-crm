@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import useNavigateWithQuery from "../../common/useNavigateWithQuery";
-import { getDateByCustomerCreationDate } from "../../utils/dateUtils";
+import {
+  getDateByCustomerCreationDate
+} from "../../utils/dateUtils";
 import ReportStatus from "./ReportStatus";
 import "./ServiceReportSmall.css";
 import TypeofService from "./TypeofService";

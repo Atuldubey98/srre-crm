@@ -1,5 +1,7 @@
 import { memo } from "react";
-import { getDateByCustomerCreationDate } from "../../utils/dateUtils";
+import {
+  getDateByCustomerCreationDate
+} from "../../utils/dateUtils";
 import ReportField from "./ReportField";
 
 export type ReportCustomerProps = {
@@ -17,7 +19,7 @@ function ReportCustomerElement(props: ReportCustomerProps) {
       <ReportField fieldName="Report Id" value={reportId} />
       <ReportField
         value={getDateByCustomerCreationDate(serviceDate)}
-        fieldName="Service Date"
+        fieldName="Service Date -(YYYY-MM-DD)"
       />
     </div>
   );

@@ -1,6 +1,22 @@
 import fs from "fs/promises";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
+const acOptions = {
+  all: "All",
+  splitac: "Split AC",
+  windowac: "Window AC",
+  centralac: "Central AC",
+  portableac: "Portable AC",
+  "ductless-mini-splitac": "Ductless Mini-Split AC",
+  packageac: "Package AC",
+  "floor-mountedac": "Floor-Mounted AC",
+  towerac: "Tower AC",
+  hybridac: "Hybrid AC",
+  "geo-thermalac": "Geo-Thermal AC",
+  "evaporative-coolerac": "Evaporative Cooler AC",
+  "chiller-waterac": "Chiller Water AC",
+  otherac: "Other AC",
+};
 function getDateForField(dateString) {
   const dateObject = new Date(dateString);
 
@@ -20,6 +36,7 @@ export function getReportsCSVFileData(reports) {
   const heading = [
     "Report Id",
     "Report Date",
+    "Service Type",
     "Customer Name",
     "Site Address",
     "Work Done",
@@ -44,6 +61,7 @@ export function getReportsCSVFileData(reports) {
     const serviceDate = helperForRemovingComma(
       getDateForField(report.serviceDate)
     );
+    const serviceType = report.typeOfCall;
     const customerName = helperForRemovingComma(report.customer.name);
     const customerAddress = helperForRemovingComma(
       report.customerAddress.location
@@ -74,7 +92,7 @@ export function getReportsCSVFileData(reports) {
               value: acmeta.modelNumber,
             })} ; ${getField({
               field: "Type of AC",
-              value: acmeta.typeOfAC,
+              value: acOptions[acmeta.typeOfAC],
             })}`
         )
         .join("\n")
@@ -87,7 +105,7 @@ export function getReportsCSVFileData(reports) {
     );
     const status = report.status;
     const description = helperForRemovingComma(report.description || "");
-    return `${reportId},${serviceDate},${customerName},${customerAddress},${workDone},${technicanName},${machineDetails},${siteContactPersonID},${status},${description}`;
+    return `${reportId},${serviceDate},${serviceType},${customerName},${customerAddress},${workDone},${technicanName},${machineDetails},${siteContactPersonID},${status},${description}`;
   });
   return [heading.join(","), ...dataRows];
 }

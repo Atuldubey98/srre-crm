@@ -14,32 +14,20 @@ function encryptionRepository() {
     }
   }
   async function checkPasswordMatching(password, hashedPassword) {
-    try {
-      const isMatching = await bcrypt.compare(password, hashedPassword);
-      return isMatching;
-    } catch (error) {
-      throw error;
-    }
+    return bcrypt.compare(password, hashedPassword);
   }
   async function getTokenAndEncryptionThePayload(userPayload) {
-    try {
-      const secret = base64url.decode(JWT_SECRET);
-      const jwt = await new EncryptJWT(userPayload)
-        .setProtectedHeader({ alg: "dir", enc: "A128CBC-HS256" })
-        .setIssuedAt()
-        .setIssuer(ISSUER)
-        .setAudience(AUDIENCE)
-        .setExpirationTime(JWT_EXPIRE)
-        .encrypt(secret);
-      return jwt;
-    } catch (error) {
-      throw error;
-    }
+    return new EncryptJWT(userPayload)
+      .setProtectedHeader({ alg: "dir", enc: "A128CBC-HS256" })
+      .setIssuedAt()
+      .setIssuer(ISSUER)
+      .setAudience(AUDIENCE)
+      .setExpirationTime(JWT_EXPIRE)
+      .encrypt(base64url.decode(JWT_SECRET));
   }
   async function decryptTokenAndGetUser(jwt) {
     try {
-      const secret = base64url.decode(JWT_SECRET);
-      const { payload } = await jwtDecrypt(jwt, secret, {
+      const { payload } = await jwtDecrypt(jwt, base64url.decode(JWT_SECRET), {
         issuer: ISSUER,
         audience: AUDIENCE,
       });
@@ -52,7 +40,7 @@ function encryptionRepository() {
     getTokenAndEncryptionThePayload,
     decryptTokenAndGetUser,
     encryptPassword,
-    checkPasswordMatching
+    checkPasswordMatching,
   });
 }
 
