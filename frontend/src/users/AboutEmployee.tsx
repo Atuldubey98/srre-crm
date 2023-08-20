@@ -56,6 +56,8 @@ export default function AboutEmployee(props: AboutEmployeeProps) {
       <OperationBtnsGroup
         navigationUrl="/users/new"
         operationLabel="Add Employee"
+        searchPlaceHolder="Search Employee"
+        searchUrl="/users"
       />
       {loading ? (
         <LoadingIndicatorAbout loading={loading} />
