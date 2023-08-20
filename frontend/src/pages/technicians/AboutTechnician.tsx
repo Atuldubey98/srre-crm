@@ -2,18 +2,15 @@ import { useEffect, useState } from "react";
 import {
   useLocation,
   useMatch,
-  useNavigate,
-  useParams,
+  useParams
 } from "react-router-dom";
-import Button from "../../common/Button";
 import { AboutSection } from "../../common/PageLeftRight";
 import OperationBtnsGroup from "../customers/OperationBtnsGroup";
 import "./AboutTechnician.css";
+import TechnicianFieldsSection from "./TechnicianFieldsSection";
 import TechnicianNotfound from "./TechnicianNotfound";
 import { Technician } from "./interfaces";
 import { getAllTechnicianById } from "./techiesApi";
-import ReportTechnician from "../reports/ReportTechnician";
-import ReportField from "../reports/ReportField";
 export default function AboutTechnician() {
   const { technicianId = "" } = useParams();
   const location = useLocation();
@@ -35,10 +32,6 @@ export default function AboutTechnician() {
       }
     })();
   }, [technicianId, updateTechnician]);
-  const navigate = useNavigate();
-  const onTechyEdit = () => {
-    navigate(`/technicians/${technicianId}/edit`);
-  };
 
   return (
     <AboutSection>
@@ -49,18 +42,7 @@ export default function AboutTechnician() {
         searchUrl="/technicians"
       />
       {technician ? (
-        <section className="technician__about d-grid">
-          <ReportTechnician technician={technician} />
-          <ReportField value={technician.email} fieldName="Technician Email" />
-          <ReportField value={technician._id} fieldName="Technician Id" />
-          <div className="btn-group d-flex-center">
-            <Button
-              label="Edit Technician"
-              className="btn btn-info"
-              onClick={onTechyEdit}
-            />
-          </div>
-        </section>
+        <TechnicianFieldsSection technician={technician} />
       ) : technicianId ? (
         <TechnicianNotfound />
       ) : null}

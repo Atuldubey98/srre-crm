@@ -1,34 +1,31 @@
+import { isAxiosError } from "axios";
 import { FormEventHandler, useEffect, useState } from "react";
-import { AboutSection } from "../../common/PageLeftRight";
-import CustomerFields from "./CustomerFields";
-import ServicesGivenFields from "./ServicesGivenFields";
-import useReportForm from "./useReportForm";
-import TechnicianFormSelect from "./TechnicianFormSelect";
+import {
+  useLocation,
+  useMatch,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import Button from "../../common/Button";
-import WorkDescriptionField from "./WorkDescriptionField";
 import FormLabelField from "../../common/FormLabelField";
+import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
+import { AboutSection } from "../../common/PageLeftRight";
+import SelectOptions from "../../common/SelectOptions";
+import { getDateForField } from "../../utils/dateUtils";
+import CustomerFields from "./CustomerFields";
+import "./FormServiceReport.css";
+import ReportnotFound from "./ReportnotFound";
+import ServicesGivenFields from "./ServicesGivenFields";
+import TechnicianFormSelect from "./TechnicianFormSelect";
+import WorkDescriptionField from "./WorkDescriptionField";
 import {
   createNewServiceReport,
   getServiceReportById,
   updateServiceReport,
 } from "./serviceReportsApi";
-import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
-import { isAxiosError } from "axios";
-import "./FormServiceReport.css";
-import {
-  useLocation,
-  useParams,
-  useMatch,
-  useNavigate,
-} from "react-router-dom";
-import { ServiceReport } from "./interfaces";
-import { getDateForField } from "../../utils/dateUtils";
-import ReportnotFound from "./ReportnotFound";
-import SelectOptions from "../../common/SelectOptions";
-export type FormServiceReportProps = {
-  onUpdateService: (serviceReport: ServiceReport) => void;
-};
-export default function FormServiceReport(props: FormServiceReportProps) {
+import useReportForm from "./useReportForm";
+
+export default function FormServiceReport() {
   const { state, operations } = useReportForm();
   const location = useLocation();
   const { reportId = "" } = useParams();
@@ -45,7 +42,6 @@ export default function FormServiceReport(props: FormServiceReportProps) {
     try {
       if (isUpdateForm) {
         const { data } = await updateServiceReport(state, reportId);
-        props.onUpdateService(data.data);
         navigate(`/reports/${data.data._id}`);
       } else {
         const { data } = await createNewServiceReport(state);

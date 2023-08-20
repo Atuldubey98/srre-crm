@@ -13,3 +13,6 @@
 .technician__selected {
   background-color: var(--primary-color);
 }
+.technician__name {
+  font-weight: bold;
+}

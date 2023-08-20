@@ -66,6 +66,7 @@ export default function AboutEmployee(props: AboutEmployeeProps) {
           <EmployeeUserDisplay {...employeeUser} />
           <div className="d-flex-center">
             <Button
+              disabled={loading}
               label="Deactivate"
               className="btn btn-danger"
               onClick={onRemoveEmployee}

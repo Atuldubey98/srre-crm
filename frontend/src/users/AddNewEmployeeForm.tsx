@@ -115,7 +115,12 @@ export default function AddNewEmployeeForm(props: AddNewEmployeeFormProps) {
           label="Confirm Password:*"
         />
         <MessageBody {...messageBody} />
-        <Button label="Register Employee" className="btn btn-success" />
+        <Button
+          disabled={loading}
+          label="Register Employee"
+          className="btn btn-success"
+          type="submit"
+        />
       </form>
     </EditSection>
   );

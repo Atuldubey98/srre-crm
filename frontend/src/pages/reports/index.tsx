@@ -3,7 +3,6 @@ import { useLocation, useMatch, useParams } from "react-router-dom";
 import Container from "../../common/Container";
 import { PageLeftRight } from "../../common/PageLeftRight";
 import PrivateRoute from "../../common/PrivateRoute";
-import { FormServiceReportProps } from "./FormServiceReport";
 import ServiceReportLeftSmallList from "./ServiceReportLeftSmallList";
 import { ServiceReport } from "./interfaces";
 import { getServiceReports } from "./serviceReportsApi";
@@ -55,16 +54,7 @@ export default function ServiceReportsPage() {
       (serviceReports || []).filter((rep) => rep._id !== serviceReportId)
     );
   };
-  const onUpdateService = (serviceReport: ServiceReport) => {
-    setServiceReports(
-      (serviceReports || []).map((rep) =>
-        rep._id === serviceReport._id ? { ...rep, ...serviceReport } : rep
-      )
-    );
-  };
-  const formServiceReportProps: FormServiceReportProps = {
-    onUpdateService,
-  };
+  
   return (
     <PrivateRoute>
       <Container>
@@ -76,7 +66,7 @@ export default function ServiceReportsPage() {
             hasMoreReports={hasMoreReports}
           />
           {showNewReport || showEditReport ? (
-            <FormServiceReport {...formServiceReportProps} />
+            <FormServiceReport />
           ) : (
             <ServiceReportAboutSection onRemoveService={onRemoveService} />
           )}

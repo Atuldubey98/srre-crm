@@ -34,17 +34,17 @@ export default function Header() {
             <Link to={"/users"}>Users</Link>
           </li>
         </AdminWrapper>
-        <li className="header__link d-flex-center">
-          <span className="header__user">
-            {authContext?.currentUser?.name} | {authContext?.currentUser?.role}
-          </span>
-          <Button
-            className="btn btn-primary"
-            label="Logout"
-            onClick={onLogoutClick}
-          />
-        </li>
       </ul>
+      <div className="d-flex-center">
+        <span className="header__user">
+          {authContext?.currentUser?.name} | {authContext?.currentUser?.role}
+        </span>
+        <Button
+          className="btn btn-primary"
+          label="Logout"
+          onClick={onLogoutClick}
+        />
+      </div>
     </header>
   );
 }
