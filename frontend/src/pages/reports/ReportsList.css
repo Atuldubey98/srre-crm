@@ -1,4 +1,5 @@
 .service__reportsSmallList {
   list-style: none;
   padding-left: 0;
+  margin-block: 0.5rem;
 }

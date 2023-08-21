@@ -12,6 +12,51 @@ export default function reportRepository() {
   }
   const reportPipeLine = [
     {
+      $unwind: "$acMetaInfo",
+    },
+    {
+      $lookup: {
+        from: "acservices",
+        localField: "acMetaInfo.services",
+        foreignField: "_id",
+        as: "acMetaInfo.services",
+      },
+    },
+    {
+      $group: {
+        _id: {
+          _id: "$_id",
+          customer: "$customer",
+          customerAddress: "$customerAddress",
+          serviceDate: "$serviceDate",
+          typeOfCall: "$typeOfCall",
+          siteContactPerson: "$siteContactPerson",
+          status: "$status",
+          description: "$description",
+          technician: "$technician",
+          createdAt: "$createdAt",
+          updatedAt: "$updatedAt",
+        },
+        acMetaInfo: { $push: "$acMetaInfo" },
+      },
+    },
+    {
+      $project: {
+        _id: "$_id._id",
+        customer: "$_id.customer",
+        customerAddress: "$_id.customerAddress",
+        serviceDate: "$_id.serviceDate",
+        typeOfCall: "$_id.typeOfCall",
+        siteContactPerson: "$_id.siteContactPerson",
+        status: "$_id.status",
+        description: "$_id.description",
+        technician: "$_id.technician",
+        createdAt: "$_id.createdAt",
+        updatedAt: "$_id.updatedAt",
+        acMetaInfo: "$acMetaInfo",
+      },
+    },
+    {
       $lookup: {
         from: "customers",
         localField: "customer",
@@ -28,14 +73,6 @@ export default function reportRepository() {
       },
     },
     { $unwind: "$technician" },
-    {
-      $lookup: {
-        from: "acservices",
-        localField: "acMetaInfo.services",
-        foreignField: "_id",
-        as: "acMetaInfoServices",
-      },
-    },
     { $unwind: "$customer" },
     {
       $project: {
@@ -55,20 +92,7 @@ export default function reportRepository() {
             },
           },
         },
-        acMetaInfo: {
-          $map: {
-            input: "$acMetaInfo",
-            as: "ac",
-            in: {
-              tonnage: "$$ac.tonnage",
-              _id: "$$ac._id",
-
-              modelNumber: "$$ac.modelNumber",
-              typeOfAC: "$$ac.typeOfAC",
-              services: "$acMetaInfoServices",
-            },
-          },
-        },
+        acMetaInfo: "$acMetaInfo",
         siteContactPerson: "$siteContactPerson",
         technician: "$technician",
         status: 1,

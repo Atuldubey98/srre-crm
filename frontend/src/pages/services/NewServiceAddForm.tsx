@@ -60,7 +60,7 @@ export default function NewServiceAddForm() {
       <section className="new__serviceForm">
         <h1>New Service Add</h1>
         <form onSubmit={onNewServiceFormSubmit} className="d-grid">
-          <div className="form__control">
+          <div className="form__labelField">
             <label htmlFor="typeOfAC">Type of AC :</label>
             <SelectOptions
               onChange={onChangeField}
@@ -74,7 +74,7 @@ export default function NewServiceAddForm() {
               ))}
             </SelectOptions>
           </div>
-          <div className="form__control">
+          <div className="form__labelField">
             <label htmlFor="serviceName">What type of service :</label>
             <Input
               required
