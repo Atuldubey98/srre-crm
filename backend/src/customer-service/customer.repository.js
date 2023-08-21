@@ -5,6 +5,9 @@ import {
 } from "./customer.validation.js";
 import Report from "../report-service/report.model.js";
 export default function customerRepository() {
+  async function getCountOfCustomers() {
+    return Customer.count({});
+  }
   async function getCustomerById(customerId) {
     return Customer.findById(customerId).populate(
       "createdBy",
@@ -103,6 +106,7 @@ export default function customerRepository() {
     getAllCustomers,
     findUniqueServicesUsedByCustomer,
     updateCustomerById,
+    getCountOfCustomers,
     getAddressListByCustomerId,
     getCustomerById,
     deleteCustomerById,

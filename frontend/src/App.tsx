@@ -9,12 +9,13 @@ import LoadingIndicatorAbout from "./common/LoadingIndicatorAbout";
 import PageNotFound from "./common/PageNotFound";
 import UnauthorizedPage from "./common/UnauthorizedPage";
 import UsersPage from "./users";
+import DashboardPage from "./pages/dashboard";
 
 export default function App() {
   return (
     <Suspense fallback={<LoadingIndicatorAbout loading={true} />}>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/" element={<Navigate to="/dashboard" />} />
         <Route path="/customers">
           <Route path="" element={<CustomerPage />} />
           <Route path="new" element={<CustomerPage />} />
@@ -44,6 +45,7 @@ export default function App() {
           <Route path=":userId" element={<UsersPage />} />
           <Route path=":userId/edit" element={<UsersPage />} />
         </Route>
+        <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/login" element={<Loginpage />} />
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
         <Route path="*" element={<PageNotFound />} />

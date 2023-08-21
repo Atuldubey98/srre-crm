@@ -119,6 +119,7 @@ export default function reportRepository() {
    * @returns {Promise<Document|null>}
    */
   async function getReportById(reportId) {
+    console.log({reportId});
     return Report.aggregate([
       { $match: { _id: new Types.ObjectId(reportId) } },
       ...reportPipeLine,

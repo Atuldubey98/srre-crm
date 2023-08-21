@@ -23,7 +23,7 @@ export async function createServiceReportController(req, res, next) {
   try {
     const report = await reportsSchema.validateAsync(req.body);
     const serviceReport = await createServiceReport(report);
-    const reports = await getReportById(serviceReport._id);
+    const reports = await getReportById(serviceReport.id);
     if (reports.length === 0) {
       throw new ReportNotFound();
     }
