@@ -39,26 +39,33 @@ export default function FormServiceReport() {
   const navigate = useNavigate();
   const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    try {
-      if (isUpdateForm) {
-        const { data } = await updateServiceReport(state, reportId);
-        navigate(`/reports/${data.data._id}`);
-      } else {
-        const { data } = await createNewServiceReport(state);
-        navigate(`/reports/${data.data._id}`);
-      }
-      operations.onSetDefaultState();
-    } catch (error) {
+    if (!state.acMetaInfo.length) {
       setMessage({
         type: "error",
-        body: isAxiosError(error)
-          ? error.response?.data.message
-          : "Error occured",
+        body: "No AC description entered",
       });
-    } finally {
-      setTimeout(() => {
-        setMessage({ ...message, body: "" });
-      }, 1500);
+    } else {
+      try {
+        if (isUpdateForm) {
+          const { data } = await updateServiceReport(state, reportId);
+          navigate(`/reports/${data.data._id}`);
+        } else {
+          const { data } = await createNewServiceReport(state);
+          navigate(`/reports/${data.data._id}`);
+        }
+        operations.onSetDefaultState();
+      } catch (error) {
+        setMessage({
+          type: "error",
+          body: isAxiosError(error)
+            ? error.response?.data.message
+            : "Error occured",
+        });
+      } finally {
+        setTimeout(() => {
+          setMessage({ ...message, body: "" });
+        }, 1500);
+      }
     }
   };
   const isUpdateForm =

@@ -1,9 +1,12 @@
 import { ChangeEventHandler } from "react";
+import Button from "../../common/Button";
 import FormLabelField from "../../common/FormLabelField";
 import SelectOptions from "../../common/SelectOptions";
-import { Service, acTypeOptions } from "../services/interfaces";
+import {
+  Service,
+  acTypeOptionsWithoutAll
+} from "../services/interfaces";
 import { AcMetaInfo } from "./interfaces";
-import Button from "../../common/Button";
 
 export type ACMetaInfoFormProps = {
   acMetaForm: AcMetaInfo;
@@ -77,7 +80,7 @@ export default function ACMetaInfoForm(props: ACMetaInfoFormProps) {
           name="typeOfAC"
         >
           <option value="">Please select type of AC</option>
-          {acTypeOptions.map((acType) => (
+          {acTypeOptionsWithoutAll.map((acType) => (
             <option value={acType.value} key={acType.value}>
               {acType.field}
             </option>

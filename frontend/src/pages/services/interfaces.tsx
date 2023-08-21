@@ -48,3 +48,20 @@ export const acTypeOptions: { value: string; field: string }[] = [
   { value: "chiller-waterac", field: "Chiller Water AC" },
   { value: "otherac", field: "Other AC" },
 ];
+
+export const acTypeOptionsWithoutAll: { value: string; field: string }[] = [
+  { value: "all", field: "All" },
+  { value: "splitac", field: "Split AC" },
+  { value: "windowac", field: "Window AC" },
+  { value: "centralac", field: "Central AC" },
+  { value: "portableac", field: "Portable AC" },
+  { value: "ductless-mini-splitac", field: "Ductless Mini-Split AC" },
+  { value: "packageac", field: "Package AC" },
+  { value: "floor-mountedac", field: "Floor-Mounted AC" },
+  { value: "towerac", field: "Tower AC" },
+  { value: "hybridac", field: "Hybrid AC" },
+  { value: "geo-thermalac", field: "Geo-Thermal AC" },
+  { value: "evaporative-coolerac", field: "Evaporative Cooler AC" },
+  { value: "chiller-waterac", field: "Chiller Water AC" },
+  { value: "otherac", field: "Other AC" },
+];
