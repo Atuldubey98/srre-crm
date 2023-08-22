@@ -3,6 +3,8 @@ import Button from "../../common/Button";
 import FormLabelField from "../../common/FormLabelField";
 import CustomerNameAddressFields from "./CustomerNameAddressFields";
 import { downloadServiceReportsByFilter } from "./serviceReportsApi";
+import { Address } from "../customers/interfaces";
+import { Customer } from "./interfaces";
 export type ServiceReportListFormFields = {
   customer: string;
   customerAddress: string;
@@ -39,6 +41,14 @@ export default function ServiceReportCsvGenerationForm() {
       [e.currentTarget.name]: e.currentTarget.value,
     });
   };
+  const onChangeCustomerItemField = (customerItem: Customer | null) => {
+    if (customerItem) {
+      setServiceReportListFormFields({
+        ...serviceReportListFormFields,
+        customer: customerItem?._id,
+      });
+    }
+  };
   const onSubmitReportsDownloadForm: FormEventHandler<HTMLFormElement> = async (
     e
   ) => {
@@ -56,6 +66,13 @@ export default function ServiceReportCsvGenerationForm() {
       URL.revokeObjectURL(fileURL);
     } catch (error) {
       console.log(error);
+    }
+  };
+  const onAddressChange = (address: Address | null) => {
+    if (address) {
+      setServiceReportListFormFields((prev) => {
+        return { ...prev, customerAddress: address._id };
+      });
     }
   };
   return (
@@ -78,13 +95,14 @@ export default function ServiceReportCsvGenerationForm() {
           />
         </div>
         <CustomerNameAddressFields
+          onAddressChange={onAddressChange}
           customerFieldDisabled={
             serviceReportListFormFields.customerFieldDisabled
           }
           customeAddressFieldRequired={false}
           customer={serviceReportListFormFields.customer}
           customerAddress={serviceReportListFormFields.customerAddress}
-          onChangeCustomerField={onChangeCustomerField}
+          onChangeCustomerField={onChangeCustomerItemField}
         />
         <div className="d-grid report__generationDates">
           <FormLabelField

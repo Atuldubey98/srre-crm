@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Employee } from "../pages/login/interfaces";
+import { Employee } from "../login/interfaces";
 import "./UserItem.css";
 function UserItemElement(user: Employee) {
   const navigate = useNavigate();

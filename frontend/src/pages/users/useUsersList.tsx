@@ -1,7 +1,7 @@
 import { isAxiosError } from "axios";
 import { useEffect, useState } from "react";
-import { MessageBodyProps } from "../common/MessageBody";
-import { Employee } from "../pages/login/interfaces";
+import { MessageBodyProps } from "../../common/MessageBody";
+import { Employee } from "../login/interfaces";
 import { getUsersList } from "./usersApi";
 
 export default function useUsersList() {

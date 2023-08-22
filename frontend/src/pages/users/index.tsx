@@ -1,8 +1,8 @@
 import { useLocation, useMatch } from "react-router-dom";
-import AdminRoute from "../common/AdminRoute";
-import Container from "../common/Container";
-import { PageLeftRight } from "../common/PageLeftRight";
-import PrivateRoute from "../common/PrivateRoute";
+import AdminRoute from "../../common/AdminRoute";
+import Container from "../../common/Container";
+import { PageLeftRight } from "../../common/PageLeftRight";
+import PrivateRoute from "../../common/PrivateRoute";
 import AboutEmployee from "./AboutEmployee";
 import AddNewEmployeeForm from "./AddNewEmployeeForm";
 import LeftUsersListSection from "./LeftUsersListSection";

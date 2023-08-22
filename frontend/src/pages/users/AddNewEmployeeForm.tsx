@@ -1,12 +1,12 @@
 import { FormEventHandler, useState } from "react";
-import Button from "../common/Button";
-import FormLabelField from "../common/FormLabelField";
-import { EditSection } from "../common/PageLeftRight";
-import MessageBody, { MessageBodyProps } from "../common/MessageBody";
+import Button from "../../common/Button";
+import FormLabelField from "../../common/FormLabelField";
+import { EditSection } from "../../common/PageLeftRight";
+import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
 import { isAxiosError } from "axios";
-import useFieldChange from "../common/useFieldChange";
+import useFieldChange from "../../common/useFieldChange";
 import { registerEmployee } from "./usersApi";
-import { Employee } from "../pages/login/interfaces";
+import { Employee } from "../login/interfaces";
 
 export type EmployeeUserFormFields = {
   name: string;

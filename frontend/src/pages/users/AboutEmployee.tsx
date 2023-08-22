@@ -1,11 +1,11 @@
 import { isAxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Button from "../common/Button";
-import LoadingIndicatorAbout from "../common/LoadingIndicatorAbout";
-import { AboutSection } from "../common/PageLeftRight";
-import OperationBtnsGroup from "../pages/customers/OperationBtnsGroup";
-import { Employee } from "../pages/login/interfaces";
+import Button from "../../common/Button";
+import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
+import { AboutSection } from "../../common/PageLeftRight";
+import OperationBtnsGroup from "../customers/OperationBtnsGroup";
+import { Employee } from "../login/interfaces";
 import EmployeeNotfound from "./EmployeeNotfound";
 import EmployeeUserDisplay from "./EmployeeUserDisplay";
 import { deleteUserById, getUserById } from "./usersApi";

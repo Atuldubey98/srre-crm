@@ -4,6 +4,7 @@ import FormLabelField from "../../common/FormLabelField";
 import "./CustomerServicesUsedCsvGenerator.css";
 import SelectCustomers from "./SelectCustomers";
 import { downloadCustomerServicesCount } from "./serviceReportsApi";
+import { Customer } from "./interfaces";
 export type CustomerServicesUsedCsvGeneratorFormFields = {
   customer: string;
   fromDate: string;
@@ -52,6 +53,14 @@ export default function CustomerServicesUsedCsvGenerator() {
       [e.currentTarget.name]: e.currentTarget.value,
     });
   };
+  const onChangeCustomerField = (customerItem: Customer | null) => {
+    if (customerItem) {
+      setFormFields({
+        ...formFields,
+        customer: customerItem?._id,
+      });
+    }
+  };
   return (
     <details>
       <summary
@@ -95,7 +104,7 @@ export default function CustomerServicesUsedCsvGenerator() {
         <SelectCustomers
           customer={formFields.customer}
           customerFieldDisabled={formFields.allCustomers}
-          onChangeCustomerField={onChangeField}
+          onChangeCustomerField={onChangeCustomerField}
         />
         <Button label="Reset" className="btn btn-info" type="reset" />
         <Button label="Download" className="btn btn-success" type="submit" />

@@ -1,11 +1,11 @@
-import { ChangeEventHandler, useEffect, useState } from "react";
-import SelectOptions from "../../common/SelectOptions";
-import { Customer } from "./interfaces";
+import { useEffect, useState } from "react";
+import Select from "react-select";
 import { getAllCustomerNames } from "../customers/customersApi";
+import { Customer } from "./interfaces";
 export type SelectCustomersProps = {
   customerFieldDisabled?: boolean;
   customer: string;
-  onChangeCustomerField: ChangeEventHandler<HTMLSelectElement>;
+  onChangeCustomerField: (customerItem: Customer | null) => void;
 };
 export default function SelectCustomers(props: SelectCustomersProps) {
   const [customers, setCustomers] = useState<Customer[] | null>(null);
@@ -19,20 +19,18 @@ export default function SelectCustomers(props: SelectCustomersProps) {
   return customers ? (
     <div className="form__labelField d-grid">
       <label htmlFor="customer">Customer Name :*</label>
-      <SelectOptions
-        disabled={props.customerFieldDisabled}
-        required
-        value={customer}
-        onChange={props.onChangeCustomerField}
+      <Select
         name="customer"
-      >
-        <option value="">Please select a customer</option>
-        {customers.map((customer) => (
-          <option key={customer._id} value={customer._id}>
-            {customer.name}
-          </option>
-        ))}
-      </SelectOptions>
+        isDisabled={props.customerFieldDisabled}
+        value={
+          customers.find((customerItem) => customer === customerItem._id) ||
+          null
+        }
+        onChange={props.onChangeCustomerField}
+        getOptionLabel={(customerItem: Customer) => customerItem.name}
+        getOptionValue={(customerItem: Customer) => customerItem._id}
+        options={customers}
+      />
     </div>
   ) : null;
 }

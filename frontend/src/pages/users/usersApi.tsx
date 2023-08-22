@@ -1,4 +1,4 @@
-import instance from "../instance";
+import instance from "../../instance";
 import { EmployeeUserFormFields } from "./AddNewEmployeeForm";
 
 export async function getUsersList() {

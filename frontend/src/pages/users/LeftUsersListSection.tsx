@@ -1,6 +1,6 @@
 import { ChangeEventHandler, useDeferredValue, useMemo, useState } from "react";
-import { ListSection } from "../common/PageLeftRight";
-import { Employee } from "../pages/login/interfaces";
+import { ListSection } from "../../common/PageLeftRight";
+import { Employee } from "../login/interfaces";
 import FilterUsers, { FilterUsersProps } from "./FilterUsers";
 import "./LeftUsersListSection.css";
 import UserItem from "./UserItem";

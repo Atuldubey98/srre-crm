@@ -1,5 +1,5 @@
-import { Employee } from "../pages/login/interfaces";
-import ReportField from "../pages/reports/ReportField";
+import { Employee } from "../login/interfaces";
+import ReportField from "../reports/ReportField";
 import "./EmployeeUserDisplay.css";
 export default function EmployeeUserDisplay(employee: Employee) {
   return (

@@ -20,7 +20,7 @@ export default function useLoginForm() {
   });
   const [loading, setLoading] = useState<boolean>(false);
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/customers";
+  const from = location.state?.from?.pathname || "/";
   const onSubmitForm: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     try {

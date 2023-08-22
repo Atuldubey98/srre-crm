@@ -8,8 +8,8 @@ const TechnicansPage = lazy(() => import("./pages/technicians"));
 import LoadingIndicatorAbout from "./common/LoadingIndicatorAbout";
 import PageNotFound from "./common/PageNotFound";
 import UnauthorizedPage from "./common/UnauthorizedPage";
-import UsersPage from "./users";
-import DashboardPage from "./pages/dashboard";
+const DashboardPage = lazy(() => import("./pages/dashboard"));
+const UsersPage = lazy(() => import("./pages/users"));
 
 export default function App() {
   return (

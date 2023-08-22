@@ -132,6 +132,7 @@ export default function FormServiceReport() {
             customer={customer}
             onAddressChange={operations.onAddressChange}
             customerAddress={customerAddress}
+            onChangeCustomerFieldItem={operations.onChangeCustomerFieldItem}
             onChangeContactField={operations.onChangeContactField}
             onChangeCustomerField={operations.onChangeReportField}
           />

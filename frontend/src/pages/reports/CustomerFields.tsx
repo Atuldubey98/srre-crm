@@ -2,7 +2,7 @@ import { ChangeEventHandler } from "react";
 import FormLabelField from "../../common/FormLabelField";
 import "./CustomerFields.css";
 import CustomerNameAddressFields from "./CustomerNameAddressFields";
-import { SiteContactPerson } from "./interfaces";
+import { Customer, SiteContactPerson } from "./interfaces";
 import { Address } from "../customers/interfaces";
 export type CustomerFieldsProps = {
   onChangeCustomerField: ChangeEventHandler<
@@ -10,12 +10,13 @@ export type CustomerFieldsProps = {
   >;
   customer: string;
   onAddressChange: (address: Address | null) => void;
+  onChangeCustomerFieldItem: (customer: Customer | null) => void;
   onChangeContactField: ChangeEventHandler<HTMLInputElement>;
   siteContactPerson: SiteContactPerson;
   customerAddress: string;
 };
 export default function CustomerFields(props: CustomerFieldsProps) {
-  const { customer, onChangeCustomerField, customerAddress } = props;
+  const { customer, customerAddress } = props;
 
   return (
     <fieldset className="field__section">
@@ -24,7 +25,7 @@ export default function CustomerFields(props: CustomerFieldsProps) {
         onAddressChange={props.onAddressChange}
         customer={customer}
         customeAddressFieldRequired={true}
-        onChangeCustomerField={onChangeCustomerField}
+        onChangeCustomerField={props.onChangeCustomerFieldItem}
         customerAddress={customerAddress}
       />
       <FormLabelField

@@ -50,7 +50,6 @@ export const acTypeOptions: { value: string; field: string }[] = [
 ];
 
 export const acTypeOptionsWithoutAll: { value: string; field: string }[] = [
-  { value: "all", field: "All" },
   { value: "splitac", field: "Split AC" },
   { value: "windowac", field: "Window AC" },
   { value: "centralac", field: "Central AC" },

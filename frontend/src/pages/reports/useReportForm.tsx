@@ -1,5 +1,5 @@
 import { ChangeEventHandler, useCallback, useReducer } from "react";
-import { AcMetaInfo, ReportFormFields } from "./interfaces";
+import { AcMetaInfo, Customer, ReportFormFields } from "./interfaces";
 import { Address } from "../customers/interfaces";
 
 export default function useReportForm() {
@@ -100,6 +100,14 @@ export default function useReportForm() {
   const onUpdateService = (acmeta: AcMetaInfo) => {
     dispatch({ type: "update:acMetaInfos", payload: acmeta });
   };
+  const onChangeCustomerFieldItem = (customer: Customer | null) => {
+    if (customer) {
+      dispatch({
+        type: "change:fields",
+        payload: { name: "customer", value: customer?._id },
+      });
+    }
+  };
   const onSetDefaultState = () => {
     dispatch({
       type: "set",
@@ -127,6 +135,7 @@ export default function useReportForm() {
     onRemoveService,
     onAddressChange,
     onSetDefaultState,
+    onChangeCustomerFieldItem,
     onSetNewState,
   };
   return {

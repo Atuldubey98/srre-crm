@@ -1,5 +1,5 @@
 import { FcBusinessman } from "react-icons/fc";
-import NotfoundItem from "../common/NotfoundItem";
+import NotfoundItem from "../../common/NotfoundItem";
 
 export type EmployeeNotfoundProps = {
   errorMessage: string;
