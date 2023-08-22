@@ -37,6 +37,7 @@ const reportsSchema = new Schema(
     },
     customerAddress: {
       type: Schema.Types.ObjectId,
+      ref: "address",
       required: true,
     },
     serviceDate: {

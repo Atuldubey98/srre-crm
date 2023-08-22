@@ -1,11 +1,5 @@
 import { Schema, model } from "mongoose";
 
-const addressSchema = new Schema({
-  location: {
-    type: String,
-    required: true,
-  },
-});
 const customerSchema = new Schema(
   {
     name: {
@@ -14,7 +8,11 @@ const customerSchema = new Schema(
       unique: true,
       index: true,
     },
-    address: [addressSchema],
+    address: {
+      type: Schema.Types.Array,
+      ref: "address",
+      default: [],
+    },
     contact: {
       name: String,
       phoneNumber: String,

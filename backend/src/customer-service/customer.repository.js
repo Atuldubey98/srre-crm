@@ -3,26 +3,32 @@ import {
   CustomerBodySchema,
   UpdateCustomerBody,
 } from "./customer.validation.js";
+import addressRepository from "./address.repository.js";
 import Report from "../report-service/report.model.js";
+const { createAddressList, deleteAddressUsingIds } = addressRepository();
 export default function customerRepository() {
   async function getCountOfCustomers() {
     return Customer.count({});
   }
   async function getCustomerById(customerId) {
-    return Customer.findById(customerId).populate(
-      "createdBy",
-      "email name role _id"
-    );
+    return Customer.findById(customerId)
+      .populate("createdBy", "email name role _id")
+      .populate("address");
   }
   async function getAddressListByCustomerId(customerId) {
-    return Customer.findById(customerId).select("address");
+    return Customer.findById(customerId).select("address").populate("address");
   }
   async function createCustomer(customerBody) {
     try {
       const newCustomer = await CustomerBodySchema.validateAsync(customerBody);
-      const customer = new Customer(newCustomer);
+      const { address, ...restCustomer } = newCustomer;
+      const addressList = await createAddressList(address);
+      const customer = new Customer({
+        ...restCustomer,
+        address: addressList.map((add) => add._id),
+      });
       await customer.save();
-      return customer;
+      return customer.populate("address");
     } catch (error) {
       console.log(error);
       throw error;
@@ -33,6 +39,7 @@ export default function customerRepository() {
       const filter = query ? { $text: { $search: query } } : {};
       const customers = await Customer.find(filter)
         .populate("createdBy", "email name _id role")
+        .populate("address")
         .select(select)
         .sort({ createdAt: -1 });
       return customers;
@@ -43,9 +50,19 @@ export default function customerRepository() {
   async function updateCustomerById(id, customerBody) {
     try {
       const customer = await UpdateCustomerBody.validateAsync(customerBody);
-      const updatedCustomer = await Customer.findByIdAndUpdate(id, customer, {
-        new: true,
-      });
+      const { address, ...restCustomer } = customer;
+      const addressList = await createAddressList(address);
+      const alreadyCustomer = await Customer.findById(id).select("address");
+      const updatedCustomer = await Customer.findByIdAndUpdate(
+        id,
+        { ...restCustomer, address: addressList.map((add) => add._id) },
+        {
+          new: true,
+        }
+      )
+        .populate("address")
+        .populate("createdBy", "name email _id");
+      await deleteAddressUsingIds(alreadyCustomer.address);
       return updatedCustomer;
     } catch (error) {
       throw error;

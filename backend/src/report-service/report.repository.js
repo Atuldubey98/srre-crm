@@ -8,7 +8,6 @@ export default function reportRepository() {
   }
   async function createServiceReport(report) {
     const serviceReport = new Report(report);
-    console.log(serviceReport);
     return serviceReport.save();
   }
   const reportPipeLine = [
@@ -67,6 +66,14 @@ export default function reportRepository() {
     },
     {
       $lookup: {
+        from: "addresses",
+        localField: "customerAddress",
+        foreignField: "_id",
+        as: "customerAddress",
+      },
+    },
+    {
+      $lookup: {
         from: "technicians",
         localField: "technician",
         foreignField: "_id",
@@ -75,6 +82,7 @@ export default function reportRepository() {
     },
     { $unwind: "$technician" },
     { $unwind: "$customer" },
+    { $unwind: "$customerAddress" },
     {
       $project: {
         serviceDate: 1,
@@ -84,24 +92,15 @@ export default function reportRepository() {
           name: "$customer.name",
           contact: "$customer.contact",
         },
-        customerAddress: {
-          $filter: {
-            input: "$customer.address",
-            as: "add",
-            cond: {
-              $eq: ["$$add._id", "$customerAddress"],
-            },
-          },
-        },
-        acMetaInfo: "$acMetaInfo",
-        siteContactPerson: "$siteContactPerson",
-        technician: "$technician",
+        customerAddress: 1,
+        acMetaInfo: 1,
+        siteContactPerson: 1,
+        technician: 1,
         status: 1,
         description: 1,
         typeOfCall: 1,
       },
     },
-    { $unwind: "$customerAddress" },
   ];
   async function downloadServiceReportsByFilter(filter) {
     const reports = await Report.aggregate([
