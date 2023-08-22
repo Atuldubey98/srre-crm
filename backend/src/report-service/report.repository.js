@@ -147,7 +147,6 @@ export default function reportRepository() {
     ]);
   }
   async function getServiceReports(skip = 0, limit = 10) {
-    console.log(skip, limit);
     return Report.aggregate([
       { $sort: { createdAt: -1 } },
       { $skip: skip },

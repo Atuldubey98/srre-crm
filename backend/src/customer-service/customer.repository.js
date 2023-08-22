@@ -6,7 +6,53 @@ import {
 import addressRepository from "./address.repository.js";
 import Report from "../report-service/report.model.js";
 const { createAddressList, deleteAddressUsingIds } = addressRepository();
+export function getDateBeforeDays(days) {
+  const today = new Date();
+  const previousDate = new Date(today);
+  previousDate.setDate(today.getDate() - days);
+  const year = previousDate.getFullYear();
+  const month = previousDate.getMonth() + 1;
+  const day = previousDate.getDate();
+  return `${year}-${month}-${day}`;
+}
+
 export default function customerRepository() {
+  async function getCountReportforCustomerByIdForLast30Days() {
+    return Report.aggregate([
+      {
+        $match: {
+          serviceDate: {
+            $gte: new Date(getDateBeforeDays(15)),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$customer",
+          count: {
+            $sum: 1,
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "customers",
+          localField: "_id",
+          foreignField: "_id",
+          as: "customer",
+        },
+      },
+      {
+        $unwind: "$customer",
+      },
+      {
+        $project: {
+          name: "$customer.name",
+          count: "$count",
+        },
+      },
+    ]);
+  }
   async function getCountOfCustomers() {
     return Customer.count({});
   }
@@ -127,5 +173,6 @@ export default function customerRepository() {
     getAddressListByCustomerId,
     getCustomerById,
     deleteCustomerById,
+    getCountReportforCustomerByIdForLast30Days,
   });
 }

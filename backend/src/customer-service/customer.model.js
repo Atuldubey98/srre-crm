@@ -32,6 +32,6 @@ const customerSchema = new Schema(
     timestamps: true,
   }
 );
-customerSchema.index({ "address.location": "text", name: "text" });
+customerSchema.index({ name: "text" });
 const Customer = model("customer", customerSchema);
 export default Customer;

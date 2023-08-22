@@ -1,0 +1,14 @@
+.dash__left {
+  padding: 0.8rem;
+  line-height: 2rem;
+  border-right: 2px solid var(--primary-color);
+  overflow-y: auto;
+}
+
+.dash__stat > h1 {
+  font-size: 1.5rem;
+  color: var(--secondary-color);
+}
+.dash__stat > p {
+  font-size: 1.2rem;
+}

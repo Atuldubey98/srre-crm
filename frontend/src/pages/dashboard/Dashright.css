@@ -1,6 +1,7 @@
 .dash__right {
   flex-wrap: wrap;
   gap: 3rem;
+  margin: 0.5rem;
 }
 .dash__itemsList {
   list-style: none;

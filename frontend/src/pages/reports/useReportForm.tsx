@@ -78,8 +78,6 @@ export default function useReportForm() {
     dispatch({ type: "change:fields", payload: { name, value } });
   };
   const onAddressChange = (address: Address | null) => {
-    console.log(address);
-    
     if (address) {
       dispatch({
         type: "change:fields",

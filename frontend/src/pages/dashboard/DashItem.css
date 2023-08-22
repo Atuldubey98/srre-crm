@@ -2,8 +2,12 @@
   font-size: xx-large;
 }
 .dash__item {
-  background-color: var(--primary-color);
+  background-color: rgb(240, 239, 239);
   text-align: center;
   padding: 0.8rem;
   border-radius: 0.5rem;
+  cursor: pointer;
+}
+.dash__item:hover {
+  background-color: var(--primary-color);
 }

@@ -1,5 +1,6 @@
 import Container from "../../common/Container";
 import PrivateRoute from "../../common/PrivateRoute";
+import DashLeft from "./DashLeft";
 import DashRight from "./DashRight";
 import "./DashboardPage.css";
 export default function DashboardPage() {
@@ -7,7 +8,7 @@ export default function DashboardPage() {
     <PrivateRoute>
       <Container>
         <section className="dashboard__section">
-          <section className="dash__left"></section>
+          <DashLeft />
           <DashRight />
         </section>
       </Container>

@@ -1,5 +1,47 @@
+import Report from "../report-service/report.model.js";
 import Technician from "./technician.model.js";
+
 export default function technicianRespository() {
+  async function getCountOfTechnicians() {
+    return Technician.count({});
+  }
+  async function getTopPerformingTechnician() {
+    const technicanTopPiped = await Report.aggregate([
+      {
+        $group: {
+          _id: "$technician",
+          count: {
+            $sum: 1,
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "technicians",
+          localField: "_id",
+          foreignField: "_id",
+          as: "_id",
+        },
+      },
+      {
+        $unwind: "$_id",
+      },
+      {
+        $project: {
+          technician: "$_id",
+          _id: 0,
+          count: "$count",
+        },
+      },
+      {
+        $sort: {
+          count: -1,
+        },
+      },
+      { $limit: 1 },
+    ]);
+    return technicanTopPiped[0] || null;
+  }
   async function createTechnician(technicianData) {
     try {
       const technician = new Technician(technicianData);
@@ -51,7 +93,9 @@ export default function technicianRespository() {
     createTechnician,
     deleteTechnician,
     updateTechnician,
+    getTopPerformingTechnician,
     getAllTechnicians,
+    getCountOfTechnicians,
     getTechnicianById,
   });
 }

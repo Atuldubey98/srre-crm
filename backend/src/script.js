@@ -69,6 +69,7 @@ async function getCustomers(token = "") {
 (async () => {
   const data = await loginUser();
   const token = data.data.token;
+  await runCustomerRequests(token);
   const { data: customers } = await getCustomers(token);
   const reportRequests = customers
     .filter((customer) => customer.address.length !== 0)
@@ -84,7 +85,7 @@ async function getCustomers(token = "") {
             tonnage: 5,
             modelNumber: "kahsdioh1kahsdkjasd",
             typeOfAC: "splitac",
-            services: ["64dd0b1ea62b3fb62f73a28b"],
+            services: ["64e35d776e76008aca656d2f"],
           },
         ],
         description: "This is descriptions ",
