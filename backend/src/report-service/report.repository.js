@@ -8,6 +8,7 @@ export default function reportRepository() {
   }
   async function createServiceReport(report) {
     const serviceReport = new Report(report);
+    console.log(serviceReport);
     return serviceReport.save();
   }
   const reportPipeLine = [
@@ -86,9 +87,9 @@ export default function reportRepository() {
         customerAddress: {
           $filter: {
             input: "$customer.address",
-            as: "address",
+            as: "add",
             cond: {
-              $eq: ["$$address._id", "$customerAddress"],
+              $eq: ["$$add._id", "$customerAddress"],
             },
           },
         },
@@ -119,7 +120,6 @@ export default function reportRepository() {
    * @returns {Promise<Document|null>}
    */
   async function getReportById(reportId) {
-    console.log({reportId});
     return Report.aggregate([
       { $match: { _id: new Types.ObjectId(reportId) } },
       ...reportPipeLine,
@@ -148,11 +148,12 @@ export default function reportRepository() {
     ]);
   }
   async function getServiceReports(skip = 0, limit = 10) {
+    console.log(skip, limit);
     return Report.aggregate([
       { $sort: { createdAt: -1 } },
-      ...reportPipeLine,
       { $skip: skip },
       { $limit: limit },
+      ...reportPipeLine,
     ]);
   }
   return Object.freeze({

@@ -1,8 +1,6 @@
 import { ChangeEventHandler, useEffect, useState } from "react";
-import SelectOptions from "../../common/SelectOptions";
-import {
-  getAddressByCustomerId
-} from "../customers/customersApi";
+import Select from "react-select";
+import { getAddressByCustomerId } from "../customers/customersApi";
 import { Address } from "../customers/interfaces";
 import SelectCustomers from "./SelectCustomers";
 export type CustomerNameAddressFieldsProps = {
@@ -10,6 +8,7 @@ export type CustomerNameAddressFieldsProps = {
   onChangeCustomerField: ChangeEventHandler<HTMLSelectElement>;
   customerAddress: string;
   customerFieldDisabled?: boolean;
+  onAddressChange: (address: Address | null) => void;
   customeAddressFieldRequired?: boolean;
 };
 export default function CustomerNameAddressFields(
@@ -17,7 +16,7 @@ export default function CustomerNameAddressFields(
 ) {
   const { customer, onChangeCustomerField, customerAddress } = props;
   const [addressList, setAddressList] = useState<Address[] | null>(null);
- 
+
   useEffect(() => {
     (() => {
       (async () => {
@@ -39,19 +38,16 @@ export default function CustomerNameAddressFields(
       {customer && addressList ? (
         <div className="form__labelField">
           <label htmlFor="customerAddress">Customer Address :</label>
-          <SelectOptions
-            required={props.customeAddressFieldRequired}
-            value={customerAddress}
-            onChange={onChangeCustomerField}
-            name="customerAddress"
-          >
-            <option value="">Please choose a address</option>
-            {addressList.map((add) => (
-              <option title={add.location} key={add._id} value={add._id}>
-                {add.location}
-              </option>
-            ))}
-          </SelectOptions>
+          <Select
+            options={addressList}
+            onChange={props.onAddressChange}
+            getOptionLabel={(option: Address) => option.location}
+            getOptionValue={(option: Address) => option._id}
+            value={
+              addressList.find((address) => address._id === customerAddress) ||
+              null
+            }
+          />
         </div>
       ) : null}
     </>

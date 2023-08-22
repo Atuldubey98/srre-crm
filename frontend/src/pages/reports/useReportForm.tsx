@@ -1,5 +1,6 @@
 import { ChangeEventHandler, useCallback, useReducer } from "react";
 import { AcMetaInfo, ReportFormFields } from "./interfaces";
+import { Address } from "../customers/interfaces";
 
 export default function useReportForm() {
   type State = ReportFormFields;
@@ -76,6 +77,16 @@ export default function useReportForm() {
     const { name, value } = e.currentTarget;
     dispatch({ type: "change:fields", payload: { name, value } });
   };
+  const onAddressChange = (address: Address | null) => {
+    console.log(address);
+    
+    if (address) {
+      dispatch({
+        type: "change:fields",
+        payload: { name: "customerAddress", value: address._id },
+      });
+    }
+  };
   const onChangeContactField: ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
   > = (e) => {
@@ -116,6 +127,7 @@ export default function useReportForm() {
     onChangeContactField,
     onAddService,
     onRemoveService,
+    onAddressChange,
     onSetDefaultState,
     onSetNewState,
   };

@@ -130,6 +130,7 @@ export default function FormServiceReport() {
           <CustomerFields
             siteContactPerson={state.siteContactPerson}
             customer={customer}
+            onAddressChange={operations.onAddressChange}
             customerAddress={customerAddress}
             onChangeContactField={operations.onChangeContactField}
             onChangeCustomerField={operations.onChangeReportField}
