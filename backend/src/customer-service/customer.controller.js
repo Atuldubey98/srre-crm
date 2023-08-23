@@ -2,19 +2,76 @@ import mongoose, { isValidObjectId } from "mongoose";
 import reportRepository from "../report-service/report.repository.js";
 import { generateCSVForCustomerServicesCount } from "./customer.csvgeneration.js";
 import customerRepository from "./customer.repository.js";
+import csvParser from "csv-parser";
 import { CustomerIdSchema } from "./customer.validation.js";
 import { CustomerBeingUsedByReportError, CustomerNotFound } from "./errors.js";
+import addressRepository from "./address.repository.js";
+const { createAddressList } = addressRepository();
 const {
   createCustomer,
   getAllCustomers,
   updateCustomerById,
   getCustomerById,
   deleteCustomerById,
+  updateCustomerByCustomerIdByAddingAddress,
   getAddressListByCustomerId,
   findUniqueServicesUsedByCustomer,
 } = customerRepository();
 const { getServiceReportsByCustomerId, getCountNumberOfReportsOfCustomer } =
   reportRepository();
+/**
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
+export async function createCustomerAddressesByCustomerIdController(
+  req,
+  res,
+  next
+) {
+  const csvFile = req.file;
+  const customerId = req.params.customerId;
+  if (!csvFile || !isValidObjectId(customerId)) {
+    throw new CustomerNotFound();
+  }
+  const results = [];
+  const stream = csvParser()
+    .on("data", (data) => results.push(data))
+    .on("end", async () => {
+      try {
+        const addressList = await createAddressList(results);
+        await updateCustomerByCustomerIdByAddingAddress(
+          customerId,
+          addressList.map((address) => address._id)
+        );
+        return res
+          .status(200)
+          .json({ status: true, message: "Customer address list updated" });
+      } catch (error) {
+        next(error);
+      }
+    })
+    .on("error", (err) => {
+      next(err);
+    });
+  stream.write(csvFile.buffer.toString("utf-8"));
+  stream.end();
+}
+/**
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+export async function downloadTemplateForCustomerAddressUploadController(
+  req,
+  res
+) {
+  const csvData = "location";
+  res.setHeader("Content-Disposition", "attachment; filename=data.csv");
+  res.setHeader("Content-Type", "text/csv");
+  res.send(csvData);
+}
 export async function getCustomerServicesUsedController(req, res, next) {
   try {
     const addressListWithIds =

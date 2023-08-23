@@ -1,0 +1,12 @@
+.dash__stat {
+  flex-direction: column;
+  text-align: center;
+  gap: 0.3rem;
+  padding: 0.3rem;
+  border: 2px solid var(--primary-color);
+}
+
+.dash__stat > p {
+  color: var(--primary-color);
+  font-size: small;
+}

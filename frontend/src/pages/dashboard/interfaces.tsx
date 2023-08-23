@@ -8,7 +8,7 @@ type TechnicianCountByReports = {
   topPerformingTechnician: {
     technician: Technician;
     count: number;
-  };
+  } | null;
   count: number;
 };
 
@@ -16,7 +16,7 @@ export type DashboardInformation = {
   customer: {
     count: number;
   };
-  technician: TechnicianCountByReports | null;
+  technician: TechnicianCountByReports;
 };
 
 export type PieData = {

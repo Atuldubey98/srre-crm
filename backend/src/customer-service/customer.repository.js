@@ -17,6 +17,15 @@ export function getDateBeforeDays(days) {
 }
 
 export default function customerRepository() {
+  async function updateCustomerByCustomerIdByAddingAddress(
+    customerId,
+    addressIdsList
+  ) {
+    return Customer.updateOne(
+      { _id: customerId },
+      { $push: { address: { $each: addressIdsList } } }
+    );
+  }
   async function getCountReportforCustomerByIdForLast30Days() {
     return Report.aggregate([
       {
@@ -173,6 +182,7 @@ export default function customerRepository() {
     getAddressListByCustomerId,
     getCustomerById,
     deleteCustomerById,
+    updateCustomerByCustomerIdByAddingAddress,
     getCountReportforCustomerByIdForLast30Days,
   });
 }

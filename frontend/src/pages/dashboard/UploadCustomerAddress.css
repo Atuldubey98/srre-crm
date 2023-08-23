@@ -1,0 +1,18 @@
+.upload {
+  display: grid;
+  gap: 0.5rem;
+}
+.upload > .direction {
+  display: grid;
+  gap: 1rem;
+  margin-block: 0.1rem;
+}
+.direction > p {
+  font-size: small;
+}
+.direction > form > p {
+  font-size: small;
+}
+.direction > i {
+  font-size: small;
+}

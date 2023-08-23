@@ -1,13 +1,13 @@
 import { Suspense, lazy } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 const CustomerPage = lazy(() => import("./pages/customers"));
-import Loginpage from "./pages/login";
+const Loginpage = lazy(() => import("./pages/login"));
 const ServiceReportsPage = lazy(() => import("./pages/reports"));
 const ServicesPage = lazy(() => import("./pages/services"));
 const TechnicansPage = lazy(() => import("./pages/technicians"));
 import LoadingIndicatorAbout from "./common/LoadingIndicatorAbout";
-import PageNotFound from "./common/PageNotFound";
-import UnauthorizedPage from "./common/UnauthorizedPage";
+const PageNotFound = lazy(() => import("./common/PageNotFound"));
+const UnauthorizedPage = lazy(() => import("./common/UnauthorizedPage"));
 const DashboardPage = lazy(() => import("./pages/dashboard"));
 const UsersPage = lazy(() => import("./pages/users"));
 

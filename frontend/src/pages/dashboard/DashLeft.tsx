@@ -3,14 +3,18 @@ import { useEffect, useState } from "react";
 import randomColors from "randomcolor";
 import { getDashboardData } from "./dashApi";
 import {
-    CustomerReportCount,
-    DashboardInformation,
-    PieData,
+  CustomerReportCount,
+  DashboardInformation,
+  PieData,
 } from "./interfaces";
 
 import CustomersServiceReportsPieChart from "./CustomersServiceReportsPieChart";
+import { ListSection } from "../../common/PageLeftRight";
+import Dashstat from "./Dashstat";
+import { AiFillStar } from "react-icons/ai";
+import { IoBusinessSharp } from "react-icons/io5";
+import { RiCustomerService2Line } from "react-icons/ri";
 import "./DashLeft.css";
-
 export default function DashLeft() {
   const [dashboardInfo, setDashboardInfo] =
     useState<DashboardInformation | null>(null);
@@ -45,28 +49,31 @@ export default function DashLeft() {
     })();
   }, []);
   return dashboardInfo ? (
-    <section className="dash__left">
-      <div className="dash__stat">
-        <h1>Total Customers :</h1>
-        <p>{dashboardInfo.customer.count}</p>
+    <ListSection>
+      <div className="dash__left">
+        <Dashstat
+          value={dashboardInfo.customer.count.toString()}
+          Icon={IoBusinessSharp}
+          label="Total Customers"
+        />
+        <Dashstat
+          label="Total Technicians"
+          value={dashboardInfo.technician.count.toString()}
+          Icon={RiCustomerService2Line}
+        />
       </div>
-      {dashboardInfo.technician ? (
-        <>
-          <div className="dash__stat">
-            <h1>Total Techncians :</h1>
-            <p>{dashboardInfo.technician.count}</p>
-          </div>
-          <div className="dash__stat">
-            <h1>Top Performing Techncian :</h1>
-            <p>
-              {dashboardInfo.technician.topPerformingTechnician.technician.name}
-            </p>
-          </div>
-        </>
+      {dashboardInfo.technician.topPerformingTechnician ? (
+        <Dashstat
+          Icon={AiFillStar}
+          label="Top Technician"
+          value={
+            dashboardInfo.technician.topPerformingTechnician.technician.name
+          }
+        />
       ) : null}
       {pieData ? <CustomersServiceReportsPieChart pieData={pieData} /> : null}
-    </section>
+    </ListSection>
   ) : (
-    <section className="dash__left"></section>
+    <ListSection></ListSection>
   );
 }

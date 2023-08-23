@@ -9,8 +9,11 @@ import {
   getCustomerServicesUsedController,
   updateCustomerByIdController,
   getReportsOfCustomerByCustomerIdController,
+  downloadTemplateForCustomerAddressUploadController,
+  createCustomerAddressesByCustomerIdController,
 } from "./customer.controller.js";
 import authenticationMiddleware from "../middlewares/authentication.middleware.js";
+import multerUpload from "../middlewares/multer.middleware.js";
 
 const customerRouter = Router();
 
@@ -28,11 +31,7 @@ customerRouter
     getUniqueServicesUsedByCustomerController
   );
 customerRouter
-  .get(
-    "/services",
-    authenticationMiddleware,
-    getCustomerServicesUsedController
-  )
+  .get("/services", authenticationMiddleware, getCustomerServicesUsedController)
   .get(
     "/services/download",
     authenticationMiddleware,
@@ -42,6 +41,17 @@ customerRouter.get(
   "/:customerId/address",
   authenticationMiddleware,
   getCustomerAddresssListByController
+);
+customerRouter.post(
+  "/:customerId/address/upload",
+  authenticationMiddleware,
+  multerUpload.single("addressList"),
+  createCustomerAddressesByCustomerIdController
+);
+customerRouter.get(
+  "/address/template/download",
+  authenticationMiddleware,
+  downloadTemplateForCustomerAddressUploadController
 );
 
 customerRouter.get(
