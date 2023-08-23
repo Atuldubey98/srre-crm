@@ -13,7 +13,7 @@ export function uploadCustomerAddressTemplateCsvFile(
   const formData = new FormData();
   formData.append("addressList", file);
   return instance.post(
-    `/api/v1/customers/${customerId}/address/upload`,
+    `/api/v1/customers/${customerId}/address/template/upload`,
     formData,
     {
       headers: {

@@ -14,3 +14,11 @@ export class ServiceBeingUsedByReportError extends Error {
     this.name = "SERVICE_BEING_USED";
   }
 }
+export class ServicesCsvFileNotFound extends Error {
+  constructor() {
+    super("Csv file not found in payload");
+    this.code = 404;
+    this.stack = Error.captureStackTrace(this);
+    this.name = "SERVICE_NOT_FOUND";
+  }
+}

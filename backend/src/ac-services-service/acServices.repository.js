@@ -115,9 +115,13 @@ export default function acServiceRepository() {
       throw error;
     }
   }
+  async function createManyServices(services) {
+    return ACService.insertMany(services);
+  }
   return Object.freeze({
     createAcService,
     findServiceById,
+    createManyServices,
     createServicesForAllTypesOfACs,
     getAllAcServicesByAcType,
     deleteServicesByIds,

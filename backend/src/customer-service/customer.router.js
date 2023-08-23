@@ -43,7 +43,7 @@ customerRouter.get(
   getCustomerAddresssListByController
 );
 customerRouter.post(
-  "/:customerId/address/upload",
+  "/:customerId/address/template/upload",
   authenticationMiddleware,
   multerUpload.single("addressList"),
   createCustomerAddressesByCustomerIdController

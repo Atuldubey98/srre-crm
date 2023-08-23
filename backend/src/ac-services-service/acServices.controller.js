@@ -1,12 +1,18 @@
 import { acTypeSchema, newACServiceSchema } from "./acServices.validation.js";
 import acServiceRepository from "./acServices.repository.js";
 import Joi from "joi";
-import { ServiceBeingUsedByReportError, ServiceNotFound } from "./errors.js";
+import {
+  ServiceBeingUsedByReportError,
+  ServiceNotFound,
+  ServicesCsvFileNotFound,
+} from "./errors.js";
+import csvParser from "csv-parser";
 const {
   createAcService,
   createServicesForAllTypesOfACs,
   getAllAcServicesByAcType,
   deleteServicesByIds,
+  createManyServices,
   findServiceById,
   checkIfServiceIdBeingUsedInReport,
 } = acServiceRepository();
@@ -109,6 +115,53 @@ export async function deleteServiceByIdController(req, res, next) {
       status: true,
       message: `Deleted ${totalDeleted}`,
     });
+  } catch (error) {
+    next(error);
+  }
+}
+/**
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
+export async function downloadAcServicesUploadTemplateController(
+  req,
+  res,
+  next
+) {
+  const csvData = "typeOfAC,serviceName";
+  res.setHeader("Content-Disposition", "attachment; filename=data.csv");
+  res.setHeader("Content-Type", "text/csv");
+  res.send(csvData);
+}
+/**
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
+export async function uploadAcServicesTemplateController(req, res, next) {
+  try {
+    const servicesCsvFile = req.file;
+    if (!servicesCsvFile) {
+      throw new ServicesCsvFileNotFound();
+    }
+    const results = [];
+    const stream = csvParser()
+      .on("data", (data) => results.push(data))
+      .on("end", async () => {
+        try {
+          await createManyServices(results);
+        } catch (error) {
+          next(error);
+        }
+      })
+      .on("error", (err) => {
+        next(err);
+      });
+    stream.write(servicesCsvFile.buffer.toString("utf-8"));
+    stream.end();
   } catch (error) {
     next(error);
   }
