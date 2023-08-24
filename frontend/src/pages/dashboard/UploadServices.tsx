@@ -1,4 +1,5 @@
 import DownloadServicesUploadTemplateButton from "./DownloadServicesUploadTemplateButton";
+import UploadServicesForm from "./UploadServicesForm";
 import UploadServicesList from "./UploadServicesList";
 
 export default function UploadServices() {
@@ -25,8 +26,10 @@ export default function UploadServices() {
       </div>
       <div className="direction">
         <p>
-          Step 3: After filling all the services in the csv template upload the file.
+          Step 3: After filling all the services in the csv template upload the
+          file.
         </p>
+        <UploadServicesForm />
       </div>
     </details>
   );

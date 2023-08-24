@@ -14,12 +14,12 @@ const acServicesRouter = Router();
 acServicesRouter.post("/", authenticationMiddleware, createServiceController);
 
 acServicesRouter.get(
-  "/template/download",
+  "/template",
   authenticationMiddleware,
   downloadAcServicesUploadTemplateController
 );
 acServicesRouter.post(
-  "/template/download",
+  "/template",
   authenticationMiddleware,
   multerUpload.single("services"),
   uploadAcServicesTemplateController

@@ -46,7 +46,7 @@ export async function createCustomerAddressesByCustomerIdController(
           addressList.map((address) => address._id)
         );
         return res
-          .status(200)
+          .status(201)
           .json({ status: true, message: "Customer address list updated" });
       } catch (error) {
         next(error);

@@ -152,7 +152,13 @@ export async function uploadAcServicesTemplateController(req, res, next) {
       .on("data", (data) => results.push(data))
       .on("end", async () => {
         try {
-          await createManyServices(results);
+          const services = await createManyServices(results);
+          return res.status(201).json({
+            status: true,
+            message: `${services.length} services were inserted and ${
+              results.length - services.length
+            } ran into errors`,
+          });
         } catch (error) {
           next(error);
         }
