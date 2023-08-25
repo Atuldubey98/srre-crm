@@ -4,3 +4,8 @@
 .banner {
   gap: 0.5rem;
 }
+.banner > a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}

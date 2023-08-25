@@ -1,53 +1,49 @@
-import { Link, useNavigate } from "react-router-dom";
+import AuthenticatedUserHeader from "./AuthenticatedUserHeader";
 import Banner from "./Banner";
 import "./Header.css";
-import { useAuth } from "./useAuth";
-import Button from "./Button";
-import AdminWrapper from "./AdminWrapper";
+import HeaderLink from "./HeaderLink";
 export default function Header() {
-  const authContext = useAuth();
-  const navigate = useNavigate();
-  const onLogoutClick = () => {
-    if (confirm("Do you want to logout ?")) {
-      localStorage.clear();
-      navigate("/login", { replace: true });
-    }
-  };
+  const navigtationLinks = [
+    {
+      to: "/dashboard",
+      label: "Dashboard",
+      isAuthenticationRequired: false,
+    },
+    {
+      to: "/customers",
+      label: "Customers",
+      isAuthenticationRequired: false,
+    },
+    {
+      to: "/services",
+      label: "Services",
+      isAuthenticationRequired: false,
+    },
+    {
+      to: "/technicians",
+      label: "Technicians",
+      isAuthenticationRequired: false,
+    },
+    {
+      to: "/reports",
+      label: "Service-Reports",
+      isAuthenticationRequired: false,
+    },
+    {
+      to: "/users",
+      label: "Users",
+      isAuthenticationRequired: true,
+    },
+  ];
   return (
     <header className="d-flex-center">
       <Banner />
       <ul className="header__links d-flex-center">
-        <li>
-          <Link to={"/dashboard"}>Dashboard</Link>
-        </li>
-        <li>
-          <Link to={"/customers"}>Customers</Link>
-        </li>
-        <li>
-          <Link to={"/services"}>Services</Link>
-        </li>
-        <li>
-          <Link to={"/technicians"}>Technicians</Link>
-        </li>
-        <li>
-          <Link to={"/reports"}>Service-Reports</Link>
-        </li>
-        <AdminWrapper>
-          <li>
-            <Link to={"/users"}>Users</Link>
-          </li>
-        </AdminWrapper>
+        {navigtationLinks.map((headerLinkProp) => (
+          <HeaderLink {...headerLinkProp} key={headerLinkProp.to} />
+        ))}
       </ul>
-      <div className="d-flex-center">
-        <span className="header__user">
-          {authContext?.currentUser?.name} | {authContext?.currentUser?.role}
-        </span>
-        <Button
-          className="btn btn-primary"
-          label="Logout"
-          onClick={onLogoutClick}
-        />
-      </div>
+      <AuthenticatedUserHeader />
     </header>
   );
 }
