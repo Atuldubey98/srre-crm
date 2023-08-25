@@ -6,8 +6,11 @@ export function errorHandler(err, req, res, next) {
   }
   let message = err.message || "internal server error";
   let code = err.code || 500;
-  if (err.name === "MongoServerError" || err.name === "CastError") {
-    message = "server validation failed";
+  if (err.name === "CastError") {
+    message = "Entity not found";
+  }
+  if (err.name === "MongoServerError") {
+    message = "Some error occured";
     code = 400;
   }
   if (err.name === "ValidationError") {

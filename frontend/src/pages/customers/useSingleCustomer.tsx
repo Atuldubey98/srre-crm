@@ -28,6 +28,7 @@ export default function useSingleCustomer() {
     body: "",
   });
   useEffect(() => {
+    setMessageBody({ type: "success", body: "" });
     if (!customerId) {
       setCustomer({
         _id: "",

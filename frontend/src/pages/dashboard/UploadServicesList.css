@@ -1,4 +1,12 @@
 .upload__servicesList {
-  padding-left: 10px;
-  list-style: circle;
+  border: 2px solid var(--primary-color);
+}
+
+.upload__servicesList > thead > tr > th{
+  border: 1px solid var(--primary-color);
+  background-color: var(--primary-color);
+}
+
+.upload__servicesList > tbody > tr > td:nth-child(1){
+  cursor: copy;
 }

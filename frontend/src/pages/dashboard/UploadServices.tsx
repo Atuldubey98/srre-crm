@@ -10,7 +10,7 @@ export default function UploadServices() {
           fontWeight: "bold",
         }}
       >
-        Upload services offered
+        Upload services offered (csv file)
       </summary>
       <div className="direction">
         <p>Step 1: Download the template given below.</p>

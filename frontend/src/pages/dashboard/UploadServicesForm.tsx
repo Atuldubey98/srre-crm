@@ -1,7 +1,6 @@
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
-import "./UploadServicesForm.css";
 import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
 import { uploadServicesTemplate } from "./dashApi";
 import { isAxiosError } from "axios";
