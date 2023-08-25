@@ -3,8 +3,8 @@ import Button from "../../common/Button";
 import FormLabelField from "../../common/FormLabelField";
 import "./CustomerServicesUsedCsvGenerator.css";
 import SelectCustomers from "./SelectCustomers";
-import { downloadCustomerServicesCount } from "./serviceReportsApi";
 import { Customer } from "./interfaces";
+import { downloadCustomerServicesCount } from "./serviceReportsApi";
 export type CustomerServicesUsedCsvGeneratorFormFields = {
   customer: string;
   fromDate: string;
@@ -106,8 +106,14 @@ export default function CustomerServicesUsedCsvGenerator() {
           customerFieldDisabled={formFields.allCustomers}
           onChangeCustomerField={onChangeCustomerField}
         />
-        <Button label="Reset" className="btn btn-info" type="reset" />
-        <Button label="Download" className="btn btn-success" type="submit" />
+        <Button
+          disabled={
+            !formFields.allCustomers && formFields.customer.length === 0
+          }
+          label="Download"
+          className="btn btn-success"
+          type="submit"
+        />
       </form>
     </details>
   );

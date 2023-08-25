@@ -37,10 +37,13 @@ export default function UploadServicesForm() {
       <Input
         required
         type="file"
+        accept=".csv"
         name="services"
         onChange={onChangeServicesFileTemplate}
       />
-      <Button label="Upload" className="btn btn-success" />
+      {servicesTemplate ? (
+        <Button label="Upload" className="btn btn-success" />
+      ) : null}
       {messageBody ? <MessageBody {...messageBody} /> : null}
     </form>
   );

@@ -1,8 +1,9 @@
-import { IconType } from "react-icons";
+import { IconBaseProps, IconType } from "react-icons";
 import "./DashItem.css";
 import { useNavigate } from "react-router-dom";
 export type DashItemProps = {
   Icon: IconType;
+  iconBaseProps?: IconBaseProps;
   heading: string;
   navigationUrl: string;
 };
@@ -15,7 +16,7 @@ export default function DashItem(props: DashItemProps) {
   return (
     <li onClick={onClickDashItem} className="dash__item">
       <div className="dash__icon">
-        <Icon size={90} />
+        <Icon {...props.iconBaseProps} />
       </div>
       <h1>{heading}</h1>
     </li>

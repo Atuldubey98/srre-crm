@@ -1,7 +1,7 @@
 import { ChangeEventHandler, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Input from "../../common/Input";
-import './FilterCustomers.css';
+import "./FilterCustomers.css";
 export default function FilterCustomers() {
   const [search, setSearch] = useState("");
   const timeOut = useRef<number | undefined | null>(null);
@@ -29,6 +29,7 @@ export default function FilterCustomers() {
     <section className="customer__filter">
       <Input
         type="search"
+        placeholder="Search customers"
         aria-label="Search"
         onChange={onChangeSearch}
         name="search"

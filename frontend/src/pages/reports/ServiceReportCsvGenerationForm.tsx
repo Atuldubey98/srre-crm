@@ -125,7 +125,14 @@ export default function ServiceReportCsvGenerationForm() {
             }}
           />
         </div>
-        <Button label="Download" className="btn btn-success" />
+        <Button
+          disabled={
+            !serviceReportListFormFields.customerFieldDisabled &&
+            serviceReportListFormFields.customer.length === 0
+          }
+          label="Download"
+          className="btn btn-success"
+        />
       </form>
     </details>
   );

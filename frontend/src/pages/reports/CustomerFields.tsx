@@ -31,6 +31,7 @@ export default function CustomerFields(props: CustomerFieldsProps) {
       <FormLabelField
         input={{
           name: "identification",
+          placeholder: "Contact name or id ? eg APL123",
           value: props.siteContactPerson.identification,
           onChange: props.onChangeContactField,
         }}
@@ -39,6 +40,7 @@ export default function CustomerFields(props: CustomerFieldsProps) {
       <FormLabelField
         input={{
           name: "contactNumber",
+          placeholder: "Contact Number of the person?",
           value: props.siteContactPerson.contactNumber,
           onChange: props.onChangeContactField,
         }}

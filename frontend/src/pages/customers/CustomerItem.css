@@ -2,7 +2,7 @@
   padding-block: 0.3rem;
   padding-inline: 0.5rem;
 }
-.customer__item:hover {
+.customer__item:hover:not(.selected__customer) {
   background-color: rgb(240, 239, 239);
 }
 .selected__customer {

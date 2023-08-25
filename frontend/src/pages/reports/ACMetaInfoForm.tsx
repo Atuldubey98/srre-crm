@@ -2,11 +2,9 @@ import { ChangeEventHandler } from "react";
 import Button from "../../common/Button";
 import FormLabelField from "../../common/FormLabelField";
 import SelectOptions from "../../common/SelectOptions";
-import {
-  Service,
-  acTypeOptionsWithoutAll
-} from "../services/interfaces";
+import { Service, acTypeOptionsWithoutAll } from "../services/interfaces";
 import { AcMetaInfo } from "./interfaces";
+import ServiceInputCheckbox from "./ServiceInputCheckbox";
 
 export type ACMetaInfoFormProps = {
   acMetaForm: AcMetaInfo;
@@ -91,19 +89,12 @@ export default function ACMetaInfoForm(props: ACMetaInfoFormProps) {
         <fieldset className="field__section">
           <legend>Work Done </legend>
           {services.map((service) => (
-            <div key={service._id} className="form__select d-flex">
-              <label htmlFor={service._id}>{service.serviceName}</label>
-              <input
-                type="checkbox"
-                onChange={() => onChangeServiceCheckBox(service)}
-                name={service._id}
-                checked={
-                  (acMetaForm.services || []).filter(
-                    (ser) => ser._id === service._id
-                  ).length > 0
-                }
-              />
-            </div>
+            <ServiceInputCheckbox
+              key={service._id}
+              service={service}
+              selectedServices={acMetaForm.services || []}
+              onChangeServiceCheckBox={onChangeServiceCheckBox}
+            />
           ))}
         </fieldset>
       ) : null}

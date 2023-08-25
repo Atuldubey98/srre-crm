@@ -12,27 +12,44 @@ export default function DashRight() {
       Icon: IoBusinessSharp,
       heading: "Customers",
       navigationUrl: "/customers",
+      iconBaseProps: {
+        size: 80,
+        color: "brown",
+      },
     },
     {
       Icon: FcServices,
       heading: "Services",
       navigationUrl: "/services",
+      iconBaseProps: {
+        size: 80,
+      },
     },
     {
       Icon: RiCustomerService2Line,
       heading: "Technicians",
       navigationUrl: "/Technicians",
+      iconBaseProps: {
+        size: 80,
+      },
     },
     {
       Icon: TbReportSearch,
       heading: "Service reports",
       navigationUrl: "/reports",
+      iconBaseProps: {
+        size: 80,
+        color: "blue",
+      },
     },
   ];
   const userDashItemProps: DashItemProps = {
     Icon: FcBusinessman,
     heading: "Employees",
     navigationUrl: "/users",
+    iconBaseProps: {
+      size: 80,
+    },
   };
   return (
     <AboutSection>

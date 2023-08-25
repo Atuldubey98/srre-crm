@@ -116,6 +116,7 @@ export default function EditTechnician() {
             <label htmlFor="name"> Technician Name :*</label>
             <Input
               name="name"
+              placeholder="What is the name of technician?"
               required
               value={technician?.name || ""}
               onChange={onChangeTechnician}
@@ -125,6 +126,7 @@ export default function EditTechnician() {
             <label htmlFor="contactNumber">Technician Contact Number :*</label>
             <Input
               type="tel"
+              placeholder="What is his contact number?"
               required
               name="contactNumber"
               value={technician?.contactNumber || ""}
@@ -135,6 +137,7 @@ export default function EditTechnician() {
             <label htmlFor="email">Technician Email : </label>
             <Input
               type="email"
+              placeholder="What is his email id?"
               value={technician?.email || ""}
               onChange={onChangeTechnician}
               name="email"
