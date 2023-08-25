@@ -1,5 +1,5 @@
 import { isAxiosError } from "axios";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../common/Button";
 import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
@@ -13,13 +13,10 @@ import CustomerNotFound from "./CustomerNotFound";
 import CustomerReportByPieChart from "./CustomerReportByPieChart";
 import OperationBtnsGroup from "./OperationBtnsGroup";
 import { deleteCustomerById } from "./customersApi";
-import { Customer } from "./interfaces";
-export type AboutCustomerProps = {
-  customer: Customer | null;
-  customerLoading: boolean;
-  message: MessageBodyProps;
-};
-function AboutCustomerElement(props: AboutCustomerProps) {
+import useSingleCustomer from "./useSingleCustomer";
+
+function AboutCustomerElement() {
+  const { customer, customerLoading, messageBody: error } = useSingleCustomer();
   const navigate = useNavigate();
   const { onNavigate } = useNavigateWithQuery();
   const [messageBody, setMessageBody] = useState<MessageBodyProps>({
@@ -27,7 +24,9 @@ function AboutCustomerElement(props: AboutCustomerProps) {
     body: "",
   });
   const { customerId } = useParams();
-  const { customerLoading: loading } = props;
+  useEffect(() => {
+    setMessageBody({ type: "success", body: "" });
+  }, [customerId]);
   const [viewGraph, setViewGraph] = useState<boolean>(false);
   const onToggleGraph = () => {
     setViewGraph(!viewGraph);
@@ -36,7 +35,7 @@ function AboutCustomerElement(props: AboutCustomerProps) {
   const onDeleteCustomer = async () => {
     try {
       if (confirm("Do you want to delete the customer ?")) {
-        await deleteCustomerById(props.customer?._id || "");
+        await deleteCustomerById(customer?._id || "");
         navigate("/customers");
       }
     } catch (error) {
@@ -46,12 +45,6 @@ function AboutCustomerElement(props: AboutCustomerProps) {
           ? error.response?.data.message
           : "Network error occured",
       });
-      setTimeout(() => {
-        setMessageBody({
-          type: "success",
-          body: "",
-        });
-      }, 1000);
     }
   };
   return (
@@ -62,24 +55,25 @@ function AboutCustomerElement(props: AboutCustomerProps) {
         searchPlaceHolder="Search customer by id"
         searchUrl="/customers"
       />
-      {loading ? (
-        <LoadingIndicatorAbout loading={loading} />
-      ) : props.customer ? (
+      {customerLoading ? (
+        <LoadingIndicatorAbout loading={customerLoading} />
+      ) : customer ? (
         <div className="customer d-grid">
-          <h1>{props.customer.name}</h1>
-          {props.customer.contact ? (
-            <CustomerContact contact={props.customer.contact} />
+          <h1>{customer.name}</h1>
+          {customer.contact ? (
+            <CustomerContact contact={customer.contact} />
           ) : null}
-          {props.customer.address ? (
-            <CustomerAddressList address={props.customer.address} />
+          {customer.address ? (
+            <CustomerAddressList address={customer.address} />
           ) : null}
           <MessageBody {...messageBody} />
+          <MessageBody {...error} />
           <div className="btn-group d-flex-center">
             <Button
               label="Edit Customer"
               className="btn btn-info"
               onClick={() => {
-                onNavigate(`/customers/${props.customer?._id}/edit`);
+                onNavigate(`/customers/${customer?._id}/edit`);
               }}
             />
             <Button
@@ -95,9 +89,9 @@ function AboutCustomerElement(props: AboutCustomerProps) {
           </div>
           {viewGraph ? <CustomerReportByPieChart /> : null}
         </div>
-      ) : customerId ? (
+      ) : (
         <CustomerNotFound />
-      ) : null}
+      )}
     </AboutSection>
   );
 }

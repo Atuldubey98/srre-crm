@@ -4,38 +4,22 @@ import { PageLeftRight } from "../../common/PageLeftRight";
 import PrivateRoute from "../../common/PrivateRoute";
 import CustomersList from "./CustomersList";
 import useCustomers from "./useCustomers";
+import { useParams } from "react-router-dom";
 const AboutCustomer = lazy(() => import("./AboutCustomer"));
 const CustomerForm = lazy(() => import("./CustomerForm"));
 
 export default function CustomerPage() {
-  const {
-    customers,
-    customer,
-    showNewCustomerPage,
-    showEditCustomerPage,
-    onSetCustomer,
-    customerLoading,
-    message,
-  } = useCustomers();
-
+  const { customers, showNewCustomerPage, showEditCustomerPage } =
+    useCustomers();
+  const { customerId } = useParams();
   return (
     <PrivateRoute>
       <Container>
         <PageLeftRight>
           <CustomersList customers={customers} />
-          {showNewCustomerPage ? (
-            <CustomerForm onSetCustomer={onSetCustomer} />
-          ) : null}
-          {showNewCustomerPage ? null : (
-            <AboutCustomer
-              customer={customer}
-              customerLoading={customerLoading}
-              message={message}
-            />
-          )}
-          {showEditCustomerPage ? (
-            <CustomerForm customer={customer} onSetCustomer={onSetCustomer} />
-          ) : null}
+          {showNewCustomerPage ? <CustomerForm /> : null}
+          {showNewCustomerPage || !customerId ? null : <AboutCustomer />}
+          {showEditCustomerPage ? <CustomerForm /> : null}
         </PageLeftRight>
       </Container>
     </PrivateRoute>

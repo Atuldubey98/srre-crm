@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 import { useMatch, useParams } from "react-router-dom";
 import { MessageBodyProps } from "../../common/MessageBody";
 import useQuery from "../../common/useQuery";
-import { getAllCustomers, getCustomerById } from "./customersApi";
-import { Customer, PlainCustomer } from "./interfaces";
+import { getAllCustomers } from "./customersApi";
+import { PlainCustomer } from "./interfaces";
 
 export default function useCustomers() {
   const [customers, setCustomers] = useState<PlainCustomer[]>([]);
-  const [customer, setCustomer] = useState<Customer | null>(null);
-  const [customerLoading, setCustomerLoading] = useState<boolean>(false);
+
   const { customerId } = useParams();
   const pathnameMatch = useMatch(location.pathname);
   const showNewCustomerPage = pathnameMatch?.pathnameBase === "/customers/new";
@@ -36,37 +35,10 @@ export default function useCustomers() {
       }
     })();
   }, [customerId, search]);
-  useEffect(() => {
-    if (!customerId) {
-      setCustomer(null);
-      return;
-    }
-    (async () => {
-      try {
-        setCustomerLoading(true);
-        const response = await getCustomerById(customerId);
-        setCustomer(response.data.data);
-      } catch (error) {
-        setMessage({
-          type: "error",
-          body: isAxiosError(error)
-            ? error.response?.data.message
-            : "Network error occured",
-        });
-      } finally {
-        setCustomerLoading(false);
-      }
-    })();
-  }, [customerId]);
-  const onSetCustomer = (updateedCustomer: Customer) => {
-    setCustomer(updateedCustomer);
-  };
+
   return {
     customers,
-    onSetCustomer,
     message,
-    customerLoading,
-    customer,
     showNewCustomerPage,
     showEditCustomerPage,
   };
