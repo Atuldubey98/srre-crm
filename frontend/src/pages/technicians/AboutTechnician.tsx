@@ -1,16 +1,14 @@
-import { useEffect, useState } from "react";
-import {
-  useLocation,
-  useMatch,
-  useParams
-} from "react-router-dom";
+import { Suspense, lazy, useEffect, useState } from "react";
+import { useLocation, useMatch, useParams } from "react-router-dom";
 import { AboutSection } from "../../common/PageLeftRight";
 import OperationBtnsGroup from "../customers/OperationBtnsGroup";
 import "./AboutTechnician.css";
-import TechnicianFieldsSection from "./TechnicianFieldsSection";
-import TechnicianNotfound from "./TechnicianNotfound";
+const TechnicianNotfound = lazy(() => import("./TechnicianNotfound"));
+const TechnicianFieldsSection = lazy(() => import("./TechnicianFieldsSection"));
+
 import { Technician } from "./interfaces";
 import { getAllTechnicianById } from "./techiesApi";
+import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
 export default function AboutTechnician() {
   const { technicianId = "" } = useParams();
   const location = useLocation();
@@ -41,11 +39,13 @@ export default function AboutTechnician() {
         searchPlaceHolder="Search technician by id"
         searchUrl="/technicians"
       />
-      {technician ? (
-        <TechnicianFieldsSection technician={technician} />
-      ) : technicianId ? (
-        <TechnicianNotfound />
-      ) : null}
+      <Suspense fallback={<LoadingIndicatorAbout loading={true} />}>
+        {technician ? (
+          <TechnicianFieldsSection technician={technician} />
+        ) : technicianId ? (
+          <TechnicianNotfound />
+        ) : null}
+      </Suspense>
     </AboutSection>
   );
 }
