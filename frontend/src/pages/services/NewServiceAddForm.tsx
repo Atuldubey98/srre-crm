@@ -55,6 +55,9 @@ export default function NewServiceAddForm() {
       });
     }
   };
+  const submitBtnDisbaled = service.serviceName.length === 0;
+  const submitBtnLabel =
+    service.typeOfAC === "all" ? "Bulk Services add" : "Add Service";
   return showNewServiceForm ? (
     <AboutSection>
       <section className="new__serviceForm">
@@ -87,7 +90,11 @@ export default function NewServiceAddForm() {
           </div>
 
           <div className="d-flex-center btn-group">
-            <Button label="Add Service" className="btn btn-success" />
+            <Button
+              disabled={submitBtnDisbaled}
+              label={submitBtnLabel}
+              className="btn btn-success"
+            />
           </div>
           <MessageBody {...message} />
         </form>

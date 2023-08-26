@@ -24,10 +24,11 @@ function AboutCustomerElement() {
     body: "",
   });
   const { customerId } = useParams();
+  const [viewGraph, setViewGraph] = useState<boolean>(false);
   useEffect(() => {
     setMessageBody({ type: "success", body: "" });
+    setViewGraph(false);
   }, [customerId]);
-  const [viewGraph, setViewGraph] = useState<boolean>(false);
   const onToggleGraph = () => {
     setViewGraph(!viewGraph);
   };

@@ -26,6 +26,12 @@ export default function CustomerForm() {
 
   const isUpdateForm =
     pathnameMatch?.pathnameBase === `/customers/${customer?._id}/edit`;
+  const isSubmitBtnDisabled = customer
+    ? customer.name.length === 0 ||
+      customer.address.some(
+        (customerAddress) => customerAddress.location.length === 0
+      )
+    : true;
   return customer && (isUpdateForm || isCustomerNewForm) ? (
     <EditSection>
       <form onSubmit={onCustomerFormSubmit} className="customer__form">
@@ -42,8 +48,11 @@ export default function CustomerForm() {
           onChangeContact={onChangeContact}
           contact={customer.contact}
         />
-        <CustomerFormUpdateSaveBtn customerId={customer._id} />
         <MessageBody {...messageBody} />
+        <CustomerFormUpdateSaveBtn
+          customerId={customer._id}
+          isSubmitBtnDisabled={isSubmitBtnDisabled}
+        />
       </form>
     </EditSection>
   ) : null;

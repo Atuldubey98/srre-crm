@@ -6,7 +6,6 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import Button from "../../common/Button";
 import FormLabelField from "../../common/FormLabelField";
 import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
 import { AboutSection } from "../../common/PageLeftRight";
@@ -14,6 +13,7 @@ import SelectOptions from "../../common/SelectOptions";
 import { getDateForField } from "../../utils/dateUtils";
 import CustomerFields from "./CustomerFields";
 import "./FormServiceReport.css";
+import FormSubmitButton from "./FormSubmitButton";
 import ReportnotFound from "./ReportnotFound";
 import ServicesGivenFields from "./ServicesGivenFields";
 import TechnicianFormSelect from "./TechnicianFormSelect";
@@ -99,6 +99,11 @@ export default function FormServiceReport() {
       })();
     }
   }, [reportId, onSetNewState]);
+  const isSubmitBtnDisbaled =
+    state.customer.length === 0 ||
+    state.serviceDate.length === 0 ||
+    state.acMetaInfo.length === 0 ||
+    state.technician.length === 0;
   return (
     <AboutSection>
       {error ? (
@@ -152,21 +157,7 @@ export default function FormServiceReport() {
             onChangeReportField={operations.onChangeReportField}
           />
           <MessageBody {...message} />
-          <div className="d-flex-center">
-            {isUpdateForm ? (
-              <Button
-                type="submit"
-                label="Update Report"
-                className="btn btn-info"
-              />
-            ) : (
-              <Button
-                type="submit"
-                label="Add Report"
-                className="btn btn-success"
-              />
-            )}
-          </div>
+          <FormSubmitButton isSubmitBtnDisbaled={isSubmitBtnDisbaled} />
         </form>
       )}
     </AboutSection>

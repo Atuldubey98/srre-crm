@@ -105,6 +105,9 @@ export default function EditTechnician() {
       });
     }
   };
+  const submitBtnDisbaled = technician
+    ? technician.name.length === 0 || technician.contactNumber.length === 0
+    : true;
   return showForm ? (
     <EditSection>
       <section className="edit__technician">
@@ -116,6 +119,8 @@ export default function EditTechnician() {
             <label htmlFor="name"> Technician Name :*</label>
             <Input
               name="name"
+              autoComplete="name"
+              id="name"
               placeholder="What is the name of technician?"
               required
               value={technician?.name || ""}
@@ -125,6 +130,7 @@ export default function EditTechnician() {
           <div className="form__control">
             <label htmlFor="contactNumber">Technician Contact Number :*</label>
             <Input
+              id="contactNumber"
               type="tel"
               placeholder="What is his contact number?"
               required
@@ -137,6 +143,8 @@ export default function EditTechnician() {
             <label htmlFor="email">Technician Email : </label>
             <Input
               type="email"
+              autoComplete="email"
+              id="email"
               placeholder="What is his email id?"
               value={technician?.email || ""}
               onChange={onChangeTechnician}
@@ -146,6 +154,7 @@ export default function EditTechnician() {
           <div className="form__control">
             <label htmlFor="currentlyActive">Is Employee active ?</label>
             <SelectOptions
+              id="currentlyActive"
               name="currentlyActive"
               onChange={onChangeTechnician}
               value={technician?.currentlyActive || "Active"}
@@ -157,14 +166,16 @@ export default function EditTechnician() {
           <div className="d-flex-center">
             {showUpdateTechnician ? (
               <Button
+                disabled={submitBtnDisbaled}
                 label="Update Technician"
-                className="btn btn-succes"
+                className="btn btn-info"
                 type="submit"
               />
             ) : (
               <Button
+                disabled={submitBtnDisbaled}
                 label="Add technician"
-                className="btn btn-info"
+                className="btn btn-success"
                 type="submit"
               />
             )}

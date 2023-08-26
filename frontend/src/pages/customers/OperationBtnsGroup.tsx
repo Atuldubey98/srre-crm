@@ -31,12 +31,13 @@ export default function OperationBtnsGroup(props: OperationBtnsGroupProps) {
       <form className="d-flex-center" onSubmit={onSubmit}>
         <Input
           type="text"
+          id="search"
           placeholder={props.searchPlaceHolder}
           value={search}
           required
           onChange={onChangeSearch}
         />
-        <Button label="Search" className="btn btn-info" />
+        <Button label="Search" className="btn btn-action" />
       </form>
     </section>
   );

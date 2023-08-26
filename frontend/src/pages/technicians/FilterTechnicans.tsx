@@ -8,7 +8,12 @@ export type FilterTechnicansProps = {
 export default function FilterTechnicans(props: FilterTechnicansProps) {
   return (
     <section className="filter__techies">
-      <Input value={props.filter} onChange={props.onChangeFilter} />
+      <Input
+        type="search"
+        id="searchTechnician"
+        value={props.filter}
+        onChange={props.onChangeFilter}
+      />
     </section>
   );
 }

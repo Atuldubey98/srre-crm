@@ -1,7 +1,7 @@
 .btn {
   border: 0;
   padding: 0.3rem;
-  font-size: large;
+  font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
   border-radius: 0.2rem;
@@ -18,7 +18,7 @@
   color: var(--dominant-color);
 }
 .btn-danger {
-  background-color: rgba(206, 54, 54, 0.767);
+  background-color: #ff5722;
   color: var(--dominant-color);
 }
 .btn-info {
@@ -29,10 +29,14 @@
   background-color: var(--secondary-color);
   color: white;
 }
+.btn-action {
+  background-color: #007bff;
+  color: white;
+}
 .btn-group {
   gap: 0.8rem;
 }
-.btn:disabled{
+.btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
