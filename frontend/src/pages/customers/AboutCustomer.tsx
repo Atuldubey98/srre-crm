@@ -1,5 +1,5 @@
 import { isAxiosError } from "axios";
-import { memo, useEffect, useState } from "react";
+import { Suspense, lazy, memo, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../common/Button";
 import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
@@ -9,11 +9,14 @@ import useNavigateWithQuery from "../../common/useNavigateWithQuery";
 import "./AboutCustomer.css";
 import CustomerAddressList from "./CustomerAddressList";
 import CustomerContact from "./CustomerContact";
-import CustomerNotFound from "./CustomerNotFound";
-import CustomerReportByPieChart from "./CustomerReportByPieChart";
+const CustomerNotFound = lazy(() => import("./CustomerNotFound"));
+const CustomerReportByPieChart = lazy(
+  () => import("./CustomerReportByPieChart")
+);
 import OperationBtnsGroup from "./OperationBtnsGroup";
 import { deleteCustomerById } from "./customersApi";
 import useSingleCustomer from "./useSingleCustomer";
+import SmallLoading from "../dashboard/SmallLoading";
 
 function AboutCustomerElement() {
   const { customer, customerLoading, messageBody: error } = useSingleCustomer();
@@ -88,10 +91,16 @@ function AboutCustomerElement() {
               onClick={onDeleteCustomer}
             />
           </div>
-          {viewGraph ? <CustomerReportByPieChart /> : null}
+          {viewGraph ? (
+            <Suspense fallback={<SmallLoading />}>
+              <CustomerReportByPieChart />
+            </Suspense>
+          ) : null}
         </div>
       ) : (
-        <CustomerNotFound />
+        <Suspense fallback={<SmallLoading />}>
+          <CustomerNotFound />
+        </Suspense>
       )}
     </AboutSection>
   );

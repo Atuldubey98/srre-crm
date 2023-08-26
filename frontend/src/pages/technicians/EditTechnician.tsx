@@ -59,10 +59,19 @@ export default function EditTechnician() {
   const onChangeTechnician: ChangeEventHandler<
     HTMLInputElement | HTMLSelectElement
   > = (e) => {
-    setTechnician(
-      technician
-        ? { ...technician, [e.currentTarget.name]: e.currentTarget.value }
-        : null
+    const { name, value } = e.currentTarget;
+    setTechnician((prevTechnician) =>
+      prevTechnician
+        ? {
+            ...prevTechnician,
+            [name]: value,
+          }
+        : {
+            contactNumber: "",
+            email: "",
+            currentlyActive: "Active",
+            name: "",
+          }
     );
   };
   const navigate = useNavigate();
@@ -115,7 +124,7 @@ export default function EditTechnician() {
           onSubmit={onTechnicianFormSubmit}
           className="d-grid edit__technicianForm"
         >
-          <div className="form__control">
+          <div className="form__labelField">
             <label htmlFor="name"> Technician Name :*</label>
             <Input
               name="name"
@@ -127,7 +136,7 @@ export default function EditTechnician() {
               onChange={onChangeTechnician}
             />
           </div>
-          <div className="form__control">
+          <div className="form__labelField">
             <label htmlFor="contactNumber">Technician Contact Number :*</label>
             <Input
               id="contactNumber"
@@ -139,7 +148,7 @@ export default function EditTechnician() {
               onChange={onChangeTechnician}
             />
           </div>
-          <div className="form__control">
+          <div className="form__labelField">
             <label htmlFor="email">Technician Email : </label>
             <Input
               type="email"
@@ -151,7 +160,7 @@ export default function EditTechnician() {
               name="email"
             />
           </div>
-          <div className="form__control">
+          <div className="form__labelField">
             <label htmlFor="currentlyActive">Is Employee active ?</label>
             <SelectOptions
               id="currentlyActive"

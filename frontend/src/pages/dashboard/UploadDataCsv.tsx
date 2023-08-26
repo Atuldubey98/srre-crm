@@ -1,9 +1,9 @@
-import { lazy } from "react";
 import { EditSection } from "../../common/PageLeftRight";
-import "./UploadDataCsv.css";
 import AddNewEntitiesListSidebar from "./AddNewEntitiesListSidebar";
-const UploadServices = lazy(() => import("./UploadServices"));
-const UploadCustomerAddress = lazy(() => import("./UploadCustomerAddress"));
+import UploadCustomerAddress from "./UploadCustomerAddress";
+import "./UploadDataCsv.css";
+import UploadServices from "./UploadServices";
+
 export default function UploadDataCsv() {
   return (
     <EditSection>

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -19,6 +19,9 @@ instance.interceptors.response.use(
     return response;
   },
   function (error) {
+    if (isAxiosError(error) && error.response?.status === 401) {
+      localStorage.clear();
+    }
     return Promise.reject(error);
   }
 );
