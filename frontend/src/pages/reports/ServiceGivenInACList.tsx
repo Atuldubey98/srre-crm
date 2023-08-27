@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 import { Service } from "../services/interfaces";
-
+import './ServiceGivenInACList.css';
 export type ServiceGivenInACListProps = {
   services: Service[] | undefined | null;
 };
@@ -11,7 +12,7 @@ export default function ServiceGivenInACList(props: ServiceGivenInACListProps) {
       <ul className="services__givenList">
         {services.map((service) => (
           <li key={service._id} className="service__given">
-            {service.serviceName}
+            <Link to={`/services/${service._id}`}>{service.serviceName}</Link>
           </li>
         ))}
       </ul>

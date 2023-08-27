@@ -7,7 +7,7 @@ import "./AboutService.css";
 import { Service, acOptions } from "./interfaces";
 import { deleteServiceById } from "./servicesApi";
 import ServiceNotfound from "./ServiceNotfound";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
 import { isAxiosError } from "axios";
 export type AboutSectionProps = {
@@ -34,6 +34,12 @@ export default function AboutService(props: AboutSectionProps) {
       });
     }
   };
+  useEffect(() => {
+    setMessage({
+      type: "success",
+      body: "",
+    });
+  }, []);
   return (
     <AboutSection>
       <OperationBtnsGroup

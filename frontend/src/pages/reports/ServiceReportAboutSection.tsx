@@ -55,6 +55,7 @@ export default function ServiceReportAboutSection(
         ) : serviceReport && reportId ? (
           <div className="reports__aboutSection">
             <ReportCustomer
+              customerId={serviceReport.customer._id}
               customerAddress={serviceReport.customerAddress.location}
               customerName={serviceReport.customer.name}
               reportId={serviceReport?._id || ""}

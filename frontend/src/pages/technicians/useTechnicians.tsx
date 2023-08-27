@@ -1,12 +1,15 @@
 import { ChangeEventHandler, useEffect, useState } from "react";
 import { Technician } from "./interfaces";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { getAllTechnicials } from "./techiesApi";
 
 export default function useTechnicians() {
   const [technicians, setTechnicians] = useState<Technician[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const location = useLocation();
   const { technicianId = "" } = useParams();
+  const isUpdateForm =
+    location.pathname === `/technicians/${technicianId}/edit`;
   const [filter, setFilter] = useState<string>("");
   useEffect(() => {
     (async () => {
@@ -20,7 +23,7 @@ export default function useTechnicians() {
         setLoading(false);
       }
     })();
-  }, [technicianId]);
+  }, [technicianId, isUpdateForm]);
   const onChangeFilter: ChangeEventHandler<HTMLInputElement> = (e) => {
     setFilter(e.currentTarget.value);
   };

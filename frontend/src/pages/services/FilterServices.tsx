@@ -23,6 +23,7 @@ export default function FilterServices(props: FilterServicesProps) {
           ))}
         </SelectOptions>
         <Input
+          type="search"
           value={filter.serviceName}
           onChange={onChangeServiceName}
           placeholder="Search for service"

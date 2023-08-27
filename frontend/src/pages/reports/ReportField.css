@@ -2,3 +2,8 @@
   font-style: italic;
   font-weight: 600;
 }
+
+.report__field > .report__fieldValue {
+  text-decoration: none;
+  font-weight: bold;
+}
