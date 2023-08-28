@@ -6,6 +6,11 @@ export default function reportRepository() {
   async function getCountNumberOfReportsOfCustomer(customerId) {
     return Report.count({ customer: customerId });
   }
+  async function getCountNumberOfReportsOfCustomerByAddressId(
+    customerAddressId
+  ) {
+    return Report.count({ customerAddress: customerAddressId });
+  }
   async function createServiceReport(report) {
     const serviceReport = new Report(report);
     return serviceReport.save();
@@ -162,6 +167,7 @@ export default function reportRepository() {
     downloadServiceReportsByFilter,
     getServiceReportsByCustomerId,
     updateServiceReport,
+    getCountNumberOfReportsOfCustomerByAddressId,
     getCountNumberOfReportsOfCustomer,
   });
 }

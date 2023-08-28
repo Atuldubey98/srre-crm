@@ -32,6 +32,8 @@ export default function CustomerForm() {
         (customerAddress) => customerAddress.location.length === 0
       )
     : true;
+  console.log(customer && (isUpdateForm || isCustomerNewForm));
+  
   return customer && (isUpdateForm || isCustomerNewForm) ? (
     <EditSection>
       <form onSubmit={onCustomerFormSubmit} className="customer__form">

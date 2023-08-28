@@ -66,3 +66,7 @@ export const addNewCustomer = (customer: CreateCustomeBody) => {
         : undefined,
   });
 };
+
+export const getCountOfReportsByAddressId = (addressId: string) => {
+  return instance.get(`/api/v1/address/${addressId}/reports`);
+};

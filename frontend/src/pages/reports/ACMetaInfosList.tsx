@@ -11,7 +11,7 @@ export type ACMetaInfosListProps = {
 export default function ACMetaInfosList(props: ACMetaInfosListProps) {
   const { acMetaInfos, onSetACMetaInfo } = props;
   return (
-    <ul className="ac__Infos">
+    <ul className="ac__Infos d-grid">
       {acMetaInfos.map((acInfo) => (
         <li key={acInfo._id} className="ac__info">
           <div onClick={() => onSetACMetaInfo(acInfo)}>

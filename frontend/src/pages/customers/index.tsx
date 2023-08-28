@@ -1,18 +1,16 @@
 import { Suspense, lazy } from "react";
 import Container from "../../common/Container";
+import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
 import { PageLeftRight } from "../../common/PageLeftRight";
 import PrivateRoute from "../../common/PrivateRoute";
 import CustomersList from "./CustomersList";
 import useCustomers from "./useCustomers";
-import { useParams } from "react-router-dom";
-import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
 const AboutCustomer = lazy(() => import("./AboutCustomer"));
 const CustomerForm = lazy(() => import("./CustomerForm"));
 
 export default function CustomerPage() {
   const { customers, showNewCustomerPage, showEditCustomerPage } =
     useCustomers();
-  const { customerId } = useParams();
   return (
     <PrivateRoute>
       <Container>
@@ -23,11 +21,8 @@ export default function CustomerPage() {
               <CustomerForm />
             </Suspense>
           ) : null}
-          {showNewCustomerPage || !customerId ? null : (
-            <Suspense fallback={<LoadingIndicatorAbout loading={true} />}>
-              <AboutCustomer />
-            </Suspense>
-          )}
+          <AboutCustomer />
+          {showNewCustomerPage ? <AboutCustomer /> : null}
           {showEditCustomerPage ? (
             <Suspense fallback={<LoadingIndicatorAbout loading={true} />}>
               <CustomerForm />

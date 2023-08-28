@@ -4,6 +4,9 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
+.ac__Infos{
+  gap: 0.8rem;
+}
 .ac__info {
   border-radius: 0.5rem;
   border: 1px solid var(--primary-color);

@@ -1,7 +1,7 @@
-import { GrClose } from "react-icons/gr";
 import Button from "../../common/Button";
-import Input from "../../common/Input";
 import { Address } from "./interfaces";
+import "./AddressInputs.css";
+import { CustomerAddressInputItem } from "./CustomerAddressInputItem";
 export type AddressInputsProps = {
   address: Address[] | null;
   onChangeAddress: (
@@ -15,23 +15,14 @@ export default function AddressInputs(props: AddressInputsProps) {
   return (
     <div className="form__control">
       <label htmlFor="location">Location :*</label>
-
       {props.address?.map((address) => (
-        <div key={address._id} className="customer__address d-flex-center">
-          <Input
-            name="location"
-            required
-            value={address.location}
-            onChange={(e) => {
-              props.onChangeAddress(e, address._id);
-            }}
-          />
-          <GrClose
-            onClick={() => {
-              props.onRemoveAddress(address._id);
-            }}
-          />
-        </div>
+        <CustomerAddressInputItem
+          key={address._id}
+          address={address}
+          onAddAddress={props.onAddAddress}
+          onChangeAddress={props.onChangeAddress}
+          onRemoveAddress={props.onRemoveAddress}
+        />
       ))}
       <div className="d-flex-center">
         <Button
