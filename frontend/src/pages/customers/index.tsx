@@ -16,8 +16,6 @@ export default function CustomerPage() {
       <Container>
         <PageLeftRight>
           <CustomersList customers={customers} />
-          
-
           {showNewCustomerPage || showEditCustomerPage ? (
             <Suspense fallback={<LoadingIndicatorAbout loading={true} />}>
               <CustomerForm />
