@@ -5,14 +5,17 @@ import CustomerAddressForm from "./CustomerAddressForm";
 import "./CustomerForm.css";
 import CustomerNameContactForm from "./CustomerNameContactForm";
 import { getCustomerById } from "./customersApi";
-import { Address } from "./interfaces";
+import { Address, PlainCustomer } from "./interfaces";
 export type CustomerNameContact = {
   _id?: string;
   name: string;
   contactName: string;
   contactPhoneNumber: string;
 };
-export default function CustomerForm() {
+export type CustomerFormProps = {
+  onCustomerAdd: (customer: PlainCustomer) => void;
+};
+export default function CustomerForm(props: CustomerFormProps) {
   const { customerId } = useParams();
   const [customerNameContact, setCustomerNameContact] =
     useState<CustomerNameContact | null>(null);
@@ -88,6 +91,7 @@ export default function CustomerForm() {
     <AboutSection>
       <section className="customer__formSection">
         <CustomerNameContactForm
+          onCustomerAdd={props.onCustomerAdd}
           onSetCustomerNameContact={onSetCustomerNameContact}
           onChangeCustomerContact={onChangeCustomerContact}
           customerNameContact={customerNameContact}

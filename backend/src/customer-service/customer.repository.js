@@ -5,7 +5,6 @@ import {
 } from "./customer.validation.js";
 import addressRepository from "./address.repository.js";
 import Report from "../report-service/report.model.js";
-const { createAddressList, deleteAddressUsingIds } = addressRepository();
 export function getDateBeforeDays(days) {
   const today = new Date();
   const previousDate = new Date(today);
@@ -93,7 +92,10 @@ export default function customerRepository() {
       );
       const customer = new Customer(newCustomer);
       await customer.save();
-      return customer.populate("address");
+      return (await customer.populate("address")).populate(
+        "createdBy",
+        "name email _id"
+      );
     } catch (error) {
       throw error;
     }

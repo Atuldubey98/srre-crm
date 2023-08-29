@@ -58,7 +58,6 @@ export async function updateAddressByAddressIdController(req, res, next) {
       addressId,
       customerAddress
     );
-    console.log(updatedCustomerAddress);
     if (!updatedCustomerAddress) {
       throw new AddressNotFound();
     }

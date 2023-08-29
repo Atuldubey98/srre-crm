@@ -6,10 +6,12 @@ import CustomerNameField from "./CustomerNameField";
 import { addNewCustomer, updateCustomerById } from "./customersApi";
 import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
 import { isAxiosError } from "axios";
+import { PlainCustomer } from "./interfaces";
 export type CustomerNameContactFormProps = {
   customerNameContact: CustomerNameContact | null;
   onSetCustomerNameContact: (value: CustomerNameContact) => void;
   onChangeCustomerContact: ChangeEventHandler<HTMLInputElement>;
+  onCustomerAdd: (customer: PlainCustomer) => void;
 };
 export default function CustomerNameContactForm(
   props: CustomerNameContactFormProps
@@ -31,6 +33,9 @@ export default function CustomerNameContactForm(
               customerNameContact
             )
           : await addNewCustomer(customerNameContact);
+        if (!customerNameContact._id) {
+          props.onCustomerAdd(data.data);
+        }
         props.onSetCustomerNameContact({
           _id: data.data._id,
           name: data.data.name,
@@ -39,6 +44,7 @@ export default function CustomerNameContactForm(
             ? data.data.contact.phoneNumber || ""
             : "",
         });
+
         setMessageBody({
           type: "success",
           body: formState,

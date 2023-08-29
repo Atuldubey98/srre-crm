@@ -34,7 +34,8 @@ export async function createCustomerEntityController(req, res, next) {
       req.body
     );
     const customer = await createCustomer(customerBody);
-    return res.status(200).json({ status: true, data: customer });
+    const fullCustomer = await customer.populate("createdBy");
+    return res.status(200).json({ status: true, data: fullCustomer });
   } catch (error) {
     next(error);
   }

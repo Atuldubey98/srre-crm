@@ -35,10 +35,15 @@ export default function useCustomers() {
       }
     })();
   }, [customerId, search]);
-
+  const onCustomerAdd = (customer: PlainCustomer) => {
+    if (customers) {
+      setCustomers([...customers, customer]);
+    }
+  };
   return {
     customers,
     message,
+    onCustomerAdd,
     showNewCustomerPage,
     showEditCustomerPage,
   };

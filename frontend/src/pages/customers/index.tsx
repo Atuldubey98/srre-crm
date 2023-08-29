@@ -9,8 +9,12 @@ const AboutCustomer = lazy(() => import("./AboutCustomer"));
 const CustomerForm = lazy(() => import("./CustomerForm"));
 
 export default function CustomerPage() {
-  const { customers, showNewCustomerPage, showEditCustomerPage } =
-    useCustomers();
+  const {
+    customers,
+    showNewCustomerPage,
+    showEditCustomerPage,
+    onCustomerAdd,
+  } = useCustomers();
   return (
     <PrivateRoute>
       <Container>
@@ -18,9 +22,11 @@ export default function CustomerPage() {
           <CustomersList customers={customers} />
           {showNewCustomerPage || showEditCustomerPage ? (
             <Suspense fallback={<LoadingIndicatorAbout loading={true} />}>
-              <CustomerForm />
+              <CustomerForm onCustomerAdd={onCustomerAdd} />
             </Suspense>
-          ) : <AboutCustomer />}
+          ) : (
+            <AboutCustomer />
+          )}
         </PageLeftRight>
       </Container>
     </PrivateRoute>
