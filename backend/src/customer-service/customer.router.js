@@ -14,6 +14,11 @@ import {
 } from "./customer.controller.js";
 import authenticationMiddleware from "../middlewares/authentication.middleware.js";
 import multerUpload from "../middlewares/multer.middleware.js";
+import {
+  createAddressController,
+  deleteAddressByIdController,
+  updateAddressByAddressIdController,
+} from "./address.controller.js";
 
 const customerRouter = Router();
 
@@ -41,6 +46,21 @@ customerRouter.get(
   "/:customerId/address",
   authenticationMiddleware,
   getCustomerAddresssListByController
+);
+customerRouter.post(
+  "/:customerId/address",
+  authenticationMiddleware,
+  createAddressController
+);
+customerRouter.patch(
+  "/:customerId/address/:addressId",
+  authenticationMiddleware,
+  updateAddressByAddressIdController
+);
+customerRouter.delete(
+  "/:customerId/address/:addressId",
+  authenticationMiddleware,
+  deleteAddressByIdController
 );
 customerRouter.post(
   "/:customerId/address/template",

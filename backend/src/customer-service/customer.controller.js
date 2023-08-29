@@ -3,7 +3,10 @@ import reportRepository from "../report-service/report.repository.js";
 import { generateCSVForCustomerServicesCount } from "./customer.csvgeneration.js";
 import customerRepository from "./customer.repository.js";
 import csvParser from "csv-parser";
-import { CustomerIdSchema } from "./customer.validation.js";
+import {
+  CustomerIdSchema,
+  CustomerNameContactSchema,
+} from "./customer.validation.js";
 import { CustomerBeingUsedByReportError, CustomerNotFound } from "./errors.js";
 import addressRepository from "./address.repository.js";
 const { createAddressList } = addressRepository();
@@ -19,6 +22,23 @@ const {
 } = customerRepository();
 const { getServiceReportsByCustomerId, getCountNumberOfReportsOfCustomer } =
   reportRepository();
+/**
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
+export async function createCustomerEntityController(req, res, next) {
+  try {
+    const customerBody = await CustomerNameContactSchema.validateAsync(
+      req.body
+    );
+    const customer = await createCustomer(customerBody);
+    return res.status(200).json({ status: true, data: customer });
+  } catch (error) {
+    next(error);
+  }
+}
 
 /**
  *

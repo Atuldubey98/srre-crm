@@ -15,7 +15,10 @@ function ReportCustomerElement(props: ReportCustomerProps) {
     props;
   return (
     <div className="report__customer">
-      <Link className="report__customerName" to={`/customers/${customerId}`}>
+      <Link
+        className="report__customerName"
+        to={{ pathname: `/customers/${customerId}` }}
+      >
         <h1>{customerName}</h1>
       </Link>
       <address>{customerAddress}</address>

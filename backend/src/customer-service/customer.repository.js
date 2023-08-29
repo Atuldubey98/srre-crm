@@ -1,6 +1,6 @@
 import Customer from "./customer.model.js";
 import {
-  CustomerBodySchema,
+  CustomerNameContactSchema,
   UpdateCustomerBody,
 } from "./customer.validation.js";
 import addressRepository from "./address.repository.js";
@@ -17,6 +17,14 @@ export function getDateBeforeDays(days) {
 }
 
 export default function customerRepository() {
+  async function updateCustomerByDeletingCustomerAddress(
+    customerId,
+    addressId
+  ) {
+    return Customer.findByIdAndUpdate(customerId, {
+      $pull: { address: addressId },
+    });
+  }
   async function updateCustomerByCustomerIdByAddingAddress(
     customerId,
     addressIdsList
@@ -25,6 +33,11 @@ export default function customerRepository() {
       { _id: customerId },
       { $push: { address: { $each: addressIdsList } } }
     );
+  }
+  async function updateCustomerByAddingNewAddress(customerId, addressId) {
+    return Customer.findByIdAndUpdate(customerId, {
+      $push: { address: addressId },
+    });
   }
   async function getCountReportforCustomerByIdForLast30Days() {
     return Report.aggregate([
@@ -75,17 +88,13 @@ export default function customerRepository() {
   }
   async function createCustomer(customerBody) {
     try {
-      const newCustomer = await CustomerBodySchema.validateAsync(customerBody);
-      const { address, ...restCustomer } = newCustomer;
-      const addressList = await createAddressList(address);
-      const customer = new Customer({
-        ...restCustomer,
-        address: addressList.map((add) => add._id),
-      });
+      const newCustomer = await CustomerNameContactSchema.validateAsync(
+        customerBody
+      );
+      const customer = new Customer(newCustomer);
       await customer.save();
       return customer.populate("address");
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }
@@ -105,19 +114,11 @@ export default function customerRepository() {
   async function updateCustomerById(id, customerBody) {
     try {
       const customer = await UpdateCustomerBody.validateAsync(customerBody);
-      const { address, ...restCustomer } = customer;
-      const addressList = await createAddressList(address);
-      const alreadyCustomer = await Customer.findById(id).select("address");
-      const updatedCustomer = await Customer.findByIdAndUpdate(
-        id,
-        { ...restCustomer, address: addressList.map((add) => add._id) },
-        {
-          new: true,
-        }
-      )
+      const updatedCustomer = await Customer.findByIdAndUpdate(id, customer, {
+        new: true,
+      })
         .populate("address")
         .populate("createdBy", "name email _id");
-      await deleteAddressUsingIds(alreadyCustomer.address);
       return updatedCustomer;
     } catch (error) {
       throw error;
@@ -179,8 +180,10 @@ export default function customerRepository() {
     findUniqueServicesUsedByCustomer,
     updateCustomerById,
     getCountOfCustomers,
+    updateCustomerByAddingNewAddress,
     getAddressListByCustomerId,
     getCustomerById,
+    updateCustomerByDeletingCustomerAddress,
     deleteCustomerById,
     updateCustomerByCustomerIdByAddingAddress,
     getCountReportforCustomerByIdForLast30Days,

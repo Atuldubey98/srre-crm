@@ -1,0 +1,9 @@
+.customer__addressForm {
+  display: grid;
+  gap: 0.8rem;
+  margin-block: 0.8rem;
+}
+.address__form {
+  display: grid;
+  gap: 1rem;
+}

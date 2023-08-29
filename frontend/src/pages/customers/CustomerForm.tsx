@@ -1,61 +1,118 @@
-import { useLocation, useMatch } from "react-router-dom";
-import MessageBody from "../../common/MessageBody";
-import { EditSection } from "../../common/PageLeftRight";
-import CustomerContactInputs from "./CustomerContactInputs";
+import { ChangeEventHandler, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { AboutSection } from "../../common/PageLeftRight";
+import CustomerAddressForm from "./CustomerAddressForm";
 import "./CustomerForm.css";
-import CustomerFormUpdateSaveBtn from "./CustomerFormUpdateSaveBtn";
-
-import CustomerAddressListInputs from "./CustomerAddressListInputs";
-import CustomerNameField from "./CustomerNameField";
-import useSingleCustomer from "./useSingleCustomer";
-
+import CustomerNameContactForm from "./CustomerNameContactForm";
+import OperationBtnsGroup from "./OperationBtnsGroup";
+import { getCustomerById } from "./customersApi";
+import { Address } from "./interfaces";
+export type CustomerNameContact = {
+  _id?: string;
+  name: string;
+  contactName: string;
+  contactPhoneNumber: string;
+};
 export default function CustomerForm() {
-  const location = useLocation();
-  const pathnameMatch = useMatch(location.pathname);
-  const isCustomerNewForm = pathnameMatch?.pathnameBase === `/customers/new`;
-  const {
-    customer,
-    onCustomerFormSubmit,
-    onChangeName,
-    onChangeAddress,
-    onChangeContact,
-    messageBody,
-    onAddAddress,
-    onRemoveAddress,
-  } = useSingleCustomer();
-
-  const isUpdateForm =
-    pathnameMatch?.pathnameBase === `/customers/${customer?._id}/edit`;
-  const isSubmitBtnDisabled = customer
-    ? customer.name.length === 0 ||
-      customer.address.some(
-        (customerAddress) => customerAddress.location.length === 0
-      )
-    : true;
-  console.log(customer && (isUpdateForm || isCustomerNewForm));
-  
-  return customer && (isUpdateForm || isCustomerNewForm) ? (
-    <EditSection>
-      <form onSubmit={onCustomerFormSubmit} className="customer__form">
-        <CustomerNameField name={customer.name} onChangeName={onChangeName} />
-        <CustomerAddressListInputs
-          addressInputProps={{
-            address: customer.address,
-            onAddAddress: onAddAddress,
-            onChangeAddress,
-            onRemoveAddress,
-          }}
+  const { customerId } = useParams();
+  const [customerNameContact, setCustomerNameContact] =
+    useState<CustomerNameContact | null>(null);
+  const onSetCustomerNameContact = (value: CustomerNameContact) => {
+    setCustomerNameContact(value);
+  };
+  const [customerAddressList, setCustomerAddressList] = useState<Address[]>([]);
+  const onAddCustomerAddress = (address: Address) => {
+    setCustomerAddressList(
+      customerAddressList.find((add) => add._id === address._id)
+        ? customerAddressList.map((add) =>
+            add._id === address._id ? address : add
+          )
+        : [...customerAddressList, address]
+    );
+  };
+  const [formAdress, setFormAddress] = useState<Address | null>(null);
+  const onChangeFormAddress: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setFormAddress(
+      formAdress
+        ? { ...formAdress, location: e.currentTarget.value }
+        : { location: "", _id: "" }
+    );
+  };
+  const onSetFormAddress = (value: Address | null) => {
+    setFormAddress(value);
+  };
+  const onChangeCustomerContact: ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (customerNameContact) {
+      setCustomerNameContact({
+        ...customerNameContact,
+        [e.currentTarget.name]: e.currentTarget.value,
+      });
+    } else {
+      setCustomerNameContact({
+        name: "",
+        contactName: "",
+        contactPhoneNumber: "",
+      });
+    }
+  };
+  useEffect(() => {
+    if (!customerId) {
+      setCustomerNameContact({
+        name: "",
+        contactName: "",
+        contactPhoneNumber: "",
+      });
+      setCustomerAddressList([]);
+      return;
+    }
+    (async () => {
+      try {
+        const { data } = await getCustomerById(customerId);
+        setCustomerNameContact({
+          _id: data.data._id,
+          name: data.data.name,
+          contactName: data.data.contact ? data.data.contact.name || "" : "",
+          contactPhoneNumber: data.data.contact
+            ? data.data.contact.phoneNumber || ""
+            : "",
+        });
+        setCustomerAddressList(data.data.address);
+      } catch (error) {}
+    })();
+  }, [customerId]);
+  return (
+    <AboutSection>
+      <OperationBtnsGroup
+        navigationUrl="/customers/new"
+        operationLabel="Add new Customer"
+        searchPlaceHolder="Search customer by id"
+        searchUrl="/customers"
+      />
+      <section className="customer__formSection">
+        <CustomerNameContactForm
+          onSetCustomerNameContact={onSetCustomerNameContact}
+          onChangeCustomerContact={onChangeCustomerContact}
+          customerNameContact={customerNameContact}
         />
-        <CustomerContactInputs
-          onChangeContact={onChangeContact}
-          contact={customer.contact}
-        />
-        <MessageBody {...messageBody} />
-        <CustomerFormUpdateSaveBtn
-          customerId={customer._id}
-          isSubmitBtnDisabled={isSubmitBtnDisabled}
-        />
-      </form>
-    </EditSection>
-  ) : null;
+        {customerNameContact?._id ? (
+          <CustomerAddressForm
+            onAddCustomerAddress={onAddCustomerAddress}
+            customerId={customerNameContact._id}
+            onSetFormAddress={onSetFormAddress}
+            formAddress={formAdress}
+            onChangeFormAddress={onChangeFormAddress}
+          />
+        ) : null}
+        <ul className="address__list address__listForm">
+          {customerAddressList.map((address) => (
+            <li onClick={() => setFormAddress(address)} key={address._id}>
+              <fieldset>
+                <address>{address.location}</address>
+              </fieldset>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </AboutSection>
+  );
 }

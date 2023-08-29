@@ -2,6 +2,16 @@
   display: grid;
   gap: 0.5rem;
 }
-.customer__address{
+.customer__address {
   gap: 0.3rem;
+}
+.address__list {
+  list-style: none;
+  padding-left: 0;
+}
+.address__listForm > li{
+  cursor: pointer;
+}
+.customer__formSection{
+  padding: 0.8rem;
 }

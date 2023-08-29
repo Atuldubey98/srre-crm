@@ -1,6 +1,7 @@
 import instance from "../../instance";
 import { CustomerServicesUsedCsvGeneratorFormFields } from "../reports/CustomerServicesUsedCsvGenerator";
-import { CreateCustomeBody, UpdateCustomerBody } from "./interfaces";
+import { CustomerNameContact } from "./CustomerForm";
+import { Address } from "./interfaces";
 
 export function getCustomerServicesCount(
   fields: CustomerServicesUsedCsvGeneratorFormFields
@@ -30,40 +31,52 @@ export const getAllCustomerNames = (search = "") => {
     },
   });
 };
+export const updateAddressOfCustomerByAddressId = (
+  addressId: string,
+  customerId: string,
+  address: Address
+) => {
+  return instance.patch(
+    `/api/v1/customers/${customerId}/address/${addressId}`,
+    { location: address.location }
+  );
+};
 export const getCustomerById = (customerId: string) => {
   return instance.get(`/api/v1/customers/${customerId}`);
 };
 export const getAddressByCustomerId = (customerId: string) => {
   return instance.get(`/api/v1/customers/${customerId}/address`);
 };
+export const addCustomerAddressByCustomerId = (
+  customerId: string,
+  address: Address
+) => {
+  return instance.post(`/api/v1/customers/${customerId}/address`, {
+    location: address.location,
+  });
+};
 export const deleteCustomerById = (customerId: string) => {
   return instance.delete(`/api/v1/customers/${customerId}`);
 };
 export const updateCustomerById = (
   customerId: string,
-  customerBody: UpdateCustomerBody
+  customerNameContact: CustomerNameContact
 ) => {
   return instance.patch(`/api/v1/customers/${customerId}`, {
-    ...customerBody,
-    address: customerBody.address.map((add) => ({
-      location: add.location,
-    })),
-    contact:
-      customerBody.contact?.name || customerBody.contact?.phoneNumber
-        ? customerBody.contact
-        : undefined,
+    name: customerNameContact.name,
+    contact: {
+      name: customerNameContact.contactName,
+      phoneNumber: customerNameContact.contactPhoneNumber,
+    },
   });
 };
-export const addNewCustomer = (customer: CreateCustomeBody) => {
+export const addNewCustomer = (customerNameContact: CustomerNameContact) => {
   return instance.post(`/api/v1/customers`, {
-    ...customer,
-    address: customer.address.map((add) => ({
-      location: add.location,
-    })),
-    contact:
-      customer.contact?.name || customer.contact?.phoneNumber
-        ? customer.contact
-        : undefined,
+    name: customerNameContact.name,
+    contact: {
+      name: customerNameContact.contactName,
+      phoneNumber: customerNameContact.contactPhoneNumber,
+    },
   });
 };
 

@@ -51,6 +51,7 @@ export function CustomerAddressInputItem(props: CustomerAddressInputItemProps) {
     <div key={address._id} className={customerAddressClassName}>
       <div className="d-flex-center">
         <Input
+          id={address._id}
           name="location"
           required
           value={address.location}

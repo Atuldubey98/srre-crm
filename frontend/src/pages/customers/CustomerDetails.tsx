@@ -1,15 +1,15 @@
+import { isAxiosError } from "axios";
 import { Suspense, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../common/Button";
 import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
+import useNavigateWithQuery from "../../common/useNavigateWithQuery";
+import SmallLoading from "../dashboard/SmallLoading";
+import { CustomerReportByPieChart } from "./AboutCustomer";
 import CustomerAddressList from "./CustomerAddressList";
 import CustomerContact from "./CustomerContact";
-import SmallLoading from "../dashboard/SmallLoading";
-import { Customer } from "./interfaces";
-import { CustomerReportByPieChart } from "./AboutCustomer";
-import { isAxiosError } from "axios";
-import { useNavigate, useParams } from "react-router-dom";
-import useNavigateWithQuery from "../../common/useNavigateWithQuery";
 import { deleteCustomerById } from "./customersApi";
+import { Customer } from "./interfaces";
 
 export type CustomerDetailsProps = {
   customer: Customer;
@@ -52,11 +52,9 @@ export default function CustomerDetails(props: CustomerDetailsProps) {
     <div className="customer d-grid">
       <h1>{customer.name}</h1>
       {customer.contact ? <CustomerContact contact={customer.contact} /> : null}
-      {customer.address ? (
-        <CustomerAddressList address={customer.address} />
-      ) : null}
       <MessageBody {...messageBody} />
       <MessageBody {...error} />
+
       <div className="btn-group d-flex-center">
         <Button
           label="Edit Customer"
@@ -76,6 +74,10 @@ export default function CustomerDetails(props: CustomerDetailsProps) {
           onClick={onDeleteCustomer}
         />
       </div>
+      {customer.address ? (
+        <CustomerAddressList address={customer.address} />
+      ) : null}
+
       {viewGraph ? (
         <Suspense fallback={<SmallLoading />}>
           <CustomerReportByPieChart />

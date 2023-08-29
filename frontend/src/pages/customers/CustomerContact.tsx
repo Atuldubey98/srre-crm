@@ -4,7 +4,7 @@ export type CustomerContactProps = {
   contact: Contact;
 };
 export default function CustomerContact(props: CustomerContactProps) {
-  return (
+  return props.contact.name || props.contact.phoneNumber ? (
     <section className="customer__contact d-grid">
       <h4>Contact Person</h4>
       <fieldset>
@@ -12,5 +12,5 @@ export default function CustomerContact(props: CustomerContactProps) {
         <p>{props.contact.phoneNumber || ""}</p>
       </fieldset>
     </section>
-  );
+  ) : null;
 }

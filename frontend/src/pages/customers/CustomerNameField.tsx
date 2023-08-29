@@ -14,6 +14,7 @@ export default function CustomerNameField(props: CustomerNameFieldProps) {
       <FormLabelField
         input={{
           type: "text",
+          id: "name",
           required: true,
           onChange: onChangeName,
           name: "name",

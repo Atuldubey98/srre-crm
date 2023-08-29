@@ -5,10 +5,15 @@ const ContactBody = joi
     phoneNumber: joi.optional(), // Optional string, can be empty or not provided
   })
   .optional();
-
+const CustomerNameContactSchema = joi.object({
+  name: joi.string().required(),
+  contact: ContactBody,
+  createdBy: joi.string().required(),
+});
+const CustomerAddressSchema = joi.object({ location: joi.string() });
 const CustomerBodySchema = joi.object({
   name: joi.string().required(),
-  address: joi.array().items(joi.object({ location: joi.string() })),
+  address: joi.array().items(CustomerAddressSchema),
   contact: ContactBody,
   createdBy: joi.string().required(),
 });
@@ -20,4 +25,10 @@ const UpdateCustomerBody = joi.object({
 });
 
 const CustomerIdSchema = joi.string().required();
-export { CustomerBodySchema, UpdateCustomerBody, CustomerIdSchema };
+export {
+  CustomerBodySchema,
+  UpdateCustomerBody,
+  CustomerAddressSchema,
+  CustomerIdSchema,
+  CustomerNameContactSchema,
+};

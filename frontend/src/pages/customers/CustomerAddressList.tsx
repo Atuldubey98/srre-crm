@@ -1,32 +1,20 @@
-import { ChangeEventHandler, useDeferredValue, useMemo, useState } from "react";
+import Input from "../../common/Input";
 import "./CustomerAddressList.css";
 import { Address } from "./interfaces";
-import Input from "../../common/Input";
+import useSearchAddress from "./useSearchAddress";
 export type CustomerAddressListProps = {
   address: Address[];
 };
 export default function CustomerAddressList(props: CustomerAddressListProps) {
-  const [query, setQuery] = useState<string>("");
-  const onChangeQuery: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setQuery(e.currentTarget.value);
-  };
-  const search = useDeferredValue(query);
-  const addressList = useMemo(() => {
-    return props.address.filter((add) =>
-      search
-        ? add.location
-            .toLocaleLowerCase()
-            .indexOf(search.toLocaleLowerCase()) !== -1
-        : true
-    );
-  }, [search, props.address]);
+  const { query, onChangeQuery, addressList } = useSearchAddress(props.address);
   return (
     <section className="customer__addressList">
       <h4>Addresses</h4>
       <div className="customer__AddressSearch">
         <Input
+          id="searchAddressInList"
           type="search"
-          value={search}
+          value={query}
           onChange={onChangeQuery}
           placeholder="Search address"
         />
