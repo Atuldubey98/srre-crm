@@ -1,13 +1,8 @@
 import { isAxiosError } from "axios";
-import {
-  useEffect,
-  useState
-} from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useMatch, useParams } from "react-router-dom";
 import { MessageBodyProps } from "../../common/MessageBody";
-import {
-  getCustomerById
-} from "./customersApi";
+import { getCustomerById } from "./customersApi";
 import { Customer } from "./interfaces";
 
 export default function useSingleCustomer() {
@@ -25,17 +20,7 @@ export default function useSingleCustomer() {
   useEffect(() => {
     setMessageBody({ type: "success", body: "" });
     if (!customerId) {
-      setCustomer({
-        _id: "",
-        address: [],
-        createdAt: "",
-        contact: {
-          name: "",
-          phoneNumber: "",
-        },
-        name: "",
-        updatedAt: "",
-      });
+      setCustomer(null);
       return;
     }
     (async () => {

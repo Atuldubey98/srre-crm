@@ -4,7 +4,6 @@ import { AboutSection } from "../../common/PageLeftRight";
 import CustomerAddressForm from "./CustomerAddressForm";
 import "./CustomerForm.css";
 import CustomerNameContactForm from "./CustomerNameContactForm";
-import OperationBtnsGroup from "./OperationBtnsGroup";
 import { getCustomerById } from "./customersApi";
 import { Address } from "./interfaces";
 export type CustomerNameContact = {
@@ -28,6 +27,11 @@ export default function CustomerForm() {
             add._id === address._id ? address : add
           )
         : [...customerAddressList, address]
+    );
+  };
+  const removeCustomerAddress = (addressId: string) => {
+    setCustomerAddressList(
+      customerAddressList.filter((add) => add._id !== addressId)
     );
   };
   const [formAdress, setFormAddress] = useState<Address | null>(null);
@@ -82,12 +86,6 @@ export default function CustomerForm() {
   }, [customerId]);
   return (
     <AboutSection>
-      <OperationBtnsGroup
-        navigationUrl="/customers/new"
-        operationLabel="Add new Customer"
-        searchPlaceHolder="Search customer by id"
-        searchUrl="/customers"
-      />
       <section className="customer__formSection">
         <CustomerNameContactForm
           onSetCustomerNameContact={onSetCustomerNameContact}
@@ -96,6 +94,7 @@ export default function CustomerForm() {
         />
         {customerNameContact?._id ? (
           <CustomerAddressForm
+            removeCustomerAddress={removeCustomerAddress}
             onAddCustomerAddress={onAddCustomerAddress}
             customerId={customerNameContact._id}
             onSetFormAddress={onSetFormAddress}

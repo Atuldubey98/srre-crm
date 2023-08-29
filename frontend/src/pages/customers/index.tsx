@@ -1,11 +1,12 @@
-import { lazy } from "react";
+import { Suspense, lazy } from "react";
 import Container from "../../common/Container";
+import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
 import { PageLeftRight } from "../../common/PageLeftRight";
 import PrivateRoute from "../../common/PrivateRoute";
 import CustomersList from "./CustomersList";
 import useCustomers from "./useCustomers";
-import CustomerForm from "./CustomerForm";
 const AboutCustomer = lazy(() => import("./AboutCustomer"));
+const CustomerForm = lazy(() => import("./CustomerForm"));
 
 export default function CustomerPage() {
   const { customers, showNewCustomerPage, showEditCustomerPage } =
@@ -15,11 +16,13 @@ export default function CustomerPage() {
       <Container>
         <PageLeftRight>
           <CustomersList customers={customers} />
+          
+
           {showNewCustomerPage || showEditCustomerPage ? (
-            <CustomerForm />
-          ) : (
-            <AboutCustomer />
-          )}
+            <Suspense fallback={<LoadingIndicatorAbout loading={true} />}>
+              <CustomerForm />
+            </Suspense>
+          ) : <AboutCustomer />}
         </PageLeftRight>
       </Container>
     </PrivateRoute>

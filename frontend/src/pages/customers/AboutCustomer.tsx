@@ -1,11 +1,10 @@
 import { Suspense, lazy, memo } from "react";
+import { useParams } from "react-router-dom";
 import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
 import { AboutSection } from "../../common/PageLeftRight";
-import SmallLoading from "../dashboard/SmallLoading";
 import "./AboutCustomer.css";
 import OperationBtnsGroup from "./OperationBtnsGroup";
 import useSingleCustomer from "./useSingleCustomer";
-import { useParams } from "react-router-dom";
 const CustomerNotFound = lazy(() => import("./CustomerNotFound"));
 const CustomerDetails = lazy(() => import("./CustomerDetails"));
 
@@ -31,7 +30,7 @@ function AboutCustomerElement() {
           <CustomerDetails customer={customer} error={error} />
         </Suspense>
       ) : customerId ? (
-        <Suspense fallback={<SmallLoading />}>
+        <Suspense fallback={<LoadingIndicatorAbout loading={true} />}>
           <CustomerNotFound />
         </Suspense>
       ) : null}

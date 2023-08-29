@@ -70,6 +70,14 @@ export const updateCustomerById = (
     },
   });
 };
+export const deleteCustomerAddressById = (
+  customerId: string,
+  addressId: string
+) => {
+  return instance.delete(
+    `/api/v1/customers/${customerId}/address/${addressId}`
+  );
+};
 export const addNewCustomer = (customerNameContact: CustomerNameContact) => {
   return instance.post(`/api/v1/customers`, {
     name: customerNameContact.name,
