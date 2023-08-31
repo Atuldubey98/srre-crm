@@ -10,6 +10,8 @@ import { Customer } from "../reports/interfaces";
 import Input from "../../common/Input";
 
 export default function UploadCustomerAddressListForm() {
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [customerId, setCustomerId] = useState<string>("");
   const [messageBody, setMessageBody] = useState<MessageBodyProps | null>(null);
   const [addressListFile, setAddressListFile] = useState<File | null>(null);
@@ -44,6 +46,7 @@ export default function UploadCustomerAddressListForm() {
     } else {
       try {
         if (addressListFile) {
+          setLoading(true);
           const { data } = await uploadCustomerAddressTemplateCsvFile(
             customerId,
             addressListFile
@@ -62,9 +65,13 @@ export default function UploadCustomerAddressListForm() {
             ? error.response?.data.message
             : "Network error occured",
         });
+      } finally {
+        setLoading(false);
       }
     }
   };
+  const btnClassName = `btn btn-success ${loading ? "btn-loading" : ""}`;
+
   return (
     <form onSubmit={onSubmitForm} className="form">
       <SelectCustomers {...selectCustomerProps} />
@@ -83,7 +90,8 @@ export default function UploadCustomerAddressListForm() {
         <Button
           type="submit"
           label="Upload Address"
-          className="btn btn-success"
+          className={btnClassName}
+          disabled={loading}
         />
       ) : null}
       {messageBody ? <MessageBody {...messageBody} /> : null}

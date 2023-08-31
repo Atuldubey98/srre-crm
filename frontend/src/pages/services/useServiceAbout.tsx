@@ -6,17 +6,24 @@ import { getServiceById } from "./servicesApi";
 export default function useServiceAbout() {
   const { serviceId = "" } = useParams();
   const [service, setService] = useState<Service | null>(null);
-
+  const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     (async () => {
-      if (!serviceId) {
+      try {
+        if (!serviceId) {
+          setService(null);
+          return;
+        }
+        setLoading(true);
+        const { data } = await getServiceById(serviceId);
+        setService(data.data);
+      } catch (error) {
         setService(null);
-        return;
+      } finally {
+        setLoading(false);
       }
-      const { data } = await getServiceById(serviceId);
-      setService(data.data);
     })();
   }, [serviceId]);
- 
-  return { service, };
+
+  return { service, loading };
 }

@@ -1,6 +1,7 @@
 import { isAxiosError } from "axios";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import Button from "../../common/Button";
+import DirectionForField from "../../common/DirectionForField";
 import Input from "../../common/Input";
 import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
 import "./CustomerAddressForm.css";
@@ -11,7 +12,6 @@ import {
   updateAddressOfCustomerByAddressId,
 } from "./customersApi";
 import { Address } from "./interfaces";
-import DirectionForField from "../../common/DirectionForField";
 export type CustomerAddressFormProps = {
   formAddress: Address | null;
   customerId: string;
@@ -24,9 +24,10 @@ export default function CustomerAddressForm(props: CustomerAddressFormProps) {
   const { formAddress, onChangeFormAddress, customerId, onAddCustomerAddress } =
     props;
   const [messageBody, setMessageBody] = useState<MessageBodyProps | null>(null);
-
+  const [loading, setLoading] = useState<boolean>(false);
   const onSubmitAddressForm: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       if (formAddress) {
         const response = formAddress._id
@@ -47,12 +48,15 @@ export default function CustomerAddressForm(props: CustomerAddressFormProps) {
           : "Network error occured",
       });
     } finally {
+      setLoading(false);
       setTimeout(() => {
         setMessageBody(null);
       }, 1000);
     }
   };
-  const btnClassName = formAddress?._id ? "btn btn-action" : "btn btn-success";
+  const btnClassName = `btn ${formAddress?._id ? "btn-info" : "btn-success"} ${
+    loading ? "btn-loading" : ""
+  }`;
   async function onDeleteAddress() {
     try {
       if (formAddress) {
@@ -101,7 +105,7 @@ export default function CustomerAddressForm(props: CustomerAddressFormProps) {
               title={
                 isAddressSubmitDisbaled ? "Location is required" : "Submit"
               }
-              disabled={isAddressSubmitDisbaled}
+              disabled={isAddressSubmitDisbaled || loading}
               type="submit"
               label={formAddress._id ? "Update" : "Submit"}
               className={btnClassName}

@@ -106,6 +106,10 @@ export default function useReportForm() {
         type: "change:fields",
         payload: { name: "customer", value: customer?._id },
       });
+      dispatch({
+        type: "change:fields",
+        payload: { name: "customerAddress", value: "" },
+      });
     }
   };
   const onSetDefaultState = () => {

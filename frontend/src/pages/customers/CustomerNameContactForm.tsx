@@ -18,13 +18,14 @@ export default function CustomerNameContactForm(
 ) {
   const { customerNameContact, onChangeCustomerContact } = props;
   const [messageBody, setMessageBody] = useState<MessageBodyProps | null>(null);
-  
+  const [loading, setLoading] = useState<boolean>();
   const onCustomerContactFormSubmit: FormEventHandler<HTMLFormElement> = async (
     e
   ) => {
     e.preventDefault();
     try {
       if (customerNameContact) {
+        setLoading(true);
         const formState = customerNameContact._id
           ? "Customer updated"
           : "Customer added";
@@ -62,11 +63,12 @@ export default function CustomerNameContactForm(
       setTimeout(() => {
         setMessageBody(null);
       }, 1000);
+      setLoading(false);
     }
   };
-  const btnClass = customerNameContact?._id
-    ? "btn btn-info"
-    : "btn btn-success";
+  const btnClass = `btn ${
+    customerNameContact?._id ? "btn-info" : "btn-success"
+  } ${loading ? "btn-loading" : ""}`;
   const isCustomerSubmitDisabled = customerNameContact
     ? customerNameContact.name.length < 3
     : true;
@@ -99,7 +101,7 @@ export default function CustomerNameContactForm(
               ? "Customer name is required"
               : "Add customer"
           }
-          disabled={isCustomerSubmitDisabled}
+          disabled={isCustomerSubmitDisabled || loading}
           label={customerNameContact?._id ? "Update Customer" : "Submit"}
           className={btnClass}
         />

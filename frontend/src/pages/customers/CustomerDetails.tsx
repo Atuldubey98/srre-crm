@@ -74,14 +74,13 @@ export default function CustomerDetails(props: CustomerDetailsProps) {
           onClick={onDeleteCustomer}
         />
       </div>
-      {customer.address ? (
-        <CustomerAddressList address={customer.address} />
-      ) : null}
-
       {viewGraph ? (
         <Suspense fallback={<SmallLoading />}>
           <CustomerReportByPieChart />
         </Suspense>
+      ) : null}
+      {customer.address ? (
+        <CustomerAddressList address={customer.address} />
       ) : null}
     </div>
   );

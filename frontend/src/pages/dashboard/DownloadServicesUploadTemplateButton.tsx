@@ -6,8 +6,10 @@ import { downloadServicesTemplate } from "./dashApi";
 
 export default function DownloadServicesUploadTemplateButton() {
   const [messageBody, setMessageBody] = useState<MessageBodyProps | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const onDownloadServicesTemplate = async () => {
     try {
+      setLoading(true);
       const response = await downloadServicesTemplate();
       const file = new Blob([response.data]);
       const fileURL = URL.createObjectURL(file);
@@ -23,12 +25,16 @@ export default function DownloadServicesUploadTemplateButton() {
           ? error.response?.data.message
           : "Network error occured",
       });
+    } finally {
+      setLoading(false);
     }
   };
+  const btnClassName = `btn btn-info ${loading ? "btn-loading" : ""}`;
   return (
     <div className="d-grid">
       <Button
-        className="btn btn-info"
+        disabled={loading}
+        className={btnClassName}
         label="Download"
         onClick={onDownloadServicesTemplate}
       />

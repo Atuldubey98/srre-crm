@@ -9,9 +9,8 @@ import useServiceAbout from "./useServiceAbout";
 const NewServiceAddForm = lazy(() => import("./NewServiceAddForm"));
 const ServiceDescription = lazy(() => import("./ServiceDescription"));
 
-
 export default function AboutService() {
-  const { service } = useServiceAbout();
+  const { service, loading } = useServiceAbout();
   const location = useLocation();
   const pathnameMatch = useMatch(location.pathname);
   const showNewServiceForm = pathnameMatch?.pathnameBase === `/services/new`;
@@ -25,7 +24,9 @@ export default function AboutService() {
         searchPlaceHolder="Search service by id"
         searchUrl="/services"
       />
-      {service ? (
+      {loading ? (
+        <LoadingIndicatorAbout loading={true} />
+      ) : service ? (
         <Suspense fallback={<LoadingIndicatorAbout loading={true} />}>
           <ServiceDescription service={service} />
         </Suspense>

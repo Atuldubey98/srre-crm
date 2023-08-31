@@ -12,6 +12,8 @@ import "./CustomerForm.css";
 import CustomerNameContactForm from "./CustomerNameContactForm";
 import { getCustomerById } from "./customersApi";
 import { Address, PlainCustomer } from "./interfaces";
+import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
+import CustomerNotFound from "./CustomerNotFound";
 export type CustomerNameContact = {
   _id?: string;
   name: string;
@@ -25,6 +27,7 @@ export default function CustomerForm(props: CustomerFormProps) {
   const { customerId } = useParams();
   const [customerNameContact, setCustomerNameContact] =
     useState<CustomerNameContact | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const onSetCustomerNameContact = (value: CustomerNameContact) => {
     setCustomerNameContact(value);
   };
@@ -86,6 +89,7 @@ export default function CustomerForm(props: CustomerFormProps) {
     }
     (async () => {
       try {
+        setLoading(true);
         const { data } = await getCustomerById(customerId);
         setCustomerNameContact({
           _id: data.data._id,
@@ -96,64 +100,79 @@ export default function CustomerForm(props: CustomerFormProps) {
             : "",
         });
         setCustomerAddressList(data.data.address);
-      } catch (error) {}
+      } catch (error) {
+        setCustomerNameContact(null);
+        setCustomerAddressList([]);
+      } finally {
+        setLoading(false);
+      }
     })();
   }, [customerId]);
   const [query, setQuery] = useState<string>("");
   const onChangeQuery: ChangeEventHandler<HTMLInputElement> = (e) => {
     setQuery(e.currentTarget.value);
   };
- 
+
   const deferedSearch = useDeferredValue(query);
+
   return (
     <AboutSection>
-      <section className="customer__formSection">
-        <CustomerNameContactForm
-          onCustomerAdd={props.onCustomerAdd}
-          onSetCustomerNameContact={onSetCustomerNameContact}
-          onChangeCustomerContact={onChangeCustomerContact}
-          customerNameContact={customerNameContact}
-        />
-        {customerNameContact?._id ? (
-          <CustomerAddressForm
-            removeCustomerAddress={removeCustomerAddress}
-            onAddCustomerAddress={onAddCustomerAddress}
-            customerId={customerNameContact._id}
-            onSetFormAddress={onSetFormAddress}
-            formAddress={formAdress}
-            onChangeFormAddress={onChangeFormAddress}
+      {loading ? (
+        <LoadingIndicatorAbout loading={loading} />
+      ) : customerNameContact ? (
+        <section className="customer__formSection">
+          <CustomerNameContactForm
+            onCustomerAdd={props.onCustomerAdd}
+            onSetCustomerNameContact={onSetCustomerNameContact}
+            onChangeCustomerContact={onChangeCustomerContact}
+            customerNameContact={customerNameContact}
           />
-        ) : null}
-        {customerAddressList && customerAddressList.length > 0 ? (
-          <div className="customer__addressList">
-            <h4>Addresses</h4>
-            <div className="customer__AddressSearch">
-              <Input
-                id="searchAddressInList"
-                type="search"
-                value={query}
-                onChange={onChangeQuery}
-                placeholder="Search address"
-              />
+          {customerNameContact?._id ? (
+            <CustomerAddressForm
+              removeCustomerAddress={removeCustomerAddress}
+              onAddCustomerAddress={onAddCustomerAddress}
+              customerId={customerNameContact._id}
+              onSetFormAddress={onSetFormAddress}
+              formAddress={formAdress}
+              onChangeFormAddress={onChangeFormAddress}
+            />
+          ) : null}
+          {customerAddressList && customerAddressList.length > 0 ? (
+            <div className="customer__addressList">
+              <h4>Addresses</h4>
+              <div className="customer__AddressSearch">
+                <Input
+                  id="searchAddressInList"
+                  type="search"
+                  value={query}
+                  onChange={onChangeQuery}
+                  placeholder="Search address"
+                />
+              </div>
+              <ul className="address__list address__listForm">
+                {customerAddressList
+                  .filter((add) =>
+                    deferedSearch
+                      ? add.location.indexOf(deferedSearch) !== -1
+                      : true
+                  )
+                  .map((address) => (
+                    <li
+                      onClick={() => setFormAddress(address)}
+                      key={address._id}
+                    >
+                      <fieldset>
+                        <address>{address.location}</address>
+                      </fieldset>
+                    </li>
+                  ))}
+              </ul>
             </div>
-            <ul className="address__list address__listForm">
-              {customerAddressList
-                .filter((add) =>
-                  deferedSearch
-                    ? add.location.indexOf(deferedSearch) !== -1
-                    : true
-                )
-                .map((address) => (
-                  <li onClick={() => setFormAddress(address)} key={address._id}>
-                    <fieldset>
-                      <address>{address.location}</address>
-                    </fieldset>
-                  </li>
-                ))}
-            </ul>
-          </div>
-        ) : null}
-      </section>
+          ) : null}
+        </section>
+      ) : (
+        <CustomerNotFound />
+      )}
     </AboutSection>
   );
 }

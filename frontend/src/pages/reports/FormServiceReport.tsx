@@ -24,9 +24,11 @@ import {
   updateServiceReport,
 } from "./serviceReportsApi";
 import useReportForm from "./useReportForm";
+import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
 
 export default function FormServiceReport() {
   const { state, operations } = useReportForm();
+  const [loading, setLoading] = useState<boolean>(false);
   const location = useLocation();
   const { reportId = "" } = useParams();
   const pathnameMatch = useMatch(location.pathname);
@@ -76,6 +78,7 @@ export default function FormServiceReport() {
       (async () => {
         setError("");
         try {
+          setLoading(true);
           const response = await getServiceReportById(reportId);
           onSetNewState({
             customer: response.data.data.customer._id,
@@ -95,19 +98,24 @@ export default function FormServiceReport() {
           setError(
             isAxiosError(error) ? error.response?.data.message : "Error occured"
           );
+        } finally {
+          setLoading(false);
         }
       })();
     }
   }, [reportId, onSetNewState]);
   const isSubmitBtnDisbaled =
     state.customer.length === 0 ||
+    state.customerAddress.length === 0 ||
     state.serviceDate.length === 0 ||
     state.acMetaInfo.length === 0 ||
     state.technician.length === 0 ||
     state.acMetaInfo.some((acMeta) => acMeta.typeOfAC.length === 0);
   return (
     <AboutSection>
-      {error ? (
+      {loading ? (
+        <LoadingIndicatorAbout loading={true} />
+      ) : error ? (
         <ReportnotFound />
       ) : (
         <form className="service__reportForm" onSubmit={onSubmit}>
@@ -158,7 +166,10 @@ export default function FormServiceReport() {
             onChangeReportField={operations.onChangeReportField}
           />
           <MessageBody {...message} />
-          <FormSubmitButton isSubmitBtnDisbaled={isSubmitBtnDisbaled} />
+          <FormSubmitButton
+            isSubmitBtnDisbaled={isSubmitBtnDisbaled || loading}
+            loading={loading}
+          />
         </form>
       )}
     </AboutSection>

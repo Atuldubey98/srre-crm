@@ -29,11 +29,13 @@ export default function NewServiceAddForm() {
     onSetField,
   } = useFieldChange<CreateServiceBody>(defaultService);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
   const onNewServiceFormSubmit: FormEventHandler<HTMLFormElement> = async (
     e
   ) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const { data } = await createNewService(service);
       onSetField(defaultService);
       if (data.data.count > 1) {
@@ -51,11 +53,14 @@ export default function NewServiceAddForm() {
           ? error.response?.data.message
           : "Error occured !",
       });
+    } finally {
+      setLoading(false);
     }
   };
   const submitBtnDisbaled = service.serviceName.length === 0;
   const submitBtnLabel =
     service.typeOfAC === "all" ? "Bulk Services add" : "Add Service";
+  const serviceBtnClassname = `btn btn-success ${loading ? "btn-loading" : ""}`;
   return (
     <AboutSection>
       <section className="new__serviceForm">
@@ -90,7 +95,7 @@ export default function NewServiceAddForm() {
             <Button
               disabled={submitBtnDisbaled}
               label={submitBtnLabel}
-              className="btn btn-success"
+              className={serviceBtnClassname}
             />
           </div>
           <MessageBody {...message} />

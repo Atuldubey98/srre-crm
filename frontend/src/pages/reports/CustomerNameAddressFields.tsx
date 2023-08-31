@@ -40,6 +40,7 @@ export default function CustomerNameAddressFields(
         <div className="form__labelField">
           <label htmlFor="customerAddress">Customer Address :</label>
           <Select
+            required
             options={addressList}
             onChange={props.onAddressChange}
             getOptionLabel={(option: Address) => option.location}

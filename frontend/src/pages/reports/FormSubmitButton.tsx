@@ -3,6 +3,7 @@ import Button from "../../common/Button";
 
 export type FormSubmitButtonProps = {
   isSubmitBtnDisbaled: boolean;
+  loading: boolean;
 };
 export default function FormSubmitButton(props: FormSubmitButtonProps) {
   const { reportId = "" } = useParams();
@@ -10,20 +11,23 @@ export default function FormSubmitButton(props: FormSubmitButtonProps) {
   const pathnameMatch = useMatch(location.pathname);
   const isUpdateForm =
     pathnameMatch?.pathnameBase === `/reports/${reportId}/edit`;
+  const btnClassName = `btn ${reportId ? "btn-info" : "btn-success"} ${
+    props.loading ? "btn-loading" : ""
+  }`;
   return (
     <div className="d-flex-center">
       {isUpdateForm ? (
         <Button
           type="submit"
           label="Update Report"
-          className="btn btn-info"
+          className={btnClassName}
           disabled={props.isSubmitBtnDisbaled}
         />
       ) : (
         <Button
           type="submit"
           label="Add Report"
-          className="btn btn-success"
+          className={btnClassName}
           disabled={props.isSubmitBtnDisbaled}
         />
       )}

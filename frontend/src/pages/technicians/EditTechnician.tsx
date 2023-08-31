@@ -36,6 +36,7 @@ export default function EditTechnician() {
   const showUpdateTechnician =
     technician &&
     pathnameMatch?.pathnameBase === `/technicians/${technicianId}/edit`;
+  const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     (async () => {
       if (!technicianId) {
@@ -48,10 +49,13 @@ export default function EditTechnician() {
         return;
       }
       try {
+        setLoading(true);
         const { data } = await getAllTechnicianById(technicianId);
         setTechnician(data.data);
       } catch (error) {
         setTechnician(null);
+      } finally {
+        setLoading(false);
       }
     })();
   }, [technicianId]);
@@ -79,44 +83,32 @@ export default function EditTechnician() {
     e
   ) => {
     e.preventDefault();
-
-    try {
-      if (showUpdateTechnician) {
-        if (technician) {
-          const { data } = await udpateNewTechnician(
-            {
-              name: technician.name,
-              contactNumber: technician.contactNumber,
-              currentlyActive: technician.currentlyActive,
-              email: technician.email,
-            },
-            technicianId
-          );
-          navigate(`/technicians/${data.data._id}`);
-        }
-      } else {
-        if (technician) {
-          const { data } = await createNewTechnician({
-            name: technician?.name,
-            contactNumber: technician?.contactNumber,
-            currentlyActive: technician?.currentlyActive,
-            email: technician?.email,
-          });
-          navigate(`/technicians/${data.data._id}`);
-        }
+    if (technician) {
+      try {
+        setLoading(true);
+        const { _id, ...restTechncian } = technician;
+        const { data } = _id
+          ? await udpateNewTechnician(restTechncian, technicianId)
+          : await createNewTechnician(restTechncian);
+        navigate(`/technicians/${data.data._id}`);
+      } catch (error) {
+        setMessageBody({
+          type: "error",
+          body: isAxiosError(error)
+            ? error.response?.data.message
+            : "Network error occured",
+        });
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      setMessageBody({
-        type: "error",
-        body: isAxiosError(error)
-          ? error.response?.data.message
-          : "Network error occured",
-      });
     }
   };
   const submitBtnDisbaled = technician
     ? technician.name.length === 0 || technician.contactNumber.length === 0
     : true;
+  const btnClassName = `btn ${technician?._id ? "btn-info" : "btn-success"} ${
+    loading ? "btn-loading" : ""
+  }`;
   return showForm ? (
     <EditSection>
       <section className="edit__technician">
@@ -175,16 +167,16 @@ export default function EditTechnician() {
           <div className="d-flex-center">
             {showUpdateTechnician ? (
               <Button
-                disabled={submitBtnDisbaled}
+                disabled={submitBtnDisbaled || loading}
                 label="Update Technician"
-                className="btn btn-info"
+                className={btnClassName}
                 type="submit"
               />
             ) : (
               <Button
-                disabled={submitBtnDisbaled}
+                disabled={submitBtnDisbaled || loading}
                 label="Add technician"
-                className="btn btn-success"
+                className={btnClassName}
                 type="submit"
               />
             )}
