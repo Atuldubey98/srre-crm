@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "start": "node .",
+    "start": "export NODE_ENV=production && node .",
     "dev": "export NODE_ENV=development && nodemon .",
     "build": "npm i"
   },
