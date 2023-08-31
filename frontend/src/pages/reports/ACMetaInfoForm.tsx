@@ -49,6 +49,7 @@ export default function ACMetaInfoForm(props: ACMetaInfoFormProps) {
       modelNumber: e.currentTarget.value.toLocaleUpperCase(),
     });
   };
+  const updateServiceDisabled = acMetaForm.typeOfAC.length === 0;
   return (
     <div className="ac__form form">
       <FormLabelField
@@ -109,6 +110,8 @@ export default function ACMetaInfoForm(props: ACMetaInfoFormProps) {
         {acMetaForm._id ? (
           <Button
             label="Update Serviced"
+            title={updateServiceDisabled ? "Select type of ac" : ""}
+            disabled={updateServiceDisabled}
             className="btn btn-small"
             onClick={() => {
               props.onUpdateService(acMetaForm);
@@ -118,7 +121,9 @@ export default function ACMetaInfoForm(props: ACMetaInfoFormProps) {
         ) : (
           <Button
             label="Add AC Serviced"
+            title={updateServiceDisabled ? "Select type of ac" : ""}
             className="btn btn-small"
+            disabled={updateServiceDisabled}
             onClick={() => {
               props.onAddService({
                 ...acMetaForm,

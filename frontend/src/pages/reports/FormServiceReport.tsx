@@ -103,7 +103,8 @@ export default function FormServiceReport() {
     state.customer.length === 0 ||
     state.serviceDate.length === 0 ||
     state.acMetaInfo.length === 0 ||
-    state.technician.length === 0;
+    state.technician.length === 0 ||
+    state.acMetaInfo.some((acMeta) => acMeta.typeOfAC.length === 0);
   return (
     <AboutSection>
       {error ? (
@@ -118,10 +119,10 @@ export default function FormServiceReport() {
               value: state.serviceDate,
               onChange: operations.onChangeReportField,
             }}
-            label="Service Date"
+            label="Service Date*"
           />
-          <div className="form__fieldLabel">
-            <label htmlFor="typeOfCall">Type of Service </label>
+          <div className="form__labelField">
+            <label htmlFor="typeOfCall">Type of Service *</label>
             <SelectOptions
               required
               name="typeOfCall"

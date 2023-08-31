@@ -14,3 +14,6 @@
 .login__form > h1{
   text-align: center;
 }
+.login__message{
+  min-height: 10vh;
+}

@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "../../common/Button";
 import ReportField from "../reports/ReportField";
 import ReportTechnician from "../reports/ReportTechnician";
@@ -12,10 +12,9 @@ export default function TechnicianFieldsSection(
 ) {
   const { technician } = props;
   const navigate = useNavigate();
-  const { technicianId = "" } = useParams();
 
   const onTechyEdit = () => {
-    navigate(`/technicians/${technicianId}/edit`);
+    navigate(`/technicians/${technician._id}/edit`);
   };
   return (
     <div className="technician__about d-grid">

@@ -38,8 +38,9 @@ export default function Loginpage() {
             maxLength={20}
           />
           <LoginSpinnerWithButton loading={loading} />
-          <MessageBody {...message} />
-        
+          <div className="login__message">
+            <MessageBody {...message} />
+          </div>
         </form>
       </section>
     </main>

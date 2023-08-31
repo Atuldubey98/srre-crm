@@ -11,6 +11,7 @@ import {
   updateAddressOfCustomerByAddressId,
 } from "./customersApi";
 import { Address } from "./interfaces";
+import DirectionForField from "../../common/DirectionForField";
 export type CustomerAddressFormProps = {
   formAddress: Address | null;
   customerId: string;
@@ -76,14 +77,18 @@ export default function CustomerAddressForm(props: CustomerAddressFormProps) {
       });
     }
   }
-
+  const isAddressSubmitDisbaled = formAddress
+    ? formAddress.location.length < 3
+    : true;
   return (
     <section className="customer__addressForm">
+      <DirectionForField directionText="Add address by clicking on 'Add Address' then submit the form" />
       {formAddress ? (
         <form onSubmit={onSubmitAddressForm} className="form address__form">
           <div className="form__labelField">
             <label htmlFor="location">Customer address *</label>
             <Input
+              minLength={3}
               name="location"
               id="location"
               value={formAddress?.location || ""}
@@ -93,6 +98,10 @@ export default function CustomerAddressForm(props: CustomerAddressFormProps) {
           <div className="d-grid btn-group">
             {messageBody ? <MessageBody {...messageBody} /> : null}
             <Button
+              title={
+                isAddressSubmitDisbaled ? "Location is required" : "Submit"
+              }
+              disabled={isAddressSubmitDisbaled}
               type="submit"
               label={formAddress._id ? "Update" : "Submit"}
               className={btnClassName}

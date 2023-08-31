@@ -1,8 +1,8 @@
 import { ChangeEventHandler, useEffect, useState } from "react";
 import SelectOptions from "../../common/SelectOptions";
+import TechnicianFieldsSection from "../technicians/TechnicianFieldsSection";
 import { Technician } from "../technicians/interfaces";
 import { getAllTechnicials } from "../technicians/techiesApi";
-import ReportField from "./ReportField";
 import "./TechnicianFormSelect.css";
 import { ServiceReportStatus } from "./interfaces";
 export type TechnicianFormSelectProps = {
@@ -25,7 +25,7 @@ export default function TechnicianFormSelect(props: TechnicianFormSelectProps) {
     <fieldset className="field__section">
       <legend>Technician</legend>
       <div className="form__labelField">
-        <label htmlFor="technician">Select the Technician Visiting</label>
+        <label htmlFor="technician">Select the Technician Visiting*</label>
         <SelectOptions
           required
           value={props.technician}
@@ -43,20 +43,7 @@ export default function TechnicianFormSelect(props: TechnicianFormSelectProps) {
         </SelectOptions>
       </div>
       {technicianSelected ? (
-        <div className="technician__item">
-          <ReportField
-            fieldName="Technician Name"
-            value={technicianSelected.name}
-          />
-          <ReportField
-            fieldName="Technician Phone number"
-            value={technicianSelected.contactNumber}
-          />
-          <ReportField
-            fieldName="Technician Active or Not "
-            value={technicianSelected.currentlyActive}
-          />
-        </div>
+        <TechnicianFieldsSection technician={technicianSelected} />
       ) : null}
       <div className="form__labelField">
         <label htmlFor="status">Work Status :</label>

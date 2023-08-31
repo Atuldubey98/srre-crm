@@ -15,6 +15,7 @@ export default function SummaryDetailsWrapper(
         onClick={() => setShowFullTab(!showFullTab)}
         style={{
           fontWeight: "bold",
+          cursor : "pointer"
         }}
       >
         {props.summaryText}

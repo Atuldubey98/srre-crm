@@ -1,5 +1,11 @@
-import { ChangeEventHandler, useEffect, useState } from "react";
+import {
+  ChangeEventHandler,
+  useDeferredValue,
+  useEffect,
+  useState,
+} from "react";
 import { useParams } from "react-router-dom";
+import Input from "../../common/Input";
 import { AboutSection } from "../../common/PageLeftRight";
 import CustomerAddressForm from "./CustomerAddressForm";
 import "./CustomerForm.css";
@@ -22,20 +28,26 @@ export default function CustomerForm(props: CustomerFormProps) {
   const onSetCustomerNameContact = (value: CustomerNameContact) => {
     setCustomerNameContact(value);
   };
-  const [customerAddressList, setCustomerAddressList] = useState<Address[]>([]);
+  const [customerAddressList, setCustomerAddressList] = useState<
+    Address[] | null
+  >([]);
   const onAddCustomerAddress = (address: Address) => {
-    setCustomerAddressList(
-      customerAddressList.find((add) => add._id === address._id)
-        ? customerAddressList.map((add) =>
-            add._id === address._id ? address : add
-          )
-        : [...customerAddressList, address]
-    );
+    if (customerAddressList) {
+      setCustomerAddressList(
+        customerAddressList.find((add) => add._id === address._id)
+          ? customerAddressList.map((add) =>
+              add._id === address._id ? address : add
+            )
+          : [...customerAddressList, address]
+      );
+    }
   };
   const removeCustomerAddress = (addressId: string) => {
-    setCustomerAddressList(
-      customerAddressList.filter((add) => add._id !== addressId)
-    );
+    if (customerAddressList) {
+      setCustomerAddressList(
+        customerAddressList.filter((add) => add._id !== addressId)
+      );
+    }
   };
   const [formAdress, setFormAddress] = useState<Address | null>(null);
   const onChangeFormAddress: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -87,6 +99,12 @@ export default function CustomerForm(props: CustomerFormProps) {
       } catch (error) {}
     })();
   }, [customerId]);
+  const [query, setQuery] = useState<string>("");
+  const onChangeQuery: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setQuery(e.currentTarget.value);
+  };
+ 
+  const deferedSearch = useDeferredValue(query);
   return (
     <AboutSection>
       <section className="customer__formSection">
@@ -106,15 +124,35 @@ export default function CustomerForm(props: CustomerFormProps) {
             onChangeFormAddress={onChangeFormAddress}
           />
         ) : null}
-        <ul className="address__list address__listForm">
-          {customerAddressList.map((address) => (
-            <li onClick={() => setFormAddress(address)} key={address._id}>
-              <fieldset>
-                <address>{address.location}</address>
-              </fieldset>
-            </li>
-          ))}
-        </ul>
+        {customerAddressList && customerAddressList.length > 0 ? (
+          <div className="customer__addressList">
+            <h4>Addresses</h4>
+            <div className="customer__AddressSearch">
+              <Input
+                id="searchAddressInList"
+                type="search"
+                value={query}
+                onChange={onChangeQuery}
+                placeholder="Search address"
+              />
+            </div>
+            <ul className="address__list address__listForm">
+              {customerAddressList
+                .filter((add) =>
+                  deferedSearch
+                    ? add.location.indexOf(deferedSearch) !== -1
+                    : true
+                )
+                .map((address) => (
+                  <li onClick={() => setFormAddress(address)} key={address._id}>
+                    <fieldset>
+                      <address>{address.location}</address>
+                    </fieldset>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        ) : null}
       </section>
     </AboutSection>
   );

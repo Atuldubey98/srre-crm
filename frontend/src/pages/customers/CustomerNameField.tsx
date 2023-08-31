@@ -13,6 +13,7 @@ export default function CustomerNameField(props: CustomerNameFieldProps) {
       <DirectionForField directionText="Enter the customers name." />
       <FormLabelField
         input={{
+          minLength: 3,
           type: "text",
           id: "name",
           required: true,

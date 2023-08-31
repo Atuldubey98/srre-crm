@@ -1,11 +1,11 @@
+import { isAxiosError } from "axios";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import Button from "../../common/Button";
 import FormLabelField from "../../common/FormLabelField";
+import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
 import { CustomerNameContact } from "./CustomerForm";
 import CustomerNameField from "./CustomerNameField";
 import { addNewCustomer, updateCustomerById } from "./customersApi";
-import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
-import { isAxiosError } from "axios";
 import { PlainCustomer } from "./interfaces";
 export type CustomerNameContactFormProps = {
   customerNameContact: CustomerNameContact | null;
@@ -18,6 +18,7 @@ export default function CustomerNameContactForm(
 ) {
   const { customerNameContact, onChangeCustomerContact } = props;
   const [messageBody, setMessageBody] = useState<MessageBodyProps | null>(null);
+  
   const onCustomerContactFormSubmit: FormEventHandler<HTMLFormElement> = async (
     e
   ) => {
@@ -66,6 +67,9 @@ export default function CustomerNameContactForm(
   const btnClass = customerNameContact?._id
     ? "btn btn-info"
     : "btn btn-success";
+  const isCustomerSubmitDisabled = customerNameContact
+    ? customerNameContact.name.length < 3
+    : true;
   return (
     <form onSubmit={onCustomerContactFormSubmit} className="form">
       <CustomerNameField
@@ -90,6 +94,12 @@ export default function CustomerNameContactForm(
       />
       <div className="d-grid">
         <Button
+          title={
+            isCustomerSubmitDisabled
+              ? "Customer name is required"
+              : "Add customer"
+          }
+          disabled={isCustomerSubmitDisabled}
           label={customerNameContact?._id ? "Update Customer" : "Submit"}
           className={btnClass}
         />
