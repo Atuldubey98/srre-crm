@@ -57,9 +57,11 @@ export default function CustomerAddressForm(props: CustomerAddressFormProps) {
   const btnClassName = `btn ${formAddress?._id ? "btn-info" : "btn-success"} ${
     loading ? "btn-loading" : ""
   }`;
+  const deleteClassName = `btn  btn-danger ${loading ? "btn-loading" : ""}`;
   async function onDeleteAddress() {
     try {
       if (formAddress) {
+        setLoading(true);
         const { data } = await getCountOfReportsByAddressId(formAddress?._id);
         if (data.data.canBeDeleted) {
           props.onSetFormAddress(null);
@@ -79,6 +81,8 @@ export default function CustomerAddressForm(props: CustomerAddressFormProps) {
           ? error.response?.data.message
           : "Network error occured",
       });
+    } finally {
+      setLoading(false);
     }
   }
   const isAddressSubmitDisbaled = formAddress
@@ -92,6 +96,7 @@ export default function CustomerAddressForm(props: CustomerAddressFormProps) {
           <div className="form__labelField">
             <label htmlFor="location">Customer address *</label>
             <Input
+              disabled={loading}
               minLength={3}
               name="location"
               id="location"
@@ -112,10 +117,11 @@ export default function CustomerAddressForm(props: CustomerAddressFormProps) {
             />
             {formAddress._id ? (
               <Button
+                disabled={loading}
                 onClick={onDeleteAddress}
                 type="button"
                 label="Delete Address"
-                className="btn btn-danger"
+                className={deleteClassName}
               />
             ) : null}
           </div>

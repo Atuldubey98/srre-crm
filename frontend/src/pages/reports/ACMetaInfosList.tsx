@@ -5,6 +5,7 @@ import Button from "../../common/Button";
 import { acOptions } from "../services/interfaces";
 export type ACMetaInfosListProps = {
   acMetaInfos: AcMetaInfo[];
+  disabled?: boolean;
   onRemoveService: (serviceId: string) => void;
   onSetACMetaInfo: (acMetaInfo: AcMetaInfo) => void;
 };
@@ -36,6 +37,7 @@ export default function ACMetaInfosList(props: ACMetaInfosListProps) {
           </div>
           <div className="ac__InfoDelete">
             <Button
+              disabled={props.disabled}
               className="btn btn-small btn-danger"
               label="Delete"
               onClick={() => {

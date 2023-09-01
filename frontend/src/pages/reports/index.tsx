@@ -43,7 +43,7 @@ export default function ServiceReportsPage() {
           ...(prevReports || []),
           ...data.data,
         ]);
-        setHashMoreReports(data.data.length > 0);
+        setHashMoreReports(data.data.length >= queryParamsReports.limit);
       } catch (error) {
         setHashMoreReports(false);
       }
@@ -54,7 +54,7 @@ export default function ServiceReportsPage() {
       (serviceReports || []).filter((rep) => rep._id !== serviceReportId)
     );
   };
-  
+
   return (
     <PrivateRoute>
       <Container>

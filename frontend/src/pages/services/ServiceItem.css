@@ -3,12 +3,15 @@
 }
 .service__item {
   padding-block: 0.3rem;
-  padding-inline: 0.5rem;
   cursor: pointer;
+  padding-inline: 0.2rem;
 }
 .service__item:hover {
   background-color: rgb(240, 239, 239);
 }
 .selected__serviceItem {
   background-color: var(--primary-color);
+}
+.service__dates{
+  font-size: small;
 }

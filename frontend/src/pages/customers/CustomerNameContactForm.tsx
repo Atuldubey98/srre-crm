@@ -75,11 +75,13 @@ export default function CustomerNameContactForm(
   return (
     <form onSubmit={onCustomerContactFormSubmit} className="form">
       <CustomerNameField
+        disabled={loading}
         onChangeName={onChangeCustomerContact}
         name={customerNameContact?.name || ""}
       />
       <FormLabelField
         input={{
+          disabled: loading,
           value: customerNameContact?.contactName || "",
           onChange: onChangeCustomerContact,
           name: "contactName",
@@ -88,6 +90,7 @@ export default function CustomerNameContactForm(
       />
       <FormLabelField
         input={{
+          disabled: loading,
           value: customerNameContact?.contactPhoneNumber || "",
           onChange: onChangeCustomerContact,
           name: "contactPhoneNumber",

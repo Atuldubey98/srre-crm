@@ -5,6 +5,9 @@ import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
 import { uploadServicesTemplate } from "./dashApi";
 import { isAxiosError } from "axios";
 export default function UploadServicesForm() {
+  const [loading, setLoading] = useState<boolean>(false);
+  const btnClassName = `btn btn-success ${loading ? "btn-loading" : ""}`;
+
   const [messageBody, setMessageBody] = useState<MessageBodyProps | null>(null);
   const [servicesTemplate, setServicesTemplate] = useState<File | null>(null);
   const onChangeServicesFileTemplate: ChangeEventHandler<HTMLInputElement> = (
@@ -21,6 +24,7 @@ export default function UploadServicesForm() {
         setMessageBody({ type: "error", body: "Please specify the template" });
         return;
       }
+      setLoading(true);
       const { data } = await uploadServicesTemplate(servicesTemplate);
       setMessageBody({ type: "success", body: data.message });
     } catch (error) {
@@ -30,11 +34,14 @@ export default function UploadServicesForm() {
           ? error.response?.data.message
           : "Network error occured",
       });
+    } finally {
+      setLoading(false);
     }
   };
   return (
     <form onSubmit={onSubmitTemplate} className="form">
       <Input
+        disabled={loading}
         required
         type="file"
         accept=".csv"
@@ -42,7 +49,7 @@ export default function UploadServicesForm() {
         onChange={onChangeServicesFileTemplate}
       />
       {servicesTemplate ? (
-        <Button label="Upload" className="btn btn-success" />
+        <Button label="Upload" className={btnClassName} disabled={loading} />
       ) : null}
       {messageBody ? <MessageBody {...messageBody} /> : null}
     </form>

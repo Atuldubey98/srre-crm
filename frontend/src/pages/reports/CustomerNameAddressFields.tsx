@@ -4,6 +4,7 @@ import { getAddressByCustomerId } from "../customers/customersApi";
 import { Address } from "../customers/interfaces";
 import SelectCustomers from "./SelectCustomers";
 import { Customer } from "./interfaces";
+import { Link } from "react-router-dom";
 export type CustomerNameAddressFieldsProps = {
   customer: string;
   onChangeCustomerField: (customerItem: Customer | null) => void;
@@ -36,7 +37,7 @@ export default function CustomerNameAddressFields(
         onChangeCustomerField={onChangeCustomerField}
         customerFieldDisabled={props.customerFieldDisabled}
       />
-      {customer && addressList ? (
+      {!customer || !addressList ? null : addressList.length ? (
         <div className="form__labelField">
           <label htmlFor="customerAddress">Customer Address :</label>
           <Select
@@ -51,7 +52,11 @@ export default function CustomerNameAddressFields(
             }
           />
         </div>
-      ) : null}
+      ) : (
+        <Link to={`/customers/${customer}/edit`}>
+          Add address for this customer
+        </Link>
+      )}
     </>
   );
 }

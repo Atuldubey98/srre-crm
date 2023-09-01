@@ -8,6 +8,7 @@ import { Customer } from "./interfaces";
 import { downloadServiceReportsByFilter } from "./serviceReportsApi";
 
 export default function ServiceReportGeneratorDownloaderForm() {
+  const [loading, setLoading] = useState<boolean>(false);
   const [serviceReportListFormFields, setServiceReportListFormFields] =
     useState<ServiceReportListFormFields>({
       customer: "",
@@ -49,6 +50,7 @@ export default function ServiceReportGeneratorDownloaderForm() {
   ) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await downloadServiceReportsByFilter(
         serviceReportListFormFields
       );
@@ -61,6 +63,8 @@ export default function ServiceReportGeneratorDownloaderForm() {
       URL.revokeObjectURL(fileURL);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   const onAddressChange = (address: Address | null) => {
@@ -70,11 +74,18 @@ export default function ServiceReportGeneratorDownloaderForm() {
       });
     }
   };
+  const isReportBtnDisabled =
+    (!serviceReportListFormFields.customerFieldDisabled &&
+      serviceReportListFormFields.customer.length === 0) ||
+    loading;
+  const btnClassName = `btn btn-success ${loading ? "btn-loading" : ""}`;
+
   return (
     <form onSubmit={onSubmitReportsDownloadForm}>
       <div className="form__labelField">
         <label htmlFor="allcustomer">All Customers</label>
         <input
+          disabled={loading}
           name="customerFieldDisabled"
           type="checkbox"
           onChange={onChangeCustomerDisableField}
@@ -84,7 +95,7 @@ export default function ServiceReportGeneratorDownloaderForm() {
       <CustomerNameAddressFields
         onAddressChange={onAddressChange}
         customerFieldDisabled={
-          serviceReportListFormFields.customerFieldDisabled
+          serviceReportListFormFields.customerFieldDisabled || loading
         }
         customeAddressFieldRequired={false}
         customer={serviceReportListFormFields.customer}
@@ -95,6 +106,7 @@ export default function ServiceReportGeneratorDownloaderForm() {
         <FormLabelField
           label="From Date"
           input={{
+            disabled: loading,
             name: "fromDate",
             type: "date",
             value: serviceReportListFormFields.fromDate,
@@ -104,6 +116,7 @@ export default function ServiceReportGeneratorDownloaderForm() {
         <FormLabelField
           label="To Date"
           input={{
+            disabled: loading,
             type: "date",
             name: "toDate",
             onChange: onChangeCustomerField,
@@ -113,12 +126,9 @@ export default function ServiceReportGeneratorDownloaderForm() {
         />
       </div>
       <Button
-        disabled={
-          !serviceReportListFormFields.customerFieldDisabled &&
-          serviceReportListFormFields.customer.length === 0
-        }
+        disabled={isReportBtnDisabled}
         label="Download"
-        className="btn btn-success"
+        className={btnClassName}
       />
     </form>
   );

@@ -69,6 +69,7 @@ export default function NewServiceAddForm() {
           <div className="form__labelField">
             <label htmlFor="typeOfAC">Type of AC :</label>
             <SelectOptions
+              disabled={loading}
               onChange={onChangeField}
               name="typeOfAC"
               value={service.typeOfAC}
@@ -83,6 +84,7 @@ export default function NewServiceAddForm() {
           <div className="form__labelField">
             <label htmlFor="serviceName">What type of service :</label>
             <Input
+              disabled={loading}
               required
               name="serviceName"
               minLength={1}

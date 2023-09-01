@@ -119,6 +119,7 @@ export default function EditTechnician() {
           <div className="form__labelField">
             <label htmlFor="name"> Technician Name :*</label>
             <Input
+              disabled={loading}
               name="name"
               autoComplete="name"
               id="name"
@@ -131,6 +132,7 @@ export default function EditTechnician() {
           <div className="form__labelField">
             <label htmlFor="contactNumber">Technician Contact Number :*</label>
             <Input
+              disabled={loading}
               id="contactNumber"
               type="tel"
               placeholder="What is his contact number?"
@@ -143,6 +145,7 @@ export default function EditTechnician() {
           <div className="form__labelField">
             <label htmlFor="email">Technician Email : </label>
             <Input
+              disabled={loading}
               type="email"
               autoComplete="email"
               id="email"
@@ -155,6 +158,7 @@ export default function EditTechnician() {
           <div className="form__labelField">
             <label htmlFor="currentlyActive">Is Employee active ?</label>
             <SelectOptions
+              disabled={loading}
               id="currentlyActive"
               name="currentlyActive"
               onChange={onChangeTechnician}

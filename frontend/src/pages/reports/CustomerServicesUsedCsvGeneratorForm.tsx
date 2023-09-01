@@ -7,6 +7,7 @@ import { Customer } from "./interfaces";
 import { downloadCustomerServicesCount } from "./serviceReportsApi";
 
 export default function CustomerServicesUsedCsvGeneratorForm() {
+  const [loading, setLoading] = useState<boolean>(false);
   const [formFields, setFormFields] =
     useState<CustomerServicesUsedCsvGeneratorFormFields>({
       customer: "",
@@ -19,6 +20,7 @@ export default function CustomerServicesUsedCsvGeneratorForm() {
   ) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await downloadCustomerServicesCount(formFields);
       const file = new Blob([response.data]);
       const fileURL = URL.createObjectURL(file);
@@ -29,6 +31,8 @@ export default function CustomerServicesUsedCsvGeneratorForm() {
       URL.revokeObjectURL(fileURL);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   const onChangeCustomerDisableField: ChangeEventHandler<
@@ -56,12 +60,17 @@ export default function CustomerServicesUsedCsvGeneratorForm() {
       });
     }
   };
+  const isDownloadDisabled =
+    !formFields.allCustomers && !formFields.customer.length;
+  const btnClassName = `btn btn-info ${loading ? "btn-loading" : ""}`;
+
   return (
     <form onSubmit={onSubmitReportsDownloadForm}>
       <div className="d-grid report__generationDates">
         <FormLabelField
           label="From Date"
           input={{
+            disabled: loading,
             name: "fromDate",
             value: formFields.fromDate,
             onChange: onChangeField,
@@ -72,6 +81,7 @@ export default function CustomerServicesUsedCsvGeneratorForm() {
           label="To Date"
           input={{
             type: "date",
+            disabled: loading,
             name: "toDate",
             value: formFields.toDate,
             min: formFields.fromDate,
@@ -84,19 +94,20 @@ export default function CustomerServicesUsedCsvGeneratorForm() {
         <input
           name="customerFieldDisabled"
           type="checkbox"
+          disabled={loading}
           onChange={onChangeCustomerDisableField}
           checked={formFields.allCustomers}
         />
       </div>
       <SelectCustomers
         customer={formFields.customer}
-        customerFieldDisabled={formFields.allCustomers}
+        customerFieldDisabled={formFields.allCustomers || loading}
         onChangeCustomerField={onChangeCustomerField}
       />
       <Button
-        disabled={!formFields.allCustomers && formFields.customer.length === 0}
+        disabled={isDownloadDisabled}
         label="Download"
-        className="btn btn-success"
+        className={btnClassName}
         type="submit"
       />
     </form>

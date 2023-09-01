@@ -79,6 +79,7 @@ export default function UploadCustomerAddressListForm() {
       <div className="form__labelField">
         <label htmlFor="addressList">Select the template :*</label>
         <Input
+          disabled={loading}
           type="file"
           required
           accept=".csv"

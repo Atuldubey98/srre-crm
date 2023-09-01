@@ -8,6 +8,7 @@ import "./ServicesGivenFields.css";
 import { AcMetaInfo } from "./interfaces";
 export type ServicesGivenFieldsProps = {
   acMetaInfoList: AcMetaInfo[];
+  disabled?: boolean;
   onAddService: (service: AcMetaInfo) => void;
   onUpdateService: (acmeta: AcMetaInfo) => void;
   onRemoveService: (serviceId: string) => void;
@@ -50,6 +51,7 @@ export default function ServicesGivenFields(props: ServicesGivenFieldsProps) {
     <fieldset className="field__section">
       <legend>Work Done</legend>
       <ACMetaInfosList
+        disabled={props.disabled}
         onRemoveService={props.onRemoveService}
         acMetaInfos={acMetaInfoList}
         onSetACMetaInfo={onSetACMetaInfo}
@@ -59,6 +61,7 @@ export default function ServicesGivenFields(props: ServicesGivenFieldsProps) {
           <Button
             className="btn btn-small"
             label="Add More AC"
+            disabled={props.disabled}
             onClick={() => setAcMetaForm(defaultACMetaInfo)}
           />
         </div>

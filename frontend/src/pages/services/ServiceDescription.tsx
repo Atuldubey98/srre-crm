@@ -13,13 +13,16 @@ export type ServiceDescriptionProps = {
 export default function ServiceDescription(props: ServiceDescriptionProps) {
   const { service } = props;
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<MessageBodyProps>({
     type: "success",
     body: "",
   });
+  const btnClassName = `btn btn-danger ${loading ? "btn-loading" : ""}`;
 
   const onDeleteService = async () => {
     try {
+      setLoading(true);
       await deleteServiceById(service?._id || "");
       navigate("/services");
     } catch (error) {
@@ -29,6 +32,8 @@ export default function ServiceDescription(props: ServiceDescriptionProps) {
           ? error.response?.data.message
           : "Network error occured",
       });
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -46,8 +51,9 @@ export default function ServiceDescription(props: ServiceDescriptionProps) {
       </div>
       <div className="btn-group d-flex-center">
         <Button
+          disabled={loading}
           label="Delete Service"
-          className="btn btn-danger"
+          className={btnClassName}
           onClick={onDeleteService}
         />
       </div>

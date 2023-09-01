@@ -5,6 +5,7 @@ import SelectOptions from "../../common/SelectOptions";
 import { Service, acTypeOptionsWithoutAll } from "../services/interfaces";
 import { AcMetaInfo } from "./interfaces";
 import ServiceInputCheckbox from "./ServiceInputCheckbox";
+import { Link } from "react-router-dom";
 
 export type ACMetaInfoFormProps = {
   acMetaForm: AcMetaInfo;
@@ -89,14 +90,20 @@ export default function ACMetaInfoForm(props: ACMetaInfoFormProps) {
       {services ? (
         <fieldset className="field__section">
           <legend>Work Done </legend>
-          {services.map((service) => (
-            <ServiceInputCheckbox
-              key={service._id}
-              service={service}
-              selectedServices={acMetaForm.services || []}
-              onChangeServiceCheckBox={onChangeServiceCheckBox}
-            />
-          ))}
+          {services.length ? (
+            services.map((service) => (
+              <ServiceInputCheckbox
+                key={service._id}
+                service={service}
+                selectedServices={acMetaForm.services || []}
+                onChangeServiceCheckBox={onChangeServiceCheckBox}
+              />
+            ))
+          ) : (
+            <Link className="service__reportAddService" to={"/services/new"}>
+              Add services for this type of AC.
+            </Link>
+          )}
         </fieldset>
       ) : null}
       <div className="d-flex-center btn-group">

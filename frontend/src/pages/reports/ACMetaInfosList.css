@@ -4,7 +4,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
-.ac__Infos{
+.ac__Infos {
   gap: 0.8rem;
 }
 .ac__info {
@@ -17,4 +17,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+.service__reportAddService {
+  text-align: center;
 }

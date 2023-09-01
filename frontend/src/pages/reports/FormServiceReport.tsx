@@ -29,6 +29,7 @@ import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
 export default function FormServiceReport() {
   const { state, operations } = useReportForm();
   const [loading, setLoading] = useState<boolean>(false);
+  const [formLoading, setFormLoading] = useState<boolean>(false);
   const location = useLocation();
   const { reportId = "" } = useParams();
   const pathnameMatch = useMatch(location.pathname);
@@ -48,13 +49,11 @@ export default function FormServiceReport() {
       });
     } else {
       try {
-        if (isUpdateForm) {
-          const { data } = await updateServiceReport(state, reportId);
-          navigate(`/reports/${data.data._id}`);
-        } else {
-          const { data } = await createNewServiceReport(state);
-          navigate(`/reports/${data.data._id}`);
-        }
+        setLoading(true);
+        const { data } = isUpdateForm
+          ? await updateServiceReport(state, reportId)
+          : await createNewServiceReport(state);
+        navigate(`/reports/${data.data._id}`);
         operations.onSetDefaultState();
       } catch (error) {
         setMessage({
@@ -67,6 +66,7 @@ export default function FormServiceReport() {
         setTimeout(() => {
           setMessage({ ...message, body: "" });
         }, 1500);
+        setLoading(false);
       }
     }
   };
@@ -78,7 +78,7 @@ export default function FormServiceReport() {
       (async () => {
         setError("");
         try {
-          setLoading(true);
+          setFormLoading(true);
           const response = await getServiceReportById(reportId);
           onSetNewState({
             customer: response.data.data.customer._id,
@@ -99,12 +99,12 @@ export default function FormServiceReport() {
             isAxiosError(error) ? error.response?.data.message : "Error occured"
           );
         } finally {
-          setLoading(false);
+          setFormLoading(false);
         }
       })();
     }
   }, [reportId, onSetNewState]);
-  const isSubmitBtnDisbaled =
+  const isSubmitBtnDisbaled: boolean =
     state.customer.length === 0 ||
     state.customerAddress.length === 0 ||
     state.serviceDate.length === 0 ||
@@ -113,7 +113,7 @@ export default function FormServiceReport() {
     state.acMetaInfo.some((acMeta) => acMeta.typeOfAC.length === 0);
   return (
     <AboutSection>
-      {loading ? (
+      {formLoading ? (
         <LoadingIndicatorAbout loading={true} />
       ) : error ? (
         <ReportnotFound />
@@ -121,6 +121,7 @@ export default function FormServiceReport() {
         <form className="service__reportForm" onSubmit={onSubmit}>
           <FormLabelField
             input={{
+              disabled: loading,
               name: "serviceDate",
               type: "date",
               required: true,
@@ -133,6 +134,7 @@ export default function FormServiceReport() {
             <label htmlFor="typeOfCall">Type of Service *</label>
             <SelectOptions
               required
+              disabled={loading}
               name="typeOfCall"
               onChange={operations.onChangeReportField}
               value={state.typeOfCall}
@@ -142,6 +144,7 @@ export default function FormServiceReport() {
             </SelectOptions>
           </div>
           <CustomerFields
+            disabled={loading}
             siteContactPerson={state.siteContactPerson}
             customer={customer}
             onAddressChange={operations.onAddressChange}
@@ -151,17 +154,20 @@ export default function FormServiceReport() {
             onChangeCustomerField={operations.onChangeReportField}
           />
           <ServicesGivenFields
+            disabled={loading}
             onRemoveService={operations.onRemoveService}
             onUpdateService={operations.onUpdateService}
             acMetaInfoList={acMetaInfo}
             onAddService={operations.onAddService}
           />
           <TechnicianFormSelect
+            disabled={loading}
             status={state.status}
             onChangeReportField={operations.onChangeReportField}
             technician={state.technician}
           />
           <WorkDescriptionField
+            disabled={loading}
             description={state.description}
             onChangeReportField={operations.onChangeReportField}
           />

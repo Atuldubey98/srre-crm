@@ -7,6 +7,7 @@ import "./TechnicianFormSelect.css";
 import { ServiceReportStatus } from "./interfaces";
 export type TechnicianFormSelectProps = {
   technician: string;
+  disabled?: boolean;
   onChangeReportField: ChangeEventHandler<HTMLSelectElement>;
   status: ServiceReportStatus;
 };
@@ -28,6 +29,7 @@ export default function TechnicianFormSelect(props: TechnicianFormSelectProps) {
         <label htmlFor="technician">Select the Technician Visiting*</label>
         <SelectOptions
           required
+          disabled={props.disabled}
           value={props.technician}
           onChange={props.onChangeReportField}
           name="technician"
@@ -48,6 +50,7 @@ export default function TechnicianFormSelect(props: TechnicianFormSelectProps) {
       <div className="form__labelField">
         <label htmlFor="status">Work Status :</label>
         <SelectOptions
+          disabled={props.disabled}
           value={props.status}
           onChange={props.onChangeReportField}
           name="status"

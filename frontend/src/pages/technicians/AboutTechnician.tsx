@@ -11,6 +11,7 @@ import { getAllTechnicianById } from "./techiesApi";
 import LoadingIndicatorAbout from "../../common/LoadingIndicatorAbout";
 export default function AboutTechnician() {
   const { technicianId = "" } = useParams();
+  const [loading, setLoading] = useState<boolean>(false);
   const location = useLocation();
   const pathnameMatch = useMatch(location.pathname);
   const updateTechnician =
@@ -23,10 +24,13 @@ export default function AboutTechnician() {
         return;
       }
       try {
+        setLoading(true);
         const { data } = await getAllTechnicianById(technicianId);
         setTechnician(data.data);
       } catch (error) {
         setTechnician(null);
+      } finally {
+        setLoading(false);
       }
     })();
   }, [technicianId, updateTechnician]);
@@ -40,7 +44,9 @@ export default function AboutTechnician() {
         searchUrl="/technicians"
       />
       <Suspense fallback={<LoadingIndicatorAbout loading={true} />}>
-        {technician ? (
+        {loading ? (
+          <LoadingIndicatorAbout loading={true} />
+        ) : technician ? (
           <TechnicianFieldsSection technician={technician} />
         ) : technicianId ? (
           <TechnicianNotfound />

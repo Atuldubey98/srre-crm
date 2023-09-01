@@ -9,6 +9,7 @@ export type CustomerFieldsProps = {
     HTMLInputElement | HTMLSelectElement
   >;
   customer: string;
+  disabled?: boolean;
   onAddressChange: (address: Address | null) => void;
   onChangeCustomerFieldItem: (customer: Customer | null) => void;
   onChangeContactField: ChangeEventHandler<HTMLInputElement>;
@@ -22,6 +23,7 @@ export default function CustomerFields(props: CustomerFieldsProps) {
     <fieldset className="field__section">
       <legend>Customer</legend>
       <CustomerNameAddressFields
+        customerFieldDisabled={props.disabled}
         onAddressChange={props.onAddressChange}
         customer={customer}
         customeAddressFieldRequired={true}
@@ -30,6 +32,7 @@ export default function CustomerFields(props: CustomerFieldsProps) {
       />
       <FormLabelField
         input={{
+          disabled: props.disabled,
           name: "identification",
           placeholder: "Contact name or id ? eg APL123",
           value: props.siteContactPerson.identification,
@@ -39,6 +42,7 @@ export default function CustomerFields(props: CustomerFieldsProps) {
       />
       <FormLabelField
         input={{
+          disabled: props.disabled,
           name: "contactNumber",
           placeholder: "Contact Number of the person?",
           value: props.siteContactPerson.contactNumber,
