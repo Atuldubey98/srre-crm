@@ -9,6 +9,9 @@ export default function AuthenticatedUserHeader() {
     if (confirm("Do you want to logout ?")) {
       localStorage.clear();
       navigate("/login", { replace: true });
+      if (authContext) {
+        authContext.onSetCurrentUser(null);
+      }
     }
   };
   return (

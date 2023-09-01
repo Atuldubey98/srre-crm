@@ -1,0 +1,9 @@
+.customer__reportNotFound {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-block: 2rem;
+  gap: 1rem;
+  min-height: 5rem;
+}
