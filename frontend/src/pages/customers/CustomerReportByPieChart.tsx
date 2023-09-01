@@ -10,6 +10,7 @@ import "./CustomerReportByPieChart.css";
 import { getCustomerServicesCount } from "./customersApi";
 import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
 import { isAxiosError } from "axios";
+import CustomerReportByPieChartNotfound from "./CustomerReportByPieChartNotfound";
 ChartJS.register(ArcElement, Tooltip, Legend);
 export default function CustomerReportByPieChart() {
   const [date, setDate] = useState<number>(30);
@@ -65,6 +66,7 @@ export default function CustomerReportByPieChart() {
   }, [customerId, date]);
   return (
     <section className="customer__reportPie">
+      <p>Stats of services used by customer : </p>
       <div className="form__labelField">
         <label htmlFor="lastMonths">Last Months</label>
         <SelectOptions value={date} onChange={onChangeDate}>
@@ -74,7 +76,11 @@ export default function CustomerReportByPieChart() {
         </SelectOptions>
       </div>
       <div className="customer__chart">
-        {pieData ? <Pie data={pieData} /> : null}
+        {pieData && pieData.labels.length ? (
+          <Pie data={pieData} />
+        ) : (
+          <CustomerReportByPieChartNotfound lastDate={date} />
+        )}
       </div>
       <MessageBody {...messageBody} />
     </section>

@@ -3,7 +3,6 @@ import { User } from "../pages/login/interfaces";
 import { currentUserApi } from "../pages/login/loginApi";
 import { AuthContext } from "./AuthContext";
 
-
 export default function AuthContextProvider({
   children,
 }: {
@@ -11,7 +10,7 @@ export default function AuthContextProvider({
 }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [currentUserLoading, setCurrentUserLoading] = useState<boolean>(true);
-  const onSetCurrentUser = (user: User) => {
+  const onSetCurrentUser = (user: User | null) => {
     setCurrentUser(user);
   };
   useEffect(() => {
