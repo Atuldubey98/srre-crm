@@ -153,7 +153,7 @@ export default function reportRepository() {
   }
   async function getServiceReports(skip = 0, limit = 10) {
     return Report.aggregate([
-      { $sort: { updatedAt: -1 } },
+      { $sort: { createdAt: -1 } },
       { $skip: skip },
       { $limit: limit },
       ...reportPipeLine,
