@@ -25,6 +25,10 @@ export function errorHandler(err, req, res, next) {
     code = 401;
     message = "token invalid";
   }
+  if (err.name === "JWEDecryptionFailed") {
+    code = 401;
+    message = "token invalid";
+  }
   if (err.name === "TypeError") {
     message = "type validation failed";
     code = 400;
