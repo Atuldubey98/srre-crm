@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@types/randomcolor": "^0.5.7",
     "axios": "^1.4.0",
     "chart.js": "^4.3.3",
     "randomcolor": "^0.6.2",
@@ -23,6 +22,7 @@
     "react-spinners": "^0.13.8"
   },
   "devDependencies": {
+    "@types/randomcolor": "^0.5.7",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
