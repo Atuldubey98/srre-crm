@@ -1,7 +1,9 @@
+import httpStatusCodes from "http-status-codes";
+
 class UserExistsError extends Error {
   constructor() {
     super("User already exists");
-    this.code = 404;
+    this.code = httpStatusCodes.CONFLICT;
     this.stack = Error.captureStackTrace(this);
     this.name = "UserExists";
   }
@@ -10,7 +12,7 @@ class UserExistsError extends Error {
 class UserDoesNotExistsError extends Error {
   constructor() {
     super("email does not exists");
-    this.code = 400;
+    this.code = httpStatusCodes.UNAUTHORIZED;
     this.stack = Error.captureStackTrace(this);
     this.name = "UserDoesNotExistsError";
   }
@@ -19,7 +21,7 @@ class UserDoesNotExistsError extends Error {
 class EmployeeNotFound extends Error {
   constructor() {
     super("Employee not found");
-    this.code = 404;
+    this.code = httpStatusCodes.NOT_FOUND;
     this.stack = Error.captureStackTrace(this);
     this.name = "EmployeeNotFound";
   }
@@ -28,7 +30,7 @@ class EmployeeNotFound extends Error {
 class PasswordDoestNotMatchError extends Error {
   constructor() {
     super("password does not match");
-    this.code = 400;
+    this.code = httpStatusCodes.UNAUTHORIZED;
     this.stack = Error.captureStackTrace(this);
     this.name = "PasswordDoestNotMatchError";
   }
@@ -37,7 +39,7 @@ class PasswordDoestNotMatchError extends Error {
 class UnAuthenticatedUserError extends Error {
   constructor() {
     super("unauthenticated");
-    this.code = 401;
+    this.code = httpStatusCodes.UNAUTHORIZED;
     this.stack = Error.captureStackTrace(this);
     this.name = "UnAuthenticatedUserError";
   }

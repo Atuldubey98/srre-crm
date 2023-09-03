@@ -3,6 +3,7 @@ import cors from "cors";
 import express, { Router } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import httpStatusCodes from "http-status-codes";
 import path from "path";
 import { NODE_ENV } from "../config.js";
 const middlewaresRouter = Router();
@@ -39,6 +40,8 @@ middlewaresRouter.use((req, res, next) => {
   }
 });
 middlewaresRouter.get("/api/v1/health", (req, res) => {
-  return res.status(200).send("Server is healthy");
+  return res
+    .status(httpStatusCodes.OK)
+    .send(httpStatusCodes.getStatusText(httpStatusCodes.OK));
 });
 export default middlewaresRouter;

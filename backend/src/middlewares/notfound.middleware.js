@@ -1,12 +1,13 @@
+import httpStatusCodes from "http-status-codes";
+
 /**
  * @description : Route not found handler
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
- * @returns {Response}
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @param {import("express").NextFunction} next
  */
 export default function routeNotFoundMiddleware(req, res) {
-  return res.status(404).json({
+  return res.status(httpStatusCodes.NOT_FOUND).json({
     status: false,
     message: `${req.originalUrl} : ${req.method} is not available on server`,
   });

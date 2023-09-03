@@ -1,37 +1,39 @@
 import { NODE_ENV } from "../config.js";
+import httpStatusCodes from "http-status-codes";
 
 export function errorHandler(err, req, res, next) {
   if (res.headersSent) {
     return next(err);
   }
   let message = err.message || "internal server error";
-  let code = err.code || 500;
+  let code = err.code || httpStatusCodes.INTERNAL_SERVER_ERROR;
   if (err.name === "CastError") {
     message = "Entity not found";
+    code = httpStatusCodes.NOT_FOUND;
   }
   if (err.name === "MongoServerError") {
     message = "Some error occured";
-    code = 400;
+    code = httpStatusCodes.BAD_REQUEST;
   }
   if (err.name === "ValidationError") {
-    code = 400;
+    code = httpStatusCodes.BAD_REQUEST;
     message = err.message;
   }
   if (err.name === "JWEInvalid") {
-    code = 401;
+    code = httpStatusCodes.UNAUTHORIZED;
     message = "token invalid";
   }
   if (err.name === "JWTExpired") {
-    code = 401;
+    code = httpStatusCodes.UNAUTHORIZED;
     message = "token invalid";
   }
   if (err.name === "JWEDecryptionFailed") {
-    code = 401;
+    code = httpStatusCodes.UNAUTHORIZED;
     message = "token invalid";
   }
   if (err.name === "TypeError") {
     message = "type validation failed";
-    code = 400;
+    code = httpStatusCodes.BAD_REQUEST;
   }
   return res.status(code).json({ status: false, message });
 }

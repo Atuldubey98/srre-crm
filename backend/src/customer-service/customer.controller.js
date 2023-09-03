@@ -9,6 +9,7 @@ import {
 } from "./customer.validation.js";
 import { CustomerBeingUsedByReportError, CustomerNotFound } from "./errors.js";
 import addressRepository from "./address.repository.js";
+import httpStatusCodes from "http-status-codes";
 const { createAddressList } = addressRepository();
 const {
   createCustomer,
@@ -247,7 +248,9 @@ export async function deleteCustomerByIdController(req, res, next) {
       throw new CustomerBeingUsedByReportError();
     }
     await deleteCustomerById(customerId);
-    return res.status(200).json({ status: true, message: "customer deleted" });
+    return res
+      .status(httpStatusCodes.NO_CONTENT)
+      .json({ status: true, message: "customer deleted" });
   } catch (error) {
     next(error);
   }

@@ -1,7 +1,8 @@
+import httpStatusCodes from "http-status-codes";
 export class UnauthorizedError extends Error {
   constructor() {
     super("Unauthorized for this request");
-    this.code = 403;
+    this.code = httpStatusCodes.FORBIDDEN;
     this.stack = Error.captureStackTrace(this);
     this.name = "Unauthorized";
   }
