@@ -23,9 +23,13 @@ export default function TechnicianItem(props: TechnicianItemProps) {
     <li onClick={onTechyClick} className={technicianClassName}>
       <div className="d-grid">
         <p className="technician__name">{technician.name}</p>
-        <p>
+        <p className="technician__subtitle">
           {`${technician.contactNumber}  |  `}
-          {getDateByCustomerCreationDate(technician.createdAt || "")}
+          {new Date(technician.createdAt || "").toLocaleDateString("en-US", {
+            month: "long",
+            day: "2-digit",
+            year: "numeric",
+          }) || ""}
         </p>
       </div>
       <GoDotFill color={dotColor} />

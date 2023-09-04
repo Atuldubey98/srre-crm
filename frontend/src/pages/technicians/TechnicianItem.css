@@ -7,6 +7,9 @@
   align-items: center;
   justify-content: space-between;
 }
+.technician__subtitle {
+  font-size: small;
+}
 .technician:hover {
   background-color: rgb(240, 239, 239);
 }

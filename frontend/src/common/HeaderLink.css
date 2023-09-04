@@ -1,10 +1,13 @@
-.header__link > a {
+.headerLink__active {
+  font-weight: bold;
+}
+.header__link {
   text-decoration: none;
   color: black;
 }
-.header__link > a:hover:not(.header__linkSelected > a) {
+.header__link:hover {
   text-decoration: underline;
 }
-.header__linkSelected > a {
-  font-weight: bold;
+.header__link:hover:is(.headerLink__active){
+  text-decoration: none;
 }

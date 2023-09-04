@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import AdminWrapper from "./AdminWrapper";
 import "./HeaderLink.css";
 export type HeaderLinkProps = {
@@ -8,19 +8,40 @@ export type HeaderLinkProps = {
 };
 export default function HeaderLink(props: HeaderLinkProps) {
   const { isAuthenticationRequired, label, to } = props;
-  const location = useLocation();
-  const className = `header__link ${
-    location.pathname === to ? "header__linkSelected" : ""
-  }`;
+
+  const headerLinkPendingClassName = "header__link headerLink__pending";
+  const headerLinkActiveClassName = "header__link headerLink__active";
   return isAuthenticationRequired ? (
     <AdminWrapper>
-      <li className={className}>
-        <Link to={to}>{label}</Link>
+      <li className="header__link">
+        <NavLink
+          className={({ isActive, isPending }) =>
+            isPending
+              ? headerLinkPendingClassName
+              : isActive
+              ? headerLinkActiveClassName
+              : "header__link"
+          }
+          to={to}
+        >
+          {label}
+        </NavLink>
       </li>
     </AdminWrapper>
   ) : (
-    <li className={className}>
-      <Link to={to}>{label}</Link>
+    <li>
+      <NavLink
+        className={({ isActive, isPending }) =>
+          isPending
+            ? headerLinkPendingClassName
+            : isActive
+            ? headerLinkActiveClassName
+            : "header__link"
+        }
+        to={to}
+      >
+        {label}
+      </NavLink>
     </li>
   );
 }

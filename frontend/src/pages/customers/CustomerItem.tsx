@@ -20,7 +20,13 @@ export default function CustomerItem(customer: PlainCustomer) {
     >
       <p className="customer__name">{customer.name}</p>
       <div className="customer__meta">
-        <span>{getDateByCustomerCreationDate(customer.createdAt)}---</span>
+        <span>
+          {`${new Date(customer.createdAt || "").toLocaleDateString("en-US", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          })} | `}
+        </span>
         <span>Created by :{customer?.createdBy?.name}</span>
       </div>
     </li>
