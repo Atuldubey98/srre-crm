@@ -4,8 +4,8 @@ import { PORT } from "./config.js";
 import mongoose from "mongoose";
 
 import cluster from "cluster";
-import { availableParallelism } from "os";
-const noOfCpus = availableParallelism();
+import { cpus } from "os";
+const noOfCpus = cpus().length;
 if (cluster.isPrimary) {
   for (let i = 0; i < noOfCpus; i++) {
     cluster.fork();
