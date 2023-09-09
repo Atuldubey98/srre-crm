@@ -7,6 +7,9 @@ import {
   downloadServiceReportByReportId,
 } from "./serviceReportsApi";
 import { isAxiosError } from "axios";
+import { AiOutlineDelete } from "react-icons/ai";
+import { MdUpdate } from "react-icons/md";
+import { BiSolidDownload } from "react-icons/bi";
 export type ReportButtonsGroupProps = {
   onRemoveService: (reportId: string) => void;
 };
@@ -55,23 +58,27 @@ export default function ReportButtonsGroup(props: ReportButtonsGroupProps) {
       });
     }
   };
+  const onClickUpdateServiceReport = () => {
+    navigate(`/reports/${reportId}/edit`);
+  };
   return (
     <div className="btn-group d-flex-center">
       <Button
+        children={<MdUpdate />}
         label="Edit Report"
-        className="btn btn-info"
-        onClick={() => {
-          navigate(`/reports/${reportId}/edit`);
-        }}
+        className="btn btn-info d-flex-center"
+        onClick={onClickUpdateServiceReport}
       />
       <Button
+        children={<BiSolidDownload />}
         label="Download Service Report"
         onClick={onDownloadServiceReport}
-        className="btn btn-success"
+        className="btn btn-success d-flex-center"
       />
       <Button
+        children={<AiOutlineDelete />}
         label="Delete Report"
-        className="btn btn-danger"
+        className="btn btn-danger d-flex-center"
         onClick={onDeleteReport}
       />
       <MessageBody {...message} />

@@ -6,6 +6,7 @@ import CustomerNameAddressFields from "./CustomerNameAddressFields";
 import { ServiceReportListFormFields } from "./ServiceReportCsvGenerationForm";
 import { Customer } from "./interfaces";
 import { downloadServiceReportsByFilter } from "./serviceReportsApi";
+import { BiSolidDownload } from "react-icons/bi";
 
 export default function ServiceReportGeneratorDownloaderForm() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -78,7 +79,7 @@ export default function ServiceReportGeneratorDownloaderForm() {
     (!serviceReportListFormFields.customerFieldDisabled &&
       serviceReportListFormFields.customer.length === 0) ||
     loading;
-  const btnClassName = `btn btn-success ${loading ? "btn-loading" : ""}`;
+  const btnClassName = `btn d-flex-center btn-success ${loading ? "btn-loading" : ""}`;
 
   return (
     <form onSubmit={onSubmitReportsDownloadForm}>
@@ -126,6 +127,7 @@ export default function ServiceReportGeneratorDownloaderForm() {
         />
       </div>
       <Button
+        children={<BiSolidDownload />}
         disabled={isReportBtnDisabled}
         label="Download"
         className={btnClassName}

@@ -1,5 +1,6 @@
 import { useParams, useMatch, useLocation } from "react-router-dom";
 import Button from "../../common/Button";
+import { MdOutlineAdd, MdUpdate } from "react-icons/md";
 
 export type FormSubmitButtonProps = {
   isSubmitBtnDisbaled: boolean;
@@ -11,7 +12,7 @@ export default function FormSubmitButton(props: FormSubmitButtonProps) {
   const pathnameMatch = useMatch(location.pathname);
   const isUpdateForm =
     pathnameMatch?.pathnameBase === `/reports/${reportId}/edit`;
-  const btnClassName = `btn ${reportId ? "btn-info" : "btn-success"} ${
+  const btnClassName = `btn d-flex-center ${reportId ? "btn-info" : "btn-success"} ${
     props.loading ? "btn-loading" : ""
   }`;
   return (
@@ -19,12 +20,14 @@ export default function FormSubmitButton(props: FormSubmitButtonProps) {
       {isUpdateForm ? (
         <Button
           type="submit"
+          children={<MdUpdate />}
           label="Update Report"
           className={btnClassName}
           disabled={props.isSubmitBtnDisbaled}
         />
       ) : (
         <Button
+          children={<MdOutlineAdd />}
           type="submit"
           label="Add Report"
           className={btnClassName}

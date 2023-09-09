@@ -5,6 +5,7 @@ import { CustomerServicesUsedCsvGeneratorFormFields } from "./CustomerServicesUs
 import SelectCustomers from "./SelectCustomers";
 import { Customer } from "./interfaces";
 import { downloadCustomerServicesCount } from "./serviceReportsApi";
+import { BiSolidDownload } from "react-icons/bi";
 
 export default function CustomerServicesUsedCsvGeneratorForm() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -62,7 +63,9 @@ export default function CustomerServicesUsedCsvGeneratorForm() {
   };
   const isDownloadDisabled =
     !formFields.allCustomers && !formFields.customer.length;
-  const btnClassName = `btn btn-info ${loading ? "btn-loading" : ""}`;
+  const btnClassName = `btn btn-success d-flex-center ${
+    loading ? "btn-loading" : ""
+  }`;
 
   return (
     <form onSubmit={onSubmitReportsDownloadForm}>
@@ -105,6 +108,7 @@ export default function CustomerServicesUsedCsvGeneratorForm() {
         onChangeCustomerField={onChangeCustomerField}
       />
       <Button
+        children={<BiSolidDownload />}
         disabled={isDownloadDisabled}
         label="Download"
         className={btnClassName}
