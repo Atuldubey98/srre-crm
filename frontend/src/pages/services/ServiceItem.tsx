@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { getDateByCustomerCreationDate } from "../../utils/dateUtils";
-import { Service, acOptions } from "./interfaces";
 import "./ServiceItem.css";
+import { Service, acOptions } from "./interfaces";
 export interface ServiceItemProps {
   service: Service;
 }

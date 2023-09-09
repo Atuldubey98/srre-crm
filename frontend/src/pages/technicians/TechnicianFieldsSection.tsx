@@ -3,6 +3,7 @@ import Button from "../../common/Button";
 import ReportField from "../reports/ReportField";
 import ReportTechnician from "../reports/ReportTechnician";
 import { Technician } from "./interfaces";
+import { FiEdit2 } from "react-icons/fi";
 
 export type TechnicianFieldsSectionProps = {
   technician: Technician;
@@ -23,8 +24,9 @@ export default function TechnicianFieldsSection(
       <ReportField value={technician._id} fieldName="Technician Id" />
       <div className="btn-group d-flex-center">
         <Button
+          children={<FiEdit2 />}
           label="Edit Technician"
-          className="btn btn-info"
+          className="btn btn-info d-flex-center"
           onClick={onTechyEdit}
         />
       </div>

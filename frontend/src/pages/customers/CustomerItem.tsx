@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import useNavigateWithQuery from "../../common/useNavigateWithQuery";
-import { getDateByCustomerCreationDate } from "../../utils/dateUtils";
 import "./CustomerItem.css";
 import { PlainCustomer } from "./interfaces";
 export default function CustomerItem(customer: PlainCustomer) {

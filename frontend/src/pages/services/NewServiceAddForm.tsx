@@ -10,6 +10,7 @@ import useFieldChange from "../../common/useFieldChange";
 import "./NewServiceAddForm.css";
 import { CreateServiceBody, acTypeOptions } from "./interfaces";
 import { createNewService } from "./servicesApi";
+import { MdOutlineAdd } from "react-icons/md";
 export default function NewServiceAddForm() {
   const [message, setMessage] = useState<{
     type: "success" | "error";
@@ -57,10 +58,12 @@ export default function NewServiceAddForm() {
       setLoading(false);
     }
   };
-  const submitBtnDisbaled = service.serviceName.length === 0;
+  const submitBtnDisbaled = loading || service.serviceName.length === 0;
   const submitBtnLabel =
     service.typeOfAC === "all" ? "Bulk Services add" : "Add Service";
-  const serviceBtnClassname = `btn btn-success ${loading ? "btn-loading" : ""}`;
+  const serviceBtnClassname = `btn d-flex-center btn-success ${
+    loading ? "btn-loading" : ""
+  }`;
   return (
     <AboutSection>
       <section className="new__serviceForm">
@@ -95,6 +98,7 @@ export default function NewServiceAddForm() {
           </div>
           <div className="d-flex-center btn-group">
             <Button
+              children={<MdOutlineAdd />}
               disabled={submitBtnDisbaled}
               label={submitBtnLabel}
               className={serviceBtnClassname}

@@ -3,6 +3,8 @@ import Button from "../../common/Button";
 import "./OperationBtnsGroup.css";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import Input from "../../common/Input";
+import { IoIosAddCircleOutline } from "react-icons/io";
+import { FcSearch } from "react-icons/fc";
 export type OperationBtnsGroupProps = {
   navigationUrl: string;
   operationLabel: string;
@@ -24,8 +26,9 @@ export default function OperationBtnsGroup(props: OperationBtnsGroupProps) {
   return isAddForm ? null : (
     <section className="operations__btns d-flex-center">
       <Button
+        children={<IoIosAddCircleOutline />}
         label={props.operationLabel}
-        className="btn btn-success"
+        className="btn btn-success d-flex-center"
         onClick={() => navigate(props.navigationUrl)}
       />
       <form className="d-flex-center" onSubmit={onSubmit}>
@@ -37,7 +40,11 @@ export default function OperationBtnsGroup(props: OperationBtnsGroupProps) {
           required
           onChange={onChangeSearch}
         />
-        <Button label="Search" className="btn btn-action" />
+        <Button
+          label="Search"
+          className="btn btn-action d-flex-center"
+          children={<FcSearch />}
+        />
       </form>
     </section>
   );

@@ -1,5 +1,7 @@
 import { isAxiosError } from "axios";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import { BiLocationPlus } from "react-icons/bi";
+import { MdOutlineAdd, MdUpdate } from "react-icons/md";
 import Button from "../../common/Button";
 import DirectionForField from "../../common/DirectionForField";
 import Input from "../../common/Input";
@@ -12,6 +14,7 @@ import {
   updateAddressOfCustomerByAddressId,
 } from "./customersApi";
 import { Address } from "./interfaces";
+import { AiOutlineDelete } from "react-icons/ai";
 export type CustomerAddressFormProps = {
   formAddress: Address | null;
   customerId: string;
@@ -57,7 +60,7 @@ export default function CustomerAddressForm(props: CustomerAddressFormProps) {
   const btnClassName = `btn ${formAddress?._id ? "btn-info" : "btn-success"} ${
     loading ? "btn-loading" : ""
   }`;
-  const deleteClassName = `btn  btn-danger ${loading ? "btn-loading" : ""}`;
+  const deleteClassName = `btn d-flex-center  btn-danger ${loading ? "btn-loading" : ""}`;
   async function onDeleteAddress() {
     try {
       if (formAddress) {
@@ -88,6 +91,14 @@ export default function CustomerAddressForm(props: CustomerAddressFormProps) {
   const isAddressSubmitDisbaled = formAddress
     ? formAddress.location.length < 3
     : true;
+  const onCancelAddress = () => {
+    props.onSetFormAddress(null);
+  };
+  const onAddNewAddress = () =>
+    props.onSetFormAddress({
+      _id: "",
+      location: "",
+    });
   return (
     <section className="customer__addressForm">
       <DirectionForField directionText="Add address by clicking on 'Add Address' then submit the form" />
@@ -110,6 +121,7 @@ export default function CustomerAddressForm(props: CustomerAddressFormProps) {
               title={
                 isAddressSubmitDisbaled ? "Location is required" : "Submit"
               }
+              children={formAddress!._id ? <MdUpdate /> : <MdOutlineAdd />}
               disabled={isAddressSubmitDisbaled || loading}
               type="submit"
               label={formAddress._id ? "Update" : "Submit"}
@@ -119,24 +131,28 @@ export default function CustomerAddressForm(props: CustomerAddressFormProps) {
               <Button
                 disabled={loading}
                 onClick={onDeleteAddress}
+                children={<AiOutlineDelete/>}
                 type="button"
                 label="Delete Address"
                 className={deleteClassName}
               />
-            ) : null}
+            ) : (
+              <Button
+                type="button"
+                label="Cancel"
+                onClick={onCancelAddress}
+                className={deleteClassName}
+              />
+            )}
           </div>
         </form>
       ) : (
         <div className="d-flex-center">
           <Button
-            className="btn btn-info btn-action btn-small"
+            children={<BiLocationPlus />}
+            className="btn btn-info btn-action btn-small d-flex-center"
             label="Add address"
-            onClick={() =>
-              props.onSetFormAddress({
-                _id: "",
-                location: "",
-              })
-            }
+            onClick={onAddNewAddress}
           />
         </div>
       )}

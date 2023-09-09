@@ -8,7 +8,7 @@ import SelectCustomers, {
 import { uploadCustomerAddressTemplateCsvFile } from "./dashApi";
 import { Customer } from "../reports/interfaces";
 import Input from "../../common/Input";
-
+import { MdUpload } from "react-icons/md";
 export default function UploadCustomerAddressListForm() {
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -70,7 +70,7 @@ export default function UploadCustomerAddressListForm() {
       }
     }
   };
-  const btnClassName = `btn btn-success ${loading ? "btn-loading" : ""}`;
+  const btnClassName = `btn btn-success d-flex-center ${loading ? "btn-loading" : ""}`;
 
   return (
     <form onSubmit={onSubmitForm} className="form">
@@ -89,6 +89,7 @@ export default function UploadCustomerAddressListForm() {
       </div>
       {addressListFile && customerId ? (
         <Button
+          children={<MdUpload />}
           type="submit"
           label="Upload Address"
           className={btnClassName}

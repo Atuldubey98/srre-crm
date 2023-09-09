@@ -3,9 +3,14 @@
   text-align: center;
   gap: 0.3rem;
   padding: 0.3rem;
+  cursor: pointer;
   border: 2px solid var(--primary-color);
+  transition: all ease-in 300ms;
 }
 
+.dash__stat:hover{
+  border: 2px solid var(--secondary-color);
+}
 .dash__stat > p {
   color: var(--primary-color);
   font-size: small;

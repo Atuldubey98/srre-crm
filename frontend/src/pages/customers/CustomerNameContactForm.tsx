@@ -7,6 +7,7 @@ import { CustomerNameContact } from "./CustomerForm";
 import CustomerNameField from "./CustomerNameField";
 import { addNewCustomer, updateCustomerById } from "./customersApi";
 import { PlainCustomer } from "./interfaces";
+import { MdOutlineAdd, MdUpdate } from "react-icons/md";
 export type CustomerNameContactFormProps = {
   customerNameContact: CustomerNameContact | null;
   onSetCustomerNameContact: (value: CustomerNameContact) => void;
@@ -66,12 +67,13 @@ export default function CustomerNameContactForm(
       setLoading(false);
     }
   };
-  const btnClass = `btn ${
+  const btnClass = `btn d-flex-center ${
     customerNameContact?._id ? "btn-info" : "btn-success"
   } ${loading ? "btn-loading" : ""}`;
   const isCustomerSubmitDisabled = customerNameContact
     ? customerNameContact.name.length < 3
     : true;
+  const buttonIcon = customerNameContact?._id ? <MdUpdate /> : <MdOutlineAdd />;
   return (
     <form onSubmit={onCustomerContactFormSubmit} className="form">
       <CustomerNameField
@@ -99,6 +101,7 @@ export default function CustomerNameContactForm(
       />
       <div className="d-grid">
         <Button
+          children={buttonIcon}
           title={
             isCustomerSubmitDisabled
               ? "Customer name is required"

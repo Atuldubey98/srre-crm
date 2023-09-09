@@ -12,6 +12,9 @@
 .address__listForm > li{
   cursor: pointer;
 }
+.address__locationSelected{
+  background-color: var(--primary-color);
+}
 .customer__formSection{
   padding: 0.8rem;
 }

@@ -4,9 +4,10 @@ import Input from "../../common/Input";
 import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
 import { uploadServicesTemplate } from "./dashApi";
 import { isAxiosError } from "axios";
+import { MdUpload } from "react-icons/md";
 export default function UploadServicesForm() {
   const [loading, setLoading] = useState<boolean>(false);
-  const btnClassName = `btn btn-success ${loading ? "btn-loading" : ""}`;
+  const btnClassName = `btn btn-success d-flex-center ${loading ? "btn-loading" : ""}`;
 
   const [messageBody, setMessageBody] = useState<MessageBodyProps | null>(null);
   const [servicesTemplate, setServicesTemplate] = useState<File | null>(null);
@@ -49,7 +50,12 @@ export default function UploadServicesForm() {
         onChange={onChangeServicesFileTemplate}
       />
       {servicesTemplate ? (
-        <Button label="Upload" className={btnClassName} disabled={loading} />
+        <Button
+          label="Upload"
+          className={btnClassName}
+          disabled={loading}
+          children={<MdUpload />}
+        />
       ) : null}
       {messageBody ? <MessageBody {...messageBody} /> : null}
     </form>

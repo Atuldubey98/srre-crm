@@ -3,6 +3,7 @@ import { useState } from "react";
 import Button from "../../common/Button";
 import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
 import { downloadServicesTemplate } from "./dashApi";
+import { BiSolidDownload } from "react-icons/bi";
 
 export default function DownloadServicesUploadTemplateButton() {
   const [messageBody, setMessageBody] = useState<MessageBodyProps | null>(null);
@@ -29,10 +30,11 @@ export default function DownloadServicesUploadTemplateButton() {
       setLoading(false);
     }
   };
-  const btnClassName = `btn btn-info ${loading ? "btn-loading" : ""}`;
+  const btnClassName = `btn btn-info d-flex-center ${loading ? "btn-loading" : ""}`;
   return (
     <div className="d-grid">
       <Button
+        children={<BiSolidDownload />}
         disabled={loading}
         className={btnClassName}
         label="Download"

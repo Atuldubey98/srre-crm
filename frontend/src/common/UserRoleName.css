@@ -1,0 +1,6 @@
+.user__roleName {
+  gap: 0.3rem;
+}
+.user__roleName > .user__role {
+  font-weight: 600;
+}

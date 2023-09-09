@@ -2,6 +2,12 @@
   list-style: none;
   padding-left: 0;
 }
+.address__list > .address__location:hover {
+  background-color: var(--primary-color);
+}
+.address__list > .address__location > fieldset {
+  border-radius: 0.3rem;
+}
 .customer__AddressSearch {
   margin-block: 0.6rem;
 }

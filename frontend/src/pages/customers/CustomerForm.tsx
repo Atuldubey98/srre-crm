@@ -115,6 +115,10 @@ export default function CustomerForm(props: CustomerFormProps) {
 
   const deferedSearch = useDeferredValue(query);
 
+  const getLocationClassName = (locationId: string) =>
+    `address__location ${
+      formAdress?._id === locationId ? "address__locationSelected" : ""
+    }`;
   return (
     <AboutSection>
       {loading ? (
@@ -158,6 +162,7 @@ export default function CustomerForm(props: CustomerFormProps) {
                   )
                   .map((address) => (
                     <li
+                      className={getLocationClassName(address._id)}
                       onClick={() => setFormAddress(address)}
                       key={address._id}
                     >

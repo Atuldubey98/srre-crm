@@ -3,11 +3,14 @@ import Button from "../../common/Button";
 import { getCustomerAddressTemplateCsvFile } from "./dashApi";
 import MessageBody, { MessageBodyProps } from "../../common/MessageBody";
 import { isAxiosError } from "axios";
+import { BiSolidDownload } from "react-icons/bi";
 
 export default function DownloadAddressTemplateButton() {
   const [loading, setLoading] = useState<boolean>(false);
   const [messageBody, setMessageBody] = useState<MessageBodyProps | null>(null);
-  const btnClassName = `btn btn-info ${loading ? "btn-loading" : ""}`;
+  const btnClassName = `btn btn-info d-flex-center ${
+    loading ? "btn-loading" : ""
+  }`;
 
   const onDownloadAddressTemplate = async () => {
     try {
@@ -34,6 +37,7 @@ export default function DownloadAddressTemplateButton() {
   return (
     <div className="d-grid">
       <Button
+        children={<BiSolidDownload />}
         disabled={loading}
         className={btnClassName}
         label="Download"

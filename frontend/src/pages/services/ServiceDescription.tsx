@@ -6,6 +6,7 @@ import { getDateByCustomerCreationDate } from "../../utils/dateUtils";
 import { Service, acOptions } from "./interfaces";
 import { deleteServiceById } from "./servicesApi";
 import { useEffect, useState } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
 
 export type ServiceDescriptionProps = {
   service: Service;
@@ -18,7 +19,9 @@ export default function ServiceDescription(props: ServiceDescriptionProps) {
     type: "success",
     body: "",
   });
-  const btnClassName = `btn btn-danger ${loading ? "btn-loading" : ""}`;
+  const btnClassName = `btn btn-danger d-flex-center ${
+    loading ? "btn-loading" : ""
+  }`;
 
   const onDeleteService = async () => {
     try {
@@ -52,6 +55,7 @@ export default function ServiceDescription(props: ServiceDescriptionProps) {
       <div className="btn-group d-flex-center">
         <Button
           disabled={loading}
+          children={<AiOutlineDelete />}
           label="Delete Service"
           className={btnClassName}
           onClick={onDeleteService}

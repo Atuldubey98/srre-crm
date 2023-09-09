@@ -15,6 +15,9 @@ import { AiFillStar } from "react-icons/ai";
 import { IoBusinessSharp } from "react-icons/io5";
 import { RiCustomerService2Line } from "react-icons/ri";
 import "./DashLeft.css";
+import TotalCustomers from "./TotalCustomers";
+import TotalTechnicians from "./TotalTechnicians";
+import TopTechnician from "./TopTechnician";
 export default function DashLeft() {
   const [dashboardInfo, setDashboardInfo] =
     useState<DashboardInformation | null>(null);
@@ -51,22 +54,16 @@ export default function DashLeft() {
   return dashboardInfo ? (
     <ListSection>
       <div className="dash__left">
-        <Dashstat
-          value={dashboardInfo.customer.count.toString()}
-          Icon={IoBusinessSharp}
-          label="Total Customers"
-        />
-        <Dashstat
-          label="Total Technicians"
-          value={dashboardInfo.technician.count.toString()}
-          Icon={RiCustomerService2Line}
-        />
+        <TotalCustomers customerCount={dashboardInfo.customer.count} />
+        <TotalTechnicians totalTechnicians={dashboardInfo.technician.count} />
       </div>
       {dashboardInfo.technician.topPerformingTechnician ? (
-        <Dashstat
-          Icon={AiFillStar}
-          label="Top Technician"
-          value={
+        <TopTechnician
+          id={
+            dashboardInfo.technician.topPerformingTechnician.technician._id ||
+            ""
+          }
+          name={
             dashboardInfo.technician.topPerformingTechnician.technician.name
           }
         />

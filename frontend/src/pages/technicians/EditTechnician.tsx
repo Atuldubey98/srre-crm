@@ -23,6 +23,7 @@ import {
   getAllTechnicianById,
   udpateNewTechnician,
 } from "./techiesApi";
+import { MdOutlineAdd, MdUpdate } from "react-icons/md";
 export default function EditTechnician() {
   const location = useLocation();
   const { technicianId = "" } = useParams();
@@ -106,9 +107,17 @@ export default function EditTechnician() {
   const submitBtnDisbaled = technician
     ? technician.name.length === 0 || technician.contactNumber.length === 0
     : true;
-  const btnClassName = `btn ${technician?._id ? "btn-info" : "btn-success"} ${
-    loading ? "btn-loading" : ""
-  }`;
+  const btnClassName = `btn d-flex-center ${
+    technician?._id ? "btn-info" : "btn-success"
+  } ${loading ? "btn-loading" : ""}`;
+  const submitButtonLabel = showUpdateTechnician
+    ? "Update technician"
+    : "Add technician";
+  const buttonSubmitIcon = showUpdateTechnician ? (
+    <MdUpdate />
+  ) : (
+    <MdOutlineAdd />
+  );
   return showForm ? (
     <EditSection>
       <section className="edit__technician">
@@ -169,21 +178,13 @@ export default function EditTechnician() {
             </SelectOptions>
           </div>
           <div className="d-flex-center">
-            {showUpdateTechnician ? (
-              <Button
-                disabled={submitBtnDisbaled || loading}
-                label="Update Technician"
-                className={btnClassName}
-                type="submit"
-              />
-            ) : (
-              <Button
-                disabled={submitBtnDisbaled || loading}
-                label="Add technician"
-                className={btnClassName}
-                type="submit"
-              />
-            )}
+            <Button
+              children={buttonSubmitIcon}
+              disabled={submitBtnDisbaled || loading}
+              label={submitButtonLabel}
+              className={btnClassName}
+              type="submit"
+            />
           </div>
           <MessageBody {...messageBody} />
         </form>

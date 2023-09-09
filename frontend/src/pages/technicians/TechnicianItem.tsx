@@ -2,7 +2,6 @@ import { GoDotFill } from "react-icons/go";
 import { useNavigate, useParams } from "react-router-dom";
 import "./TechnicianItem.css";
 import { Technician } from "./interfaces";
-import { getDateByCustomerCreationDate } from "../../utils/dateUtils";
 export type TechnicianItemProps = {
   technician: Technician;
 };
