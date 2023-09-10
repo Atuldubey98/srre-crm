@@ -7,6 +7,7 @@
   "scripts": {
     "start": "export NODE_ENV=production && node .",
     "dev": "export NODE_ENV=development && nodemon .",
+    "dev-dummy-data" : "node src/dev-scripts/app.js",
     "build": "npm i",
     "test": "export NODE_ENV=test && mocha --timeout 3000"
   },
