@@ -8,16 +8,12 @@ import {
   PieData,
 } from "./interfaces";
 
-import CustomersServiceReportsPieChart from "./CustomersServiceReportsPieChart";
 import { ListSection } from "../../common/PageLeftRight";
-import Dashstat from "./Dashstat";
-import { AiFillStar } from "react-icons/ai";
-import { IoBusinessSharp } from "react-icons/io5";
-import { RiCustomerService2Line } from "react-icons/ri";
+import CustomersServiceReportsPieChart from "./CustomersServiceReportsPieChart";
 import "./DashLeft.css";
+import TopTechnician from "./TopTechnician";
 import TotalCustomers from "./TotalCustomers";
 import TotalTechnicians from "./TotalTechnicians";
-import TopTechnician from "./TopTechnician";
 export default function DashLeft() {
   const [dashboardInfo, setDashboardInfo] =
     useState<DashboardInformation | null>(null);
