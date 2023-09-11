@@ -1,5 +1,5 @@
-import Technician from "../technician-service/technician.model";
-import { getCSVData } from "./customers";
+import Technician from "../technician-service/technician.model.js";
+import { getCSVData } from "./customers.js";
 
 export async function runTechnicians() {
   await Technician.deleteMany({});

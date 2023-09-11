@@ -15,11 +15,12 @@ export function getCustomerServicesCount(
   });
 }
 
-export const getAllCustomers = (search = "") => {
+export const getAllCustomers = (search = "", skip = 0) => {
   return instance.get("/api/v1/customers", {
     params: {
       select: "address name createdAt createdBy updatedAt",
       q: search,
+      skip,
     },
   });
 };

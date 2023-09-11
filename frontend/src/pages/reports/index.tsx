@@ -17,6 +17,7 @@ const ServiceReportAboutSection = lazy(
 
 export default function ServiceReportsPage() {
   const location = useLocation();
+  const [loading, setLoading] = useState<boolean>(false);
   const { reportId = "" } = useParams();
   const pathnameMatch = useMatch(location.pathname);
   const showNewReport = pathnameMatch?.pathnameBase === "/reports/new";
@@ -35,6 +36,7 @@ export default function ServiceReportsPage() {
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const { data } = await getServiceReports(
           queryParamsReports.limit,
           queryParamsReports.skip
@@ -46,6 +48,8 @@ export default function ServiceReportsPage() {
         setHashMoreReports(data.data.length >= queryParamsReports.limit);
       } catch (error) {
         setHashMoreReports(false);
+      } finally {
+        setLoading(false);
       }
     })();
   }, [queryParamsReports, setServiceReports, setHashMoreReports]);
@@ -60,6 +64,7 @@ export default function ServiceReportsPage() {
       <Container>
         <PageLeftRight>
           <ServiceReportLeftSmallList
+            loading={loading}
             onIncrementSkip={onIncrementSkip}
             onRemoveService={onRemoveService}
             serviceReports={serviceReports}

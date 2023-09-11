@@ -13,13 +13,21 @@ export default function CustomerPage() {
     customers,
     showNewCustomerPage,
     showEditCustomerPage,
+    hasMore,
+    loading,
+    onIncrementSkip,
     onCustomerAdd,
   } = useCustomers();
   return (
     <PrivateRoute>
       <Container>
         <PageLeftRight>
-          <CustomersList customers={customers} />
+          <CustomersList
+            loading={loading}
+            customers={customers}
+            onIncrementSkip={onIncrementSkip}
+            hasMore={hasMore}
+          />
           {showNewCustomerPage || showEditCustomerPage ? (
             <Suspense fallback={<LoadingIndicatorAbout loading={true} />}>
               <CustomerForm onCustomerAdd={onCustomerAdd} />

@@ -100,14 +100,21 @@ export default function customerRepository() {
       throw error;
     }
   }
-  async function getAllCustomers(select = "", query = "") {
+  async function getAllCustomers({
+    select = "",
+    query = "",
+    limit = 10,
+    skip = 0,
+  }) {
     try {
       const filter = query ? { $text: { $search: query } } : {};
+      console.log(skip, limit);
       const customers = await Customer.find(filter)
-        .populate("createdBy", "email name _id role")
-        .populate("address")
         .select(select)
-        .sort({ createdAt: -1 });
+        .skip(skip)
+        .limit(limit)
+        .populate("createdBy", "email name _id role")
+        .populate("address");
       return customers;
     } catch (error) {
       throw error;

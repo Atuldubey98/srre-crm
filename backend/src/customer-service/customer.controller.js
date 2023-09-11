@@ -211,11 +211,21 @@ export async function createCustomerController(req, res, next) {
     next(error);
   }
 }
+/**
+ *
+ * @param {import("express").Request} req
+ * @param {import("express").Response} res
+ * @param {import("express").NextFunction} next
+ */
 export async function getAllCustomersController(req, res, next) {
   try {
     const select = req.query.select || "";
+    const limit = isNaN(parseInt(req.query.limit))
+      ? 10
+      : parseInt(req.query.limit);
+    const skip = isNaN(parseInt(req.query.skip)) ? 0 : parseInt(req.query.skip);
     const query = typeof req.query.q === "string" ? req.query.q : "";
-    const customers = await getAllCustomers(select, query);
+    const customers = await getAllCustomers({ select, query, limit, skip });
     return res.status(200).json({ status: true, data: customers });
   } catch (error) {
     next(error);

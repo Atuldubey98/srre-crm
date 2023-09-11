@@ -16,8 +16,20 @@ export default function useHasMore() {
       skip: queryParams.skip + 10,
     });
   };
+  const onSetSkip = (skip: number) => {
+    setQueryParams({
+      ...queryParams,
+      skip,
+    });
+  };
   const onSetHasMoreReports = useCallback((hasMoreData: boolean) => {
     setHashMoreReports(hasMoreData);
   }, []);
-  return { queryParams, onIncrementSkip, onSetHasMoreReports, hasMore };
+  return {
+    queryParams,
+    onIncrementSkip,
+    onSetHasMoreReports,
+    hasMore,
+    onSetSkip,
+  };
 }
