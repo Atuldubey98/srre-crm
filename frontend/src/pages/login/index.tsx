@@ -1,12 +1,35 @@
+import { HiOutlineMail } from "react-icons/hi";
 import Banner from "../../common/Banner";
 import Input from "../../common/Input";
 import MessageBody from "../../common/MessageBody";
+import IconInput from "./IconInput";
 import LoginSpinnerWithButton from "./LoginbuttonWithSpinner";
 import "./Loginpage.css";
 import useLoginForm from "./useLoginForm";
+import { RiLockPasswordLine } from "react-icons/ri";
 export default function Loginpage() {
   const { state, onChangeField, onSubmitForm, message, loading } =
     useLoginForm();
+  const emailProps = {
+    placeholder: "Email",
+    type: "email",
+    name: "email",
+    required: true,
+    onChange: onChangeField,
+    minLength: 3,
+    value: state.email,
+    maxLength: 50,
+  };
+  const passwordProps = {
+    placeholder: "Password",
+    type: "password",
+    name: "password",
+    required: true,
+    onChange: onChangeField,
+    minLength: 8,
+    value: state.password,
+    maxLength: 30,
+  };
   return (
     <main>
       <section className="form__container d-flex-center">
@@ -17,26 +40,8 @@ export default function Loginpage() {
         >
           <Banner />
           <i>S R Refrigeration and Electricals - Login (CRMS)</i>
-          <Input
-            placeholder="Email"
-            type="email"
-            name="email"
-            required
-            onChange={onChangeField}
-            minLength={3}
-            value={state.email}
-            maxLength={30}
-          />
-          <Input
-            placeholder="Password"
-            type="password"
-            required
-            value={state.password}
-            name="password"
-            onChange={onChangeField}
-            minLength={3}
-            maxLength={20}
-          />
+          <IconInput inputProps={emailProps} Icon={HiOutlineMail} />
+          <IconInput inputProps={passwordProps} Icon={RiLockPasswordLine} />
           <LoginSpinnerWithButton loading={loading} />
           <div className="login__message">
             <MessageBody {...message} />

@@ -1,5 +1,6 @@
 import { ClipLoader } from "react-spinners";
 import Button from "../../common/Button";
+import { BiLogIn } from "react-icons/bi";
 export type LoginSpinnerWithButtonProps = {
   loading: boolean;
 };
@@ -13,10 +14,11 @@ export default function LoginSpinnerWithButton(
         <ClipLoader color="var(--secondary-color)" />
       ) : (
         <Button
+          children={<BiLogIn />}
           form="login__formID"
           type="submit"
           disabled={loading}
-          className="btn btn-success"
+          className="btn d-flex-center btn-success"
           label="Login"
         />
       )}

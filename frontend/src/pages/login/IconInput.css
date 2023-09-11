@@ -1,0 +1,17 @@
+.icon__input > input {
+  border: 0;
+  outline: 0;
+}
+.icon__input {
+  flex: auto 1fr;
+  gap: 0.3rem;
+  padding: 0.3rem;
+  border-radius: 0.2rem;
+  outline: 2px solid var(--primary-color); /* You can change the color and style as needed */
+}
+.icon__input > input:focus {
+  outline: none;
+}
+.icon__input:focus-within {
+  outline: 2px solid grey; /* You can change the color and style as needed */
+}
