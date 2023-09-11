@@ -1,12 +1,11 @@
 import { HiOutlineMail } from "react-icons/hi";
+import { RiLockPasswordLine } from "react-icons/ri";
 import Banner from "../../common/Banner";
-import Input from "../../common/Input";
 import MessageBody from "../../common/MessageBody";
 import IconInput from "./IconInput";
 import LoginSpinnerWithButton from "./LoginbuttonWithSpinner";
 import "./Loginpage.css";
 import useLoginForm from "./useLoginForm";
-import { RiLockPasswordLine } from "react-icons/ri";
 export default function Loginpage() {
   const { state, onChangeField, onSubmitForm, message, loading } =
     useLoginForm();
