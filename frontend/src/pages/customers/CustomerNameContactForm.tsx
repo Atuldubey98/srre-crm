@@ -27,9 +27,6 @@ export default function CustomerNameContactForm(
     try {
       if (customerNameContact) {
         setLoading(true);
-        const formState = customerNameContact._id
-          ? "Customer updated"
-          : "Customer added";
         const { data } = customerNameContact._id
           ? await updateCustomerById(
               customerNameContact._id,
