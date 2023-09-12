@@ -2,6 +2,23 @@ import { getRandomInt } from "./customers.js";
 import Report from "../report-service/report.model.js";
 /**
  *
+ * @param {Date} minDate
+ * @param {Date} maxDate
+ * @returns {Date}
+ */
+function getRandomDate(minDate, maxDate) {
+  const minTime = minDate.getTime();
+  const maxTime = maxDate.getTime();
+  const timeDifference = maxTime - minTime;
+
+  const randomTime = minTime + Math.random() * timeDifference;
+
+  const randomDate = new Date(randomTime);
+
+  return randomDate;
+}
+/**
+ *
  * @param {import("../../types/dev-scripts/customer").Customer[]} customers
  * @param {import("../../types/dev-scripts/technician").Technician[]} technicians
  * @param {import("../../types/dev-scripts/services").Service[]} services
@@ -12,7 +29,10 @@ export async function runServiceReports(customers, technicians, services) {
   customers.forEach((customer) => {
     const { _id: customerId, ...restCustomer } = customer;
     for (let i = 0; i < 2; i++) {
-      const randomIndexAddress = getRandomInt(0, restCustomer._doc.address.length);
+      const randomIndexAddress = getRandomInt(
+        0,
+        restCustomer._doc.address.length
+      );
       const randomIndexService = getRandomInt(0, services.length);
       const randomIndexTechnician = getRandomInt(0, technicians.length);
       const customerAddress = restCustomer._doc.address[randomIndexAddress]._id;
@@ -32,11 +52,16 @@ export async function runServiceReports(customers, technicians, services) {
           services: [service],
         },
       ];
+      const serviceDate = getRandomDate(
+        new Date("2023-08-12"),
+        new Date("2023-09-12")
+      );
       const serviceReport = {
         customer: customerId,
         status,
         description,
         acMetaInfo,
+        serviceDate,
         siteContactPerson,
         technician,
         customerAddress,
