@@ -47,11 +47,6 @@ export default function CustomerNameContactForm(
             ? data.data.contact.phoneNumber || ""
             : "",
         });
-
-        setMessageBody({
-          type: "success",
-          body: formState,
-        });
       }
     } catch (error) {
       setMessageBody({
