@@ -21,8 +21,10 @@ export default function CustomerAddressList(props: CustomerAddressListProps) {
       </div>
       <ul className="address__list">
         {addressList.map((address) => (
-          <li key={address._id}>
-            <fieldset>{address.location}</fieldset>
+          <li className="address__item" key={address._id}>
+            <fieldset>
+              <address>{address.location}</address>
+            </fieldset>
           </li>
         ))}
       </ul>

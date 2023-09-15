@@ -10,11 +10,12 @@
   font-size: small;
 }
 .service__reportSmall {
-  padding: 0.3rem;
+  padding-block: 0.3rem;
+  padding-inline: 0.5rem;
   transition: all 300ms ease-in;
   cursor: pointer;
 }
-.service__reportSmall:hover {
+.service__reportSmall:not(.selected__service__reportSmall):hover {
   background-color: rgb(240, 239, 239);
 }
 .selected__service__reportSmall {

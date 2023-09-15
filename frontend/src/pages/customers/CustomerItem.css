@@ -1,6 +1,7 @@
 .customer__item {
   padding-block: 0.3rem;
   padding-inline: 0.5rem;
+  border-radius: 0.3rem;
 }
 .customer__item:hover:not(.selected__customer) {
   background-color: rgb(240, 239, 239);

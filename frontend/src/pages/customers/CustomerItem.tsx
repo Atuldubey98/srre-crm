@@ -17,7 +17,7 @@ export default function CustomerItem(customer: PlainCustomer) {
       className={`customer__item cursor-pointer ${selectedCustomer}`}
       key={customer._id}
     >
-      <p className="customer__name">{customer.name}</p>
+      <p className="customer__name text-wrap">{customer.name}</p>
       <div className="customer__meta">
         <span>
           {`${new Date(customer.createdAt || "").toLocaleDateString("en-US", {

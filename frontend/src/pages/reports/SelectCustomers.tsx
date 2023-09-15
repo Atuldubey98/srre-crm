@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AsyncSelect from "react-select/async";
 import { getAllCustomerNames } from "../customers/customersApi";
 import { Customer } from "./interfaces";
+import CurrentCustomer from "./CurrentCustomer";
 export type SelectCustomersProps = {
   customerFieldDisabled?: boolean;
   customer: string;
@@ -29,6 +30,8 @@ export default function SelectCustomers(props: SelectCustomersProps) {
   };
   return customers ? (
     <div className="form__labelField d-grid">
+      <p>Select a customer from below dropdown.</p>
+      <CurrentCustomer customerId={customer} />
       <label htmlFor="customer">Customer Name :*</label>
       <AsyncSelect
         defaultOptions={[]}

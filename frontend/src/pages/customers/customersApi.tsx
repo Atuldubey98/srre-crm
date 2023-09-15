@@ -42,8 +42,12 @@ export const updateAddressOfCustomerByAddressId = (
     { location: address.location }
   );
 };
-export const getCustomerById = (customerId: string) => {
-  return instance.get(`/api/v1/customers/${customerId}`);
+export const getCustomerById = (customerId: string, select = "") => {
+  return instance.get(`/api/v1/customers/${customerId}`, {
+    params: {
+      select,
+    },
+  });
 };
 export const getAddressByCustomerId = (customerId: string) => {
   return instance.get(`/api/v1/customers/${customerId}/address`);

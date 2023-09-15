@@ -9,7 +9,7 @@ body {
 :root {
   --primary-color: lightgrey;
   --dominant-color: white;
-  --secondary-color: #155E84;
+  --secondary-color: #155e84;
 }
 .d-flex-center {
   display: flex;
@@ -39,4 +39,7 @@ body {
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
+}
+.border-radius-3 {
+  border-radius: 0.3rem;
 }

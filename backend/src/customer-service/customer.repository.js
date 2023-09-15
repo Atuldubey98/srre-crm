@@ -77,10 +77,18 @@ export default function customerRepository() {
   async function getCountOfCustomers() {
     return Customer.count({});
   }
-  async function getCustomerById(customerId) {
-    return Customer.findById(customerId)
-      .populate("createdBy", "email name role _id")
-      .populate("address");
+  async function getCustomerById(customerId, select = "") {
+    const query = Customer.findById(customerId);
+    if (select) {
+      query.select(select);
+    }
+    if (!select || select.indexOf("createdBy") !== -1) {
+      query.populate("createdBy", "email name role _id");
+    }
+    if (!select || select.indexOf("address") !== -1) {
+      query.populate("address");
+    }
+    return query.exec();
   }
   async function getAddressListByCustomerId(customerId) {
     return Customer.findById(customerId).select("address").populate("address");

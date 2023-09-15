@@ -5,3 +5,9 @@
 .customer__contact {
   gap: 0.5rem;
 }
+.customer__contact > fieldset {
+  border-radius: 0.3rem;
+}
+.address__item > fieldset {
+  border-radius: 0.3rem;
+}

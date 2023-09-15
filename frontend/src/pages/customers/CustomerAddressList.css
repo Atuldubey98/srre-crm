@@ -2,7 +2,7 @@
   list-style: none;
   padding-left: 0;
 }
-.address__list > .address__location:hover {
+.address__list > .address__location > fieldset:hover {
   background-color: var(--primary-color);
 }
 .address__list > .address__location > fieldset {

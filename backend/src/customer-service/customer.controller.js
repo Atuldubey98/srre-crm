@@ -271,7 +271,8 @@ export async function getCustomerByIdController(req, res, next) {
     const customerId = await CustomerIdSchema.validateAsync(
       req.params.customerId
     );
-    const customer = await getCustomerById(customerId);
+    const select = typeof req.query.select === "string" ? req.query.select : "";
+    const customer = await getCustomerById(customerId, select);
     return res.status(200).json({ status: true, data: customer });
   } catch (error) {
     next(error);

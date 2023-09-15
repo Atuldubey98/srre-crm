@@ -12,7 +12,7 @@ export default function ServiceItem(props: ServiceItemProps) {
     navigate(`/services/${service._id}`);
   };
   const location = useLocation();
-  const className = `service__item ${
+  const className = `border-radius-3 service__item ${
     location.pathname === `/services/${service._id}`
       ? "selected__serviceItem"
       : ""
@@ -20,7 +20,7 @@ export default function ServiceItem(props: ServiceItemProps) {
   return (
     <li onClick={onNavigateToAbout} key={service._id} className={className}>
       <div className="service">
-        <span className="service__acType">{service.serviceName}</span>
+        <span className="text-wrap service__acType">{service.serviceName}</span>
       </div>
       <div className="service__dates">
         <span>{`${new Date(service.createdAt || "").toLocaleDateString(

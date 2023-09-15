@@ -1,11 +1,13 @@
 import { ChangeEventHandler } from "react";
+import { GrFormAdd } from "react-icons/gr";
+import { Link } from "react-router-dom";
 import Button from "../../common/Button";
 import FormLabelField from "../../common/FormLabelField";
 import SelectOptions from "../../common/SelectOptions";
 import { Service, acTypeOptionsWithoutAll } from "../services/interfaces";
-import { AcMetaInfo } from "./interfaces";
 import ServiceInputCheckbox from "./ServiceInputCheckbox";
-import { Link } from "react-router-dom";
+import { AcMetaInfo } from "./interfaces";
+import { MdCancelPresentation } from "react-icons/md";
 
 export type ACMetaInfoFormProps = {
   acMetaForm: AcMetaInfo;
@@ -51,6 +53,20 @@ export default function ACMetaInfoForm(props: ACMetaInfoFormProps) {
     });
   };
   const updateServiceDisabled = acMetaForm.typeOfAC.length === 0;
+  const onUpdateACServiced = () => {
+    props.onUpdateService(acMetaForm);
+    onSetACMetaInfo(null);
+  };
+  const onAddACServiced = () => {
+    props.onAddService({
+      ...acMetaForm,
+      _id: Math.random().toString(36).substring(2, 9),
+    });
+    onSetACMetaInfo(null);
+  };
+  const onCancelACServiced = () => {
+    onSetACMetaInfo(null);
+  };
   return (
     <div className="ac__form form">
       <FormLabelField
@@ -108,11 +124,10 @@ export default function ACMetaInfoForm(props: ACMetaInfoFormProps) {
       ) : null}
       <div className="d-flex-center btn-group">
         <Button
+          children={<MdCancelPresentation />}
           label="Cancel"
-          className="btn btn-small btn-info"
-          onClick={() => {
-            onSetACMetaInfo(null);
-          }}
+          className="btn btn-small btn-info d-flex-center"
+          onClick={onCancelACServiced}
         />
         {acMetaForm._id ? (
           <Button
@@ -120,24 +135,16 @@ export default function ACMetaInfoForm(props: ACMetaInfoFormProps) {
             title={updateServiceDisabled ? "Select type of ac" : ""}
             disabled={updateServiceDisabled}
             className="btn btn-small"
-            onClick={() => {
-              props.onUpdateService(acMetaForm);
-              onSetACMetaInfo(null);
-            }}
+            onClick={onUpdateACServiced}
           />
         ) : (
           <Button
             label="Add AC Serviced"
+            children={<GrFormAdd />}
             title={updateServiceDisabled ? "Select type of ac" : ""}
-            className="btn btn-small"
+            className="btn btn-small d-flex-center"
             disabled={updateServiceDisabled}
-            onClick={() => {
-              props.onAddService({
-                ...acMetaForm,
-                _id: Math.random().toString(36).substring(2, 9),
-              });
-              onSetACMetaInfo(null);
-            }}
+            onClick={onAddACServiced}
           />
         )}
       </div>

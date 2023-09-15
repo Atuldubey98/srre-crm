@@ -13,8 +13,8 @@ export default function TechnicianItem(props: TechnicianItemProps) {
   const navigate = useNavigate();
   const technicianClassName =
     technicianId === props.technician._id
-      ? "technician technician__selected"
-      : "technician";
+      ? "border-radius-3 technician technician__selected"
+      : "border-radius-3 technician";
   const onTechyClick = () => {
     navigate(`/technicians/${props.technician._id}`);
   };

@@ -15,7 +15,7 @@ export type ServiceReportSmallProps = {
 export default function ServiceReportSmall(props: ServiceReportSmallProps) {
   const { reportId = "" } = useParams();
   const { onNavigate } = useNavigateWithQuery();
-  const classname = `service__reportSmall ${
+  const classname = `border-radius-3 service__reportSmall ${
     reportId === props.serviceReport._id ? "selected__service__reportSmall" : ""
   }`;
   const onDeleteReportById = async () => {
@@ -36,10 +36,10 @@ export default function ServiceReportSmall(props: ServiceReportSmallProps) {
       className={classname}
     >
       <div className="customer__data text-wrap">
-        <p title="Customer Name" className="customer__name">
+        <p title="Customer Name" className="customer__name text-wrap">
           {props.serviceReport.customer.name}
         </p>
-        <p title="Customer Address" className="customer__address">
+        <p title="Customer Address" className="customer__address text-wrap">
           {props.serviceReport.customerAddress.location}
         </p>
         <div className="report__statusWrapper">
