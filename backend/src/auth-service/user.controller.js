@@ -15,6 +15,11 @@ const {
   getEmployeeById,
   deleteEmployeeById,
 } = userRepository();
+
+/**
+ * register user controller
+ * @type {import("express").Handler}
+ */
 export async function registerUserController(req, res, next) {
   try {
     const validatedUser = await UserBodySchema.validateAsync(req.body);
@@ -33,6 +38,11 @@ export async function registerUserController(req, res, next) {
     next(error);
   }
 }
+
+/**
+ * login user controller
+ * @type {import("express").Handler}
+ */
 export async function loginUserController(req, res, next) {
   try {
     const user = await LoginBodySchema.validateAsync(req.body);
@@ -43,6 +53,10 @@ export async function loginUserController(req, res, next) {
   }
 }
 
+/**
+ * getting the logged in user
+ * @type {import("express").Handler}
+ */
 export async function currentUserController(req, res, next) {
   return res.status(200).json({
     status: true,
@@ -50,10 +64,8 @@ export async function currentUserController(req, res, next) {
   });
 }
 /**
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @param {import("express").NextFunction} next
+ * registering the admin controller
+ * @type {import("express").Handler}
  */
 export async function registerAdminController(req, res, next) {
   try {
@@ -72,10 +84,8 @@ export async function registerAdminController(req, res, next) {
 }
 
 /**
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @param {import("express").NextFunction} next
+ * getting all the employees controller
+ * @type {import("express").Handler}
  */
 export async function getAllEmployeesController(req, res, next) {
   try {
@@ -87,10 +97,8 @@ export async function getAllEmployeesController(req, res, next) {
 }
 
 /**
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @param {import("express").NextFunction} next
+ * getting employee by id controller
+ * @type {import("express").Handler}
  */
 export async function getEmployeeByIdController(req, res, next) {
   try {
@@ -104,10 +112,8 @@ export async function getEmployeeByIdController(req, res, next) {
   }
 }
 /**
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @param {import("express").NextFunction} next
+ * delete employee by id controller
+ * @type {import("express").Handler}
  */
 export async function deleteEmployeeByIdController(req, res, next) {
   try {

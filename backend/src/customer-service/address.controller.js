@@ -13,10 +13,8 @@ const {
 const { getCountNumberOfReportsOfCustomerByAddressId } = reportRepository();
 
 /**
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
+ * counting the number of reports by address
+ * @type {import("express").Handler}
  */
 export async function countNumberOfReportsForAddressById(req, res, next) {
   try {
@@ -42,10 +40,8 @@ export async function countNumberOfReportsForAddressById(req, res, next) {
 }
 
 /**
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
+ * update the address by id controller
+ * @type {import("express").Handler}
  */
 export async function updateAddressByAddressIdController(req, res, next) {
   try {
@@ -68,10 +64,8 @@ export async function updateAddressByAddressIdController(req, res, next) {
 }
 
 /**
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
+ * delete the address by id controller
+ * @type {import("express").Handler}
  */
 export async function deleteAddressByIdController(req, res, next) {
   try {
@@ -102,12 +96,9 @@ export async function deleteAddressByIdController(req, res, next) {
 }
 
 /**
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
+ * create the address passing address
+ * @type {import("express").Handler}
  */
-
 export async function createAddressController(req, res, next) {
   try {
     const customerAddress = await CustomerAddressSchema.validateAsync(req.body);

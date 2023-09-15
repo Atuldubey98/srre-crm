@@ -24,10 +24,8 @@ const {
 const { getServiceReportsByCustomerId, getCountNumberOfReportsOfCustomer } =
   reportRepository();
 /**
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
+ * create customer name, _id and contact controller
+ * @type {import("express").Handler}
  */
 export async function createCustomerEntityController(req, res, next) {
   try {
@@ -43,10 +41,8 @@ export async function createCustomerEntityController(req, res, next) {
 }
 
 /**
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
+ * create the customer address by customerId controller
+ * @type {import("express").Handler}
  */
 export async function createCustomerAddressesByCustomerIdController(
   req,
@@ -82,9 +78,8 @@ export async function createCustomerAddressesByCustomerIdController(
   stream.end();
 }
 /**
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
+ * download the template for customerAddress upload contoller
+ * @type {import("express").Handler}
  */
 export async function downloadTemplateForCustomerAddressUploadController(
   req,
@@ -138,6 +133,11 @@ export async function getCustomerServicesUsedController(req, res, next) {
     next(error);
   }
 }
+
+/**
+ * getting the unique services used by the customer according to filter
+ * @type {import("express").Handler}
+ */
 export async function getUniqueServicesUsedByCustomerController(
   req,
   res,
@@ -196,6 +196,10 @@ export async function getUniqueServicesUsedByCustomerController(
     next(error);
   }
 }
+/**
+ * creating customer controller
+ * @type {import("express").Handler}
+ */
 export async function createCustomerController(req, res, next) {
   try {
     const newCustomer = await createCustomer({
@@ -212,10 +216,8 @@ export async function createCustomerController(req, res, next) {
   }
 }
 /**
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @param {import("express").NextFunction} next
+ * getting all the customer controller
+ * @type {import("express").Handler}
  */
 export async function getAllCustomersController(req, res, next) {
   try {
@@ -231,6 +233,11 @@ export async function getAllCustomersController(req, res, next) {
     next(error);
   }
 }
+
+/**
+ * update the customer by id controller
+ * @type {import("express").Handler}
+ */
 export async function updateCustomerByIdController(req, res, next) {
   try {
     const customerId = await CustomerIdSchema.validateAsync(
@@ -244,6 +251,10 @@ export async function updateCustomerByIdController(req, res, next) {
   }
 }
 
+/**
+ * deleting the customer by id controller.
+ * @type {import("express").Handler}
+ */
 export async function deleteCustomerByIdController(req, res, next) {
   try {
     const customerId = req.params.customerId;
@@ -266,6 +277,10 @@ export async function deleteCustomerByIdController(req, res, next) {
   }
 }
 
+/**
+ * getting customer by id controller
+ * @type {import("express").Handler}
+ */
 export async function getCustomerByIdController(req, res, next) {
   try {
     const customerId = await CustomerIdSchema.validateAsync(
@@ -278,6 +293,11 @@ export async function getCustomerByIdController(req, res, next) {
     next(error);
   }
 }
+
+/**
+ * getting customer address list
+ * @type {import("express").Handler}
+ */
 export async function getCustomerAddresssListByController(req, res, next) {
   try {
     if (!isValidObjectId(req.params.customerId)) {
@@ -289,6 +309,11 @@ export async function getCustomerAddresssListByController(req, res, next) {
     next(error);
   }
 }
+
+/**
+ * getting reports of customer by customerId
+ * @type {import("express").Handler}
+ */
 
 export async function getReportsOfCustomerByCustomerIdController(
   req,

@@ -1,10 +1,14 @@
+import Report from "../report-service/report.model.js";
 import Customer from "./customer.model.js";
 import {
   CustomerNameContactSchema,
   UpdateCustomerBody,
 } from "./customer.validation.js";
-import addressRepository from "./address.repository.js";
-import Report from "../report-service/report.model.js";
+/**
+ *
+ * @param {number} days
+ * @returns {string}
+ */
 export function getDateBeforeDays(days) {
   const today = new Date();
   const previousDate = new Date(today);
@@ -16,6 +20,11 @@ export function getDateBeforeDays(days) {
 }
 
 export default function customerRepository() {
+  /**
+   * update customer by deleting customer address
+   * @param {string} customerId
+   * @param {string} addressId
+   */
   async function updateCustomerByDeletingCustomerAddress(
     customerId,
     addressId
@@ -24,6 +33,11 @@ export default function customerRepository() {
       $pull: { address: addressId },
     });
   }
+  /**
+   * update customer by customerId and adding address list
+   * @param {string} customerId
+   * @param {string[]} addressIdsList
+   */
   async function updateCustomerByCustomerIdByAddingAddress(
     customerId,
     addressIdsList
@@ -33,6 +47,11 @@ export default function customerRepository() {
       { $push: { address: { $each: addressIdsList } } }
     );
   }
+  /**
+   * update customer by adding new address
+   * @param {string} customerId
+   * @param {string} addressId
+   */
   async function updateCustomerByAddingNewAddress(customerId, addressId) {
     return Customer.findByIdAndUpdate(customerId, {
       $push: { address: addressId },
@@ -77,6 +96,11 @@ export default function customerRepository() {
   async function getCountOfCustomers() {
     return Customer.count({});
   }
+  /**
+   * getting customer by id
+   * @param {string} customerId
+   * @param {string} select
+   */
   async function getCustomerById(customerId, select = "") {
     const query = Customer.findById(customerId);
     if (select) {
@@ -90,9 +114,17 @@ export default function customerRepository() {
     }
     return query.exec();
   }
+  /**
+   * getting address list by customerId
+   * @param {string} customerId
+   */
   async function getAddressListByCustomerId(customerId) {
     return Customer.findById(customerId).select("address").populate("address");
   }
+  /**
+   * creating new customer
+   * @param {Object} customerBody
+   */
   async function createCustomer(customerBody) {
     try {
       const newCustomer = await CustomerNameContactSchema.validateAsync(
@@ -108,6 +140,11 @@ export default function customerRepository() {
       throw error;
     }
   }
+  /**
+   *
+   * @param {{select: string; query : string; limit : number; skip : number}} param0
+   * @returns
+   */
   async function getAllCustomers({
     select = "",
     query = "",
@@ -128,6 +165,11 @@ export default function customerRepository() {
       throw error;
     }
   }
+  /**
+   * update customer by id
+   * @param {string} id 
+   * @param {string} customerBody 
+   */
   async function updateCustomerById(id, customerBody) {
     try {
       const customer = await UpdateCustomerBody.validateAsync(customerBody);
@@ -141,6 +183,10 @@ export default function customerRepository() {
       throw error;
     }
   }
+  /**
+   * delete customer by id
+   * @param {string} id 
+   */
   async function deleteCustomerById(id) {
     try {
       const deletedCustomer = await Customer.findByIdAndDelete(id);
@@ -149,6 +195,10 @@ export default function customerRepository() {
       throw error;
     }
   }
+  /**
+   * find unique services used by customer
+   * @param {Object} filter 
+   */
   async function findUniqueServicesUsedByCustomer(filter) {
     return Report.aggregate([
       {

@@ -3,6 +3,10 @@ import { UnAuthenticatedUserError } from "../auth-service/errors.js";
 import userRepository from "../auth-service/user.repository.js";
 const { getEmployeeById } = userRepository();
 const { decryptTokenAndGetUser } = encryptionRepository();
+/**
+ * authentication middleware checks for authorization header
+ * @type {import("express").Handler}
+ */
 export default async function authenticationMiddleware(req, res, next) {
   try {
     const authHeader =
@@ -13,7 +17,7 @@ export default async function authenticationMiddleware(req, res, next) {
       throw new UnAuthenticatedUserError();
     }
     const bearerToken = authHeader.split(" ")[1];
-    const { email, name, _id, role } = await decryptTokenAndGetUser(
+    const { email, _id, name, role } = await decryptTokenAndGetUser(
       bearerToken
     );
     const user = await getEmployeeById(_id);

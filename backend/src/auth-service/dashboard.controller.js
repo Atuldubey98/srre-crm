@@ -5,10 +5,8 @@ const { getCountOfCustomers, getCountReportforCustomerByIdForLast30Days } =
 const { getTopPerformingTechnician, getCountOfTechnicians } =
   technicianRespository();
 /**
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @param {import("express").NextFunction} next
+ * getting dashboard content controller
+ * @type {import("express").Handler}
  */
 export async function getDashboardContentController(req, res, next) {
   try {

@@ -1,6 +1,9 @@
 import { NODE_ENV } from "../config.js";
 import httpStatusCodes from "http-status-codes";
-
+/**
+ * 
+ * @type {import("express").ErrorRequestHandler}
+ */
 export function errorHandler(err, req, res, next) {
   if (res.headersSent) {
     return next(err);
@@ -37,6 +40,11 @@ export function errorHandler(err, req, res, next) {
   }
   return res.status(code).json({ status: false, message });
 }
+
+/**
+ * 
+ * @type {import("express").ErrorRequestHandler}
+ */
 export function logErrors(err, req, res, next) {
   if (NODE_ENV === "development") {
     console.error(err.stack);

@@ -18,13 +18,24 @@ export default function userRepository() {
     createdAt: 1,
     updatedAt: 1,
   };
+  /**
+   * 
+   * @param {string} userId 
+   */
   async function getEmployeeById(userId = "") {
     return User.findById(userId).select(defaultUserSelect);
   }
-
+  /**
+   * 
+   * getting all the employees
+   */
   async function getAllEmployees() {
     return User.find({ role: "EMPLOYEE" }).select(defaultUserSelect);
   }
+  /**
+   * login user repository
+   * @param {{email: string; password : string;}} user 
+   */
   async function loginUser(user) {
     try {
       const existingUser = await findByUserByEmailId(user.email);
@@ -53,6 +64,10 @@ export default function userRepository() {
       throw error;
     }
   }
+  /**
+   * 
+   * @param {string} email 
+   */
   async function findByUserByEmailId(email) {
     try {
       const user = await User.findOne({ email });
@@ -61,9 +76,17 @@ export default function userRepository() {
       throw error;
     }
   }
+  /**
+   * delete employee by id
+   * @param {string} userId 
+   */
   async function deleteEmployeeById(userId) {
     return User.findByIdAndDelete(userId);
   }
+  /**
+   * registering a new user
+   * @param {{email : string; password : string;}} user 
+   */
   async function createUser(user) {
     try {
       const existingUser = await findByUserByEmailId(user.email);

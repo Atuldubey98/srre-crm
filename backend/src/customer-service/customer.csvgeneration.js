@@ -1,3 +1,10 @@
+/**
+ * generate a csv for customer services count
+ * @param {{ serviceName: string, noOfTimesServiceUsed: number }[]} servicesGivenWithCount 
+ * @param {{name?: string}} customerServiceReport 
+ * @param {string} fromDate 
+ * @param {string} toDate 
+ */
 export function generateCSVForCustomerServicesCount(
   servicesGivenWithCount = [],
   customerServiceReport,

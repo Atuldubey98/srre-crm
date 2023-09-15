@@ -9,10 +9,8 @@ export class UnauthorizedError extends Error {
 }
 
 /**
- *
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @param {import("express").NextFunction} next
+ * autorization middleware checks for role
+ * @type {import("express").Handler}
  */
 export default function authorizationMiddleware(req, res, next) {
   try {

@@ -31,7 +31,7 @@ export default function acServiceRepository() {
   }
   /**
    *
-   * @param {{serviceName : string}} acServiceBody
+   *  @param {{serviceName : string}} acServiceBody
    *  @returns {Promise<Model<{ typeOfAC: string; serviceName: string;}>>}
    */
   async function createAcService(acServiceBody) {
@@ -45,7 +45,7 @@ export default function acServiceRepository() {
   }
   /**
    *
-   * @param {{serviceName : string}} acServiceBody
+   *  @param {{serviceName : string}} acServiceBody
    *  @returns {Promise<Model<{ typeOfAC: string; serviceName: string;}>[]>}
    */
   async function createServicesForAllTypesOfACs(acServiceBody) {

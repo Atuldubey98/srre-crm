@@ -18,11 +18,8 @@ const {
 } = acServiceRepository();
 
 /**
- * @description : create new services
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
- * @returns {Response}
+ * creating the new services controller
+ * @type {import("express").Handler}
  */
 export async function createServiceController(req, res, next) {
   try {
@@ -51,11 +48,8 @@ export async function createServiceController(req, res, next) {
   }
 }
 /**
- * @description : Get All AC services by ac type
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
- * @returns {Response}
+ * getting all air conditioners services by type
+ * @type {import("express").Handler}
  */
 export async function getAllAirConditonerServicesByType(req, res, next) {
   try {
@@ -73,11 +67,8 @@ export async function getAllAirConditonerServicesByType(req, res, next) {
 }
 
 /**
- * @description : Get service by id
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
- * @returns {Response}
+ * getting service by id
+ * @type {import("express").Handler}
  */
 export async function getServiceByIdController(req, res, next) {
   try {
@@ -92,11 +83,8 @@ export async function getServiceByIdController(req, res, next) {
   }
 }
 /**
- * @description : Delete service by id
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
- * @returns {Response}
+ * delete service by id controller
+ * @type {import("express").Handler}
  */
 export async function deleteServiceByIdController(req, res, next) {
   try {
@@ -120,10 +108,8 @@ export async function deleteServiceByIdController(req, res, next) {
   }
 }
 /**
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
+ * download the template for uploading the services controller
+ * @type {import("express").Handler}
  */
 export async function downloadAcServicesUploadTemplateController(
   req,
@@ -136,10 +122,8 @@ export async function downloadAcServicesUploadTemplateController(
   res.send(csvData);
 }
 /**
- *
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
+ * uploading a services template controller
+ * @type {import("express").Handler}
  */
 export async function uploadAcServicesTemplateController(req, res, next) {
   try {

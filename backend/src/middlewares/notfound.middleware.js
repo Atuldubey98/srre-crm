@@ -1,10 +1,8 @@
 import httpStatusCodes from "http-status-codes";
 
 /**
- * @description : Route not found handler
- * @param {import("express").Request} req
- * @param {import("express").Response} res
- * @param {import("express").NextFunction} next
+ * Route not found middleware
+ * @type {import("express").Handler}
  */
 export default function routeNotFoundMiddleware(req, res) {
   return res.status(httpStatusCodes.NOT_FOUND).json({
