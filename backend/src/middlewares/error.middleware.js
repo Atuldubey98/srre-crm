@@ -1,5 +1,6 @@
 import { NODE_ENV } from "../config.js";
 import httpStatusCodes from "http-status-codes";
+import logger from "../logger.js";
 /**
  * 
  * @type {import("express").ErrorRequestHandler}
@@ -49,5 +50,6 @@ export function logErrors(err, req, res, next) {
   if (NODE_ENV === "development") {
     console.error(err.stack);
   }
+  logger.error(err);
   next(err);
 }

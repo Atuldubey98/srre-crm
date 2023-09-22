@@ -153,7 +153,6 @@ export default function customerRepository() {
   }) {
     try {
       const filter = query ? { $text: { $search: query } } : {};
-      console.log(skip, limit);
       const customers = await Customer.find(filter)
         .select(select)
         .skip(skip)

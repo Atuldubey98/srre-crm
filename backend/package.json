@@ -7,7 +7,7 @@
   "scripts": {
     "start": "export NODE_ENV=production && node .",
     "dev": "export NODE_ENV=development && nodemon .",
-    "dev-dummy-data" : "node src/dev-scripts/app.js",
+    "dev-dummy-data": "node src/dev-scripts/app.js",
     "build": "npm i",
     "test": "export NODE_ENV=test && mocha --timeout 3000"
   },
@@ -27,7 +27,8 @@
     "jose": "^4.14.4",
     "mongoose": "^7.4.1",
     "morgan": "^1.10.0",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "winston": "^3.10.0"
   },
   "devDependencies": {
     "@types/multer": "^1.4.7",

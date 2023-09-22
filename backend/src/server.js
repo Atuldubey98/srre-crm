@@ -5,26 +5,26 @@ import mongoose from "mongoose";
 
 import cluster from "cluster";
 import { cpus } from "os";
+import logger from "./logger.js";
 const noOfCpus = cpus().length;
 if (cluster.isPrimary) {
   for (let i = 0; i < noOfCpus; i++) {
     cluster.fork();
   }
   cluster.on("exit", (worker) => {
-    console.log(`worker ${worker.process.pid} died`);
+    logger.info(`worker ${worker.process.pid} died`);
   });
 } else {
   const server = http.createServer(app);
   server.listen(PORT, () => {
-    console.log("Server is running");
+    logger.info("Server is running");
   });
   process.on("SIGTERM", () => {
-    console.info("SIGTERM signal received.");
-    console.log("Closing http server.");
+    logger.info("SIGTERM signal received.");
     server.close(() => {
-      console.log("Http server closed.");
+      logger.warn("Http server closed.");
       mongoose.connection.close(false, () => {
-        console.log("MongoDb connection closed.");
+        logger.warn("MongoDb connection closed.");
       });
     });
   });
