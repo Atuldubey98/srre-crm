@@ -2,10 +2,10 @@ import app from "./app.js";
 import http from "http";
 import { PORT } from "./config.js";
 import mongoose from "mongoose";
-
 import cluster from "cluster";
 import { cpus } from "os";
 import logger from "./logger.js";
+
 const noOfCpus = cpus().length;
 if (cluster.isPrimary) {
   for (let i = 0; i < noOfCpus; i++) {
