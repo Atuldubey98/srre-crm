@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongodb/mongodb-community-server:4.4.17-ubi8
+    restart: unless-stopped
+    volumes:
+      - db:/data/db
+    networks:
+      - backend
+  srre-crm-backend:
+    depends_on:
+      - mongodb
+    build: ./backend
+    env_file:
+      - ./.env
+    ports:
+      - 9000:9000
+    networks:
+      - backend
+      - frontend
+  srre-crm-frontend:
+    depends_on:
+      - srre-crm-backend
+    build: ./frontend
+    ports:
+      - 3000:80
+volumes:
+  db:
+networks:
+  backend:
+  frontend:
