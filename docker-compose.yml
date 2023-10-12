@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 services:
   mongodb:
     image: mongodb/mongodb-community-server:4.4.17-ubi8
