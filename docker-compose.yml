@@ -7,7 +7,7 @@ services:
       - db:/data/db
     networks:
       - backend
-  srre-crm-backend:
+  backend:
     depends_on:
       - mongodb
     build: ./backend
@@ -18,7 +18,7 @@ services:
     networks:
       - backend
       - frontend
-  srre-crm-frontend:
+  frontend:
     depends_on:
       - srre-crm-backend
     build: ./frontend
