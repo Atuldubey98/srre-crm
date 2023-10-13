@@ -20,7 +20,7 @@ services:
       - frontend
   frontend:
     depends_on:
-      - srre-crm-backend
+      - backend
     build: ./frontend
     ports:
       - 3000:80

@@ -1,5 +1,5 @@
 #react
-FROM node:14-slim as frontend
+FROM node:14.21.3-alpine3.17 as frontend
 WORKDIR /srre-crm-frontend
 COPY ./package*.json ./
 RUN npm install
