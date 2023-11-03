@@ -2,13 +2,11 @@ import compression from "compression";
 import cors from "cors";
 import express, { Router } from "express";
 import helmet from "helmet";
-import morgan from "morgan";
 import httpStatusCodes from "http-status-codes";
-import path from "path";
+import morgan from "morgan";
 import { NODE_ENV } from "../config.js";
 const middlewaresRouter = Router();
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-const FRONTEND_LOCATION = path.join(__dirname, "../../../frontend/dist");
+
 middlewaresRouter.use(express.json());
 middlewaresRouter.use(
   compression({
@@ -23,22 +21,11 @@ middlewaresRouter.use(
 middlewaresRouter.use(helmet());
 middlewaresRouter.use(cors());
 middlewaresRouter.use(morgan(NODE_ENV === "development" ? "dev" : "combined"));
-middlewaresRouter.use(
-  express.static(FRONTEND_LOCATION, {
-    maxAge: "1y",
-  })
-);
 middlewaresRouter.get("/robots.txt", (req, res) => {
   res.type("text/plain");
   res.send("User-agent: *\nDisallow: /");
 });
-middlewaresRouter.use((req, res, next) => {
-  if (req.originalUrl.startsWith("/api")) {
-    next();
-  } else {
-    return res.sendFile(FRONTEND_LOCATION + "/index.html");
-  }
-});
+
 middlewaresRouter.get("/api/v1/health", (req, res) => {
   return res
     .status(httpStatusCodes.OK)

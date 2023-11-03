@@ -1,0 +1,23 @@
+version: "3.1"
+services:
+  backend:
+    image: backend
+    build: ./backend
+    restart: always
+    networks:
+      - host
+    env_file:
+      - .env
+  frontend:
+    image: frontend
+    build: ./frontend
+    restart: always
+    networks:
+      - host
+    stdin_open: true
+    depends_on:
+      - backend
+    env_file:
+      - .env
+networks:
+  host:
